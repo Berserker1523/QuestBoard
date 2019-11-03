@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Inicio from "./Inicio.js";
+import TableroMisiones from "./TableroMisiones.js";
+import Navbar from "./Navbar.js";
 import { HashRouter, Switch, Route } from "react-router-dom";
 
 const App = () => {
@@ -34,12 +36,19 @@ const App = () => {
   return (
     <div className="App">
       <HashRouter>
+      <Navbar />
       {/* envolvemos nuestra aplicación en el Router  */}
       <Switch>
         {/* también la envolvemos en el componente Switch */}
         <Route
           path="/"
           component={Inicio}
+          exact
+        />
+        <Route
+          path="/tablero"
+          component={TableroMisiones}
+          exact
         />
         {/* y creamos nuestras rutas */}
       </Switch>

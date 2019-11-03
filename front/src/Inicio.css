@@ -1,14 +1,29 @@
-.inicio-sesion {
+.inicio {
   background-color: rgba(255, 255, 255, 0.15);
   width: 70%;
   height: 70%;
   border-radius: 10px;
+  align-content: center;
 
   position: absolute;
   left: 15%;
   top: 20%;
   bottom: 20%;
   right: 20%;
+}
+
+.registro {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+  margin-top: 6%;
+}
+
+.inicio-sesion {
+  margin: auto;
+  width: 50%;
+  text-align: center;
+  margin-top: 10%;
 }
 
 input {
@@ -18,10 +33,29 @@ input {
   color: #FFFFFF;
   font-family: 'Oswald', sans-serif;
   font-size: 16px;
-  size: 35;
 }
 
 label {
   font-family: 'Patua One', cursive;
-  font-size: 28px;
+  font-size: 20px;
+  padding-bottom: 10px;
+}
+
+p {
+  font-family: 'Oswald', sans-serif;
+  margin-bottom: 1px;
+  margin-top: 1px;
+}
+
+.registrar {
+  color: #FF6344;
+}
+
+.btn-inicio {
+  background-color: #FF6344;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Patua One', cursive;
+  font-size: 24px;
+  color: #000000;
 }
