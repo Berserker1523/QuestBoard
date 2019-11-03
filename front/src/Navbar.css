@@ -1,0 +1,13 @@
+.navbar-logo {
+  margin-left: 20px;
+  width: 60px;
+  height: 100%;
+}
+
+.navbar-expand-lg {
+  background-color: #000000;
+}
+
+body {
+  font-family: 'Patua One', cursive;
+}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import Inicio from "./Inicio.js";
+import { HashRouter, Switch, Route } from "react-router-dom";
 
 const App = () => {
   const [docs, setDocs] = useState([]);
@@ -31,8 +33,19 @@ const App = () => {
 
   return (
     <div className="App">
-      {err}
-      {renderDocs()}
+      <HashRouter>
+      {/* envolvemos nuestra aplicación en el Router  */}
+      <Switch>
+        {/* también la envolvemos en el componente Switch */}
+        <Route
+          path="/"
+          component={Inicio}
+        />
+        {/* y creamos nuestras rutas */}
+      </Switch>
+    </HashRouter>
+      {/*{err}
+      {renderDocs()}*/}
     </div>
   );
 };
