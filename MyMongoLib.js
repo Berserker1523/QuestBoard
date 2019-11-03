@@ -345,6 +345,116 @@ const MyMongoLib = function() {
       });
     });
 
+  /*
+  ------------------------ CHATS ---------------------------------------------------
+  */
+  MyMongoLib.getChats = () =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Get Chats - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Chats");
+
+        return collection
+          .find({})
+          .toArray()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.getChat = chat_id =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Get Chat - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Chats");
+
+        return collection
+          .find({ _id: ObjectId(chat_id) })
+          .toArray()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.postChat = newChat =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Post Chat - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Chats");
+
+        return collection
+          .insertOne(newChat)
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.putChat = (chat_id, updatedChat) =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Put Chat - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Chats");
+
+        return collection
+          .updateOne({ _id: ObjectId(chat_id) }, updatedChat)
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.deleteChat = chat_id =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Delete Chat - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Chats");
+
+        return collection
+          .deleteOne({ _id: ObjectId(chat_id) })
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
   //----------------- Listening to Changes -------------------------------
 
   MyMongoLib.listenToChanges = cbk => {
@@ -355,15 +465,31 @@ const MyMongoLib = function() {
       console.log("ListenToChanges - Connected correctly to server");
 
       const db = client.db(dbName);
-      const testCol = db.collection("Users");
 
-      const csCursor = testCol.watch();
+      const questCollection = db.collection("Quests");
+      const csCursorQuest = questCollection.watch();
+
+      const gamesCollection = db.collection("Games");
+      const csCursorGames = gamesCollection.watch();
+
+      const chatsCollection = db.collection("Chats");
+      const csCursorChats = chatsCollection.watch();
 
       console.log("Listening to changes on mongo");
-      csCursor.on("change", data => {
-        console.log("changed", data);
 
-        MyMongoLib.getUsers().then(docs => cbk(JSON.stringify(docs)));
+      csCursorQuest.on("change", data => {
+        console.log("Quests changed: ", data);
+        MyMongoLib.getQuests().then(docs => cbk(JSON.stringify(docs)));
+      });
+
+      csCursorGames.on("change", data => {
+        console.log("Games changed: ", data);
+        MyMongoLib.getGames().then(docs => cbk(JSON.stringify(docs)));
+      });
+
+      csCursorChats.on("change", data => {
+        console.log("Chats changed: ", data);
+        MyMongoLib.getChats().then(docs => cbk(JSON.stringify(docs)));
       });
     });
   };

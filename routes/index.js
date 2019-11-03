@@ -279,4 +279,74 @@ router.delete("/games/:game_id", (req, res) => {
     .catch(err => res.send({ err: true, msg: err }));
 });
 
+/*
+  ------------------------------- CHATS  ----------------------------------------
+*/
+
+router.get("/chats", (req, res) => {
+  myMongoLib
+    .getChats()
+    .then(docs => res.send(docs))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.get("/chats/:chat_id", (req, res) => {
+  const chat_id = req.params.chat_id;
+
+  myMongoLib
+    .getChat(chat_id)
+    .then(docs => res.send(docs[0]))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.post("/chats", (req, res) => {
+  const chat_name = req.body.name;
+  const chat_quest = req.body.quest;
+  const chat_users = req.body.users;
+  const chat_messages = [];
+
+  const new_chat = {
+    name: chat_name,
+    quest: chat_quest,
+    users: chat_users,
+    messages: chat_messages
+  };
+
+  myMongoLib
+    .postChat(new_chat)
+    .then(docs => res.send(docs.ops[0]))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.put("/chats/:chat_id", (req, res) => {
+  const chat_id = req.params.chat_id;
+
+  const chat_name = req.body.name;
+  const chat_quest = req.body.quest;
+  const chat_users = req.body.users;
+  const chat_messages = req.body.messages;
+
+  const updated_chat = {
+    $set: {
+      name: chat_name,
+      quest: chat_quest,
+      users: chat_users,
+      messages: chat_messages
+    }
+  };
+
+  myMongoLib
+    .putChat(chat_id, updated_chat)
+    .then(docs => res.send({ updated: docs.modifiedCount }))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.delete("/chats/:chat_id", (req, res) => {
+  const chat_id = req.params.chat_id;
+  myMongoLib
+    .deleteChat(chat_id)
+    .then(docs => res.send({ deleted: docs.deletedCount }))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
 module.exports = router;
