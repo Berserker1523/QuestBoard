@@ -6,7 +6,7 @@ import "./Inicio.css";
 class Inicio extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {value: ''};
+    this.state = {apodo: 'Escriba aquí su nombre de usuario de LoL', contrasenia: ''};
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -31,13 +31,13 @@ class Inicio extends React.Component {
             <label htmlFor="">
               Nombre de usuario:
               <br/>
-              <input type="text" value={this.state.value} onChange={this.handleChange}/>
+              <input type="text" value={this.state.apodo} onChange={this.handleChange}/>
             </label>
             <br/>
             <label htmlFor="">
               Contraseña:
               <br/>
-              <input type="password"/>
+              <input type="password" value={this.state.contrasenia}/>
             </label>
           </form>
         </div>
