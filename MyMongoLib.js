@@ -4,9 +4,11 @@ const MyMongoLib = function() {
   const MyMongoLib = this || {};
 
   // Connection URL
-  const url =
-    process.env.MONGO_URL ||
-    "mongodb+srv://Berserker1523:aUzzl2eAz7NZRWUZ@cluster0-cjep6.mongodb.net/test?retryWrites=true&w=majority";
+  const url = process.env.MONGO_URL || null;
+
+  if (url === null) {
+    throw "MONGO_URL env variable is not set";
+  }
   // Database Name
   const dbName = "QuestBoard";
   // Create a new MongoClient
