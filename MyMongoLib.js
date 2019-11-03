@@ -235,6 +235,116 @@ const MyMongoLib = function() {
       });
     });
 
+  /*
+  ------------------------ GAMES ---------------------------------------------------
+  */
+  MyMongoLib.getGames = () =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Get Games - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Games");
+
+        return collection
+          .find({})
+          .toArray()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.getGame = game_id =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Get Game - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Games");
+
+        return collection
+          .find({ _id: ObjectId(game_id) })
+          .toArray()
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.postGame = newGame =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Post Game - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Games");
+
+        return collection
+          .insertOne(newGame)
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.putGame = (game_id, updatedGame) =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Put Game - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Games");
+
+        return collection
+          .updateOne({ _id: ObjectId(game_id) }, updatedGame)
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.deleteGame = game_id =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Delete Game - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Games");
+
+        return collection
+          .deleteOne({ _id: ObjectId(game_id) })
+          .then(resolve)
+          .catch(reject);
+      });
+    });
+
   //----------------- Listening to Changes -------------------------------
 
   MyMongoLib.listenToChanges = cbk => {

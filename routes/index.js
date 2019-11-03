@@ -169,4 +169,74 @@ router.delete("/quests/:quest_id", (req, res) => {
     .catch(err => res.send({ err: true, msg: err }));
 });
 
+/*
+  ------------------------------- GAMES ----------------------------------------
+*/
+
+router.get("/games", (req, res) => {
+  myMongoLib
+    .getGames()
+    .then(docs => res.send(docs))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.get("/games/:game_id", (req, res) => {
+  const game_id = req.params.game_id;
+
+  myMongoLib
+    .getGame(game_id)
+    .then(docs => res.send(docs[0]))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.post("/games", (req, res) => {
+  const game_name = req.body.name;
+  const game_genre = req.body.genre;
+  const game_description = req.body.description;
+  const game_logo = req.body.logo;
+
+  const new_game = {
+    name: game_name,
+    genre: game_genre,
+    description: game_description,
+    logo: game_logo
+  };
+
+  myMongoLib
+    .postGame(new_game)
+    .then(docs => res.send(docs.ops[0]))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.put("/games/:game_id", (req, res) => {
+  const game_id = req.params.game_id;
+
+  const game_name = req.body.name;
+  const game_genre = req.body.genre;
+  const game_description = req.body.description;
+  const game_logo = req.body.logo;
+
+  const updated_game = {
+    $set: {
+      name: game_name,
+      genre: game_genre,
+      description: game_description,
+      logo: game_logo
+    }
+  };
+
+  myMongoLib
+    .putGame(game_id, updated_game)
+    .then(docs => res.send({ updated: docs.modifiedCount }))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.delete("/games/:game_id", (req, res) => {
+  const game_id = req.params.game_id;
+  myMongoLib
+    .deleteGame(game_id)
+    .then(docs => res.send({ deleted: docs.deletedCount }))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
 module.exports = router;
