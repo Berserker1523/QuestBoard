@@ -1,0 +1,486 @@
+{
+	"info": {
+		"_postman_id": "72872cae-e39e-4bc3-878b-749d733c8fec",
+		"name": "QuestBoard",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "PostUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b43e7f11-ba19-49cf-8924-074159cade13",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"user_id\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"PruebaUsuario\",\n\t\"mail\": \"prueba@asd.com\",\n\t\"password\": \"123456789\",\n\t\"age\": \"18\",\n\t\"avatar\": \"asd.png\",\n\t\"country\": \"Locombia\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUsers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUser",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/users/{{user_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutUser",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"asdfgh\",\n\t\"mail\": \"prueba@asd.com\",\n\t\"password\": \"123456789\",\n\t\"age\": \"18\",\n\t\"avatar\": \"asd.png\",\n\t\"country\": \"Locombia\",\n\t\"ownQuests\": [\"{{quest_id}}\"],\n    \"activeQuests\": [\"{{quest_id}}\"],\n    \"completedQuests\": [],\n    \"ownGames\": [\"{{game_id}}\"]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/users/{{user_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/users/{{user_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Quest",
+			"item": [
+				{
+					"name": "PostQuest",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c764c6eb-d17a-4dea-9317-85b8ad8aedfe",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"quest_id\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"2vs2 o 1v1 en la grieta del invocador\",\n    \"description\": \"2vs2 en la linea del mid, gana el primero equipo que mate a los otros 2\",\n    \"finishDate\": \"03/11/2019\",\n    \"minPlayers\": 2,\n    \"maxPlayers\": 4,\n    \"owner\": \"{{user_id}}\",\n    \"game\": \"{{game_id}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/quests",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetQuests",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/quests",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetQuest",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/quests/{{quest_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"quests",
+								"{{quest_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutQuest",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"2vs2 o 1v1 en la grieta del invocador\",\r\n    \"description\": \"2vs2 en la linea del mid, gana el primero equipo que mate a los otros 2\",\r\n    \"startDate\": \"2019-11-03T21:32:40.698Z\",\r\n    \"finishDate\": \"03/11/2019\",\r\n    \"minPlayers\": 2,\r\n    \"maxPlayers\": 4,\r\n    \"completed\": true,\r\n    \"owner\": \"{{user_id}}\",\r\n    \"players\": [],\r\n    \"game\": \"{{game_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/quests/{{quest_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"quests",
+								"{{quest_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteQuest",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/quests/{{quest_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"quests",
+								"{{quest_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ebfdbb43-d1a5-4445-be91-5d55522c63ea",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "922302ba-8e9d-4580-b1aa-47e5ca5fc5c4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Game",
+			"item": [
+				{
+					"name": "PostGame",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c764c6eb-d17a-4dea-9317-85b8ad8aedfe",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"game_id\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"League of Legends\",\n\t\"genre\": \"MOBA\",\n    \"description\": \"League of Legends is a multiplayer online battle arena video game developed and published by Riot Games for Microsoft Windows and macOS.\",\n   \"logo\": \"https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwix7OKlhc_lAhUsuVkKHV1gC04QjRx6BAgBEAQ&url=https%3A%2F%2Fwww.teepublic.com%2Fen-gb%2Fsticker%2F3303813-league-of-legends-logo&psig=AOvVaw2caxRdv99eeNrYYxerH0Lm&ust=1572904839775249\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/games",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"games"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetGames",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/games",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"games"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetGame",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/games/{{game_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"games",
+								"{{game_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutGame",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"League of Flamers\",\n\t\"genre\": \"MOBA\",\n    \"description\": \"League of Legends is a multiplayer online battle arena video game developed and published by Riot Games for Microsoft Windows and macOS.\",\n   \"logo\": \"https://www.google.com/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&ved=2ahUKEwix7OKlhc_lAhUsuVkKHV1gC04QjRx6BAgBEAQ&url=https%3A%2F%2Fwww.teepublic.com%2Fen-gb%2Fsticker%2F3303813-league-of-legends-logo&psig=AOvVaw2caxRdv99eeNrYYxerH0Lm&ust=1572904839775249\",\n   \"activeQuests\": [\"{{quest_id}}\"],\n   \"completedQuests\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/games/{{game_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"games",
+								"{{game_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteGame",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/games/{{game_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"games",
+								"{{game_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ebfdbb43-d1a5-4445-be91-5d55522c63ea",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "922302ba-8e9d-4580-b1aa-47e5ca5fc5c4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
