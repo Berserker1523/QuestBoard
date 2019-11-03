@@ -36,6 +36,10 @@ router.post("/users", (req, res) => {
   const user_age = req.body.age;
   const user_avatar = req.body.avatar;
   const user_country = req.body.country;
+  const user_ownQuests = [];
+  const user_activeQuests = [];
+  const user_completedQuests = [];
+  const user_ownGames = [];
 
   const new_user = {
     name: user_name,
@@ -43,7 +47,11 @@ router.post("/users", (req, res) => {
     password: user_password,
     age: user_age,
     avatar: user_avatar,
-    country: user_country
+    country: user_country,
+    ownQuests: user_ownQuests,
+    activeQuests: user_activeQuests,
+    completedQuests: user_completedQuests,
+    ownGames: user_ownGames
   };
 
   myMongoLib
@@ -61,6 +69,10 @@ router.put("/users/:user_id", (req, res) => {
   const user_age = req.body.age;
   const user_avatar = req.body.avatar;
   const user_country = req.body.country;
+  const user_ownQuests = req.body.ownQuests;
+  const user_activeQuests = req.body.activeQuests;
+  const user_completedQuests = req.body.completedQuests;
+  const user_ownGames = req.body.ownGames;
 
   const updated_user = {
     $set: {
@@ -69,7 +81,11 @@ router.put("/users/:user_id", (req, res) => {
       password: user_password,
       age: user_age,
       avatar: user_avatar,
-      country: user_country
+      country: user_country,
+      ownQuests: user_ownQuests,
+      activeQuests: user_activeQuests,
+      completedQuests: user_completedQuests,
+      ownGames: user_ownGames
     }
   };
 
@@ -115,6 +131,13 @@ router.post("/quests", (req, res) => {
   const quest_minPlayers = req.body.minPlayers;
   const quest_maxPlayers = req.body.maxPlayers;
   const quest_completed = false;
+  const quest_owner = req.body.owner;
+  const quest_players = [];
+  const quest_game = req.body.game;
+
+  console.log("POST QUEST ROUTER");
+  console.log(`quest owner: ${quest_owner}`);
+  console.log(`quest game: ${quest_game}`);
 
   const new_quest = {
     name: quest_name,
@@ -123,7 +146,10 @@ router.post("/quests", (req, res) => {
     finishDate: quest_finishDate,
     minPlayers: quest_minPlayers,
     maxPlayers: quest_maxPlayers,
-    completed: quest_completed
+    completed: quest_completed,
+    owner: quest_owner,
+    players: quest_players,
+    game: quest_game
   };
 
   myMongoLib
@@ -142,6 +168,9 @@ router.put("/quests/:quest_id", (req, res) => {
   const quest_minPlayers = req.body.minPlayers;
   const quest_maxPlayers = req.body.maxPlayers;
   const quest_completed = req.body.completed;
+  const quest_owner = req.body.owner;
+  const quest_players = req.body.players;
+  const quest_game = req.body.game;
 
   const updated_quest = {
     $set: {
@@ -151,7 +180,10 @@ router.put("/quests/:quest_id", (req, res) => {
       finishDate: quest_finishDate,
       minPlayers: quest_minPlayers,
       maxPlayers: quest_maxPlayers,
-      completed: quest_completed
+      completed: quest_completed,
+      owner: quest_owner,
+      players: quest_players,
+      game: quest_game
     }
   };
 
@@ -194,12 +226,16 @@ router.post("/games", (req, res) => {
   const game_genre = req.body.genre;
   const game_description = req.body.description;
   const game_logo = req.body.logo;
+  const game_activeQuests = [];
+  const game_completedQuests = [];
 
   const new_game = {
     name: game_name,
     genre: game_genre,
     description: game_description,
-    logo: game_logo
+    logo: game_logo,
+    activeQuests: game_activeQuests,
+    completedQuests: game_completedQuests
   };
 
   myMongoLib
@@ -215,13 +251,17 @@ router.put("/games/:game_id", (req, res) => {
   const game_genre = req.body.genre;
   const game_description = req.body.description;
   const game_logo = req.body.logo;
+  const game_activeQuests = req.body.activeQuests;
+  const game_completedQuests = req.body.completedQuests;
 
   const updated_game = {
     $set: {
       name: game_name,
       genre: game_genre,
       description: game_description,
-      logo: game_logo
+      logo: game_logo,
+      activeQuests: game_activeQuests,
+      completedQuests: game_completedQuests
     }
   };
 
