@@ -11,18 +11,12 @@ class MisMisiones extends React.Component {
     this.renderMisiones = this.renderMisiones.bind(this);
   }
 
-  /*componentDidMount() {
-    if (this.state.usuarioActual !== null) {
-      fetch("/users/" + this.state.usuarioActual.mail + "/quests")
-        .then(res => res.json())
-        .then(data => this.setState({ misiones: data }))
-        .catch();
-    }
-  }*/
-
   renderMisiones() {
     return this.props.quests.map((mision, i) => {
-      if (mision.owner === this.props.currentUser._id) {
+      if (
+        mision.owner === this.props.currentUser._id ||
+        mision.players.findIndex(id => id === this.props.currentUser._id) >= 0
+      ) {
         return (
           <div className="col-md-4" key={i}>
             <Mision info={mision} currentUser={this.props.currentUser} />
