@@ -20,11 +20,11 @@ router.get("/users", (req, res) => {
     .catch(err => res.send({ err: true, msg: err }));
 });
 
-router.get("/users/:user_id", (req, res) => {
-  const user_id = req.params.user_id;
+router.get("/users/:user_mail", (req, res) => {
+  const user_mail = req.params.user_mail;
   //console.log(`GET users/:user_name - param: ${user_name}`);
   myMongoLib
-    .getUser(user_id)
+    .getUser(user_mail)
     .then(docs => res.send(docs[0]))
     .catch(err => res.send({ err: true, msg: err }));
 });
@@ -347,6 +347,35 @@ router.delete("/chats/:chat_id", (req, res) => {
     .deleteChat(chat_id)
     .then(docs => res.send({ deleted: docs.deletedCount }))
     .catch(err => res.send({ err: true, msg: err }));
+});
+
+/*
+---------------------------------- Riot Games API --------------------------------------
+*/
+const fetch = require("node-fetch");
+
+router.get("/lol_info/:summoner_name", (req, res) => {
+  let summoner_name = req.params.summoner_name;
+  summoner_name.split(" ").join("%20");
+
+  console.log(`Obtaining data from riot games api of: ${summoner_name}`);
+
+  fetch(
+    `https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner_name}`,
+    {
+      method: "GET",
+      headers: {
+        Origin: "https://developer.riotgames.com",
+        "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
+        "X-Riot-Token": "RGAPI-5525c01a-7f6e-4728-8238-c88d6e99be28"
+      }
+    }
+  )
+    .then(res => res.json())
+    .then(response => {
+      console.log("Response: ");
+      console.log(response);
+    });
 });
 
 module.exports = router;

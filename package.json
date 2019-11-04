@@ -17,6 +17,7 @@
     "jade": "~1.11.0",
     "mongodb": "^3.3.3",
     "morgan": "~1.9.1",
+    "node-fetch": "^2.6.0",
     "uglify-js": "2.6.0",
     "utf-8-validate": "^5.0.2",
     "ws": "^7.2.0"
