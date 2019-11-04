@@ -9,11 +9,11 @@ class Inicio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nombre: '',
-      descripcion: '',
+      nombre: "",
+      descripcion: "",
       fechaFinal: new Date(),
       minJugadores: 1,
-      maxJugadores: 2,
+      maxJugadores: 2
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -38,26 +38,22 @@ class Inicio extends React.Component {
 
   handleSubmit(event) {
     fetch("/quests", {
-      method: 'POST', // or 'PUT'
-      body: JSON.stringify(
-      {
+      method: "POST", // or 'PUT'
+      body: JSON.stringify({
         name: this.state.nombre,
         description: this.state.descripcion,
         finishDate: this.state.fechaFinal,
         maxPlayers: this.state.maxJugadores,
-        minPlayers:this.state.minJugadores,
-        owner: this.props.currentUser._id,
+        minPlayers: this.state.minJugadores,
+        owner: this.props.currentUser._id
+      }),
+      headers: {
+        "Content-Type": "application/json"
       }
-
-      ), // data can be `string` or {object}!
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    }).then(res => res.json())
-    .catch(error => console.error('Error:', error))
-    .then(response =>
-      console.log('Success:', response)
-    );
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => console.log("Success:", response));
   }
 
   render() {
@@ -66,42 +62,72 @@ class Inicio extends React.Component {
       <div className="CrearMision">
         <div className="container-fluid crear-mision">
           <div className="row informacion">
-          <div className="col-md-12">
-            <form>
-              <label htmlFor="">
-                <input type="text" className="nombre" name="nombre" value={this.state.nombre} onChange={this.handleInputChange} placeholder="Nombre de la misión..."/>
-              </label>
-              <br/> <br/>
-              <label htmlFor="">
-                Descripción
-                <br/>
-                <textarea name="descripcion" value={this.state.descripcion} onChange={this.handleInputChange} placeholder="Escribe algo.."> </textarea>
-              </label>
-              <br/>
-              <label htmlFor="">
-                Número mínimo y máximo de jugadores
-                <br/>
-                <input type="number" name="minJugadores" value={this.state.minJugadores} onChange={this.handleInputChange} />
-                -
-                <input type="number" name="maxJugadores" value={this.state.maxJugadores} onChange={this.handleInputChange} />
-              </label>
-              <br/>
-              <label htmlFor="">
-                Fecha de fin
-                <br/>
-                <DatePicker
-                  name="fechaFinal"
-                  value={this.state.fechaFinal}
-                  selected={this.state.fechaFinal}
-                  onChange={this.handleChange}
-                />
-              </label>
-              <br/> <br/>
-              <Link to={"/mis-misiones"}>
-                <button type="submit" className="btn-crear" onClick={this.handleSubmit}>Crear</button>
-              </Link>
-            </form>
-          </div>
+            <div className="col-md-12">
+              <form>
+                <label htmlFor="">
+                  <input
+                    type="text"
+                    className="nombre"
+                    name="nombre"
+                    value={this.state.nombre}
+                    onChange={this.handleInputChange}
+                    placeholder="Nombre de la misión..."
+                  />
+                </label>
+                <br /> <br />
+                <label htmlFor="">
+                  Descripción
+                  <br />
+                  <textarea
+                    name="descripcion"
+                    value={this.state.descripcion}
+                    onChange={this.handleInputChange}
+                    placeholder="Escribe algo.."
+                  >
+                    {" "}
+                  </textarea>
+                </label>
+                <br />
+                <label htmlFor="">
+                  Número mínimo y máximo de jugadores
+                  <br />
+                  <input
+                    type="number"
+                    name="minJugadores"
+                    value={this.state.minJugadores}
+                    onChange={this.handleInputChange}
+                  />
+                  -
+                  <input
+                    type="number"
+                    name="maxJugadores"
+                    value={this.state.maxJugadores}
+                    onChange={this.handleInputChange}
+                  />
+                </label>
+                <br />
+                <label htmlFor="">
+                  Fecha de fin
+                  <br />
+                  <DatePicker
+                    name="fechaFinal"
+                    value={this.state.fechaFinal}
+                    selected={this.state.fechaFinal}
+                    onChange={this.handleChange}
+                  />
+                </label>
+                <br /> <br />
+                <Link to={"/mis-misiones"}>
+                  <button
+                    type="submit"
+                    className="btn-crear"
+                    onClick={this.handleSubmit}
+                  >
+                    Crear
+                  </button>
+                </Link>
+              </form>
+            </div>
           </div>
         </div>
       </div>
