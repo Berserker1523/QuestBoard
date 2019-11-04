@@ -51,7 +51,7 @@ class Chat extends React.Component{
   }
 
   renderMsgs() {
-    return this.props.chat.messages.map(msg => <div className={msg.owner === this.props.currentUser._id ? "row right" : "row left"}>{msg.text}</div>);
+    return this.props.chat.messages.map((msg,i) => <div key={i} className={msg.owner === this.props.currentUser._id ? "row right" : "row left"}>{msg.text}</div>);
   }
 
   render() {

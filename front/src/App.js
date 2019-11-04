@@ -16,7 +16,9 @@ const App = props => {
   const [quests, setQuests] = useState([]);
   const [questsError, setQuestsError] = useState("");
   const [connected, setConnected] = useState(false);
-  const [chats, setChats] = useState([]);
+  const [currentChat, setCurrentChat] = useState(null);
+  const [currentChatId, setCurrentChatId] = useState("");
+  const [chatError, setChatError] = useState("");
 
   useEffect(() => {
     if (!connected) {
@@ -31,12 +33,17 @@ const App = props => {
             setQuests(res.data);
           }
           if (res.type === "chats") {
-            setChats(res.data);
+            const i = res.data.indexOf(currentChatId);
+            if(i !== -1)
+            {
+              console.log(res.data[i]);
+              setCurrentChat(res.data[i]);
+            }
           }
         };
       };
     }
-  }, [connected, user, quests, chats]);
+  }, [connected, user, quests, currentChatId]);
 
   const GetQuests = () => {
     fetch("/quests")
@@ -48,6 +55,21 @@ const App = props => {
       .catch(err =>
         setQuestsError(
           "No fue posible obtener las misiones, por favor intentelo de nuevo"
+        )
+      );
+  };
+
+  const GetCurrentChat = (currentChatId) => {
+    setCurrentChatId(currentChatId);
+    fetch("/chats/"+currentChatId)
+      .then(res => res.json())
+      .then(data => {
+        setCurrentChat(data);
+        setChatError("");
+      })
+      .catch(err =>
+        setChatError(
+          "No fue posible obtener el chat, por favor intentelo de nuevo"
         )
       );
   };
@@ -111,7 +133,8 @@ const App = props => {
               <Chats
                 {...propiedades}
                 currentUser={user}
-                chats={chats} />
+                GetCurrentChat = {GetCurrentChat}
+                currentChat={currentChat} />
             )}
             exact
           />

@@ -26,21 +26,17 @@ class Chats extends React.Component{
       .then(data => this.setState({chats: data}))
       .catch();
     }
+
+    console.log(this.state.chats);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if(this.state.currentChatId !== prevState.currentChatId) {
       if(this.state.currentChatId !== "")
       {
-        console.log("/chats/"+this.state.currentChatId);
-        fetch("/chats/"+this.state.currentChatId)
-          .then(resp => resp.json())
-          .then(chat => this.setState({currentChat: chat}))
-          .catch();
+        this.props.GetCurrentChat(this.state.currentChatId);
       }
     }
-
-    console.log(this.state.currentChat);
   }
 
   renderChatsNames() {
@@ -55,7 +51,7 @@ class Chats extends React.Component{
   }
 
   renderCurrentChat() {
-    return <Chat chat={this.state.currentChat} currentUser={this.props.currentUser} />;
+    return <Chat chat={this.props.currentChat} currentUser={this.props.currentUser} />;
   }
 
   render() {
