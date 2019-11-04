@@ -9,12 +9,20 @@ class TableroMisiones extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      misiones: ["holi", "holi", "holi", "holi", "holi", "holi", "holi", "holi", "holi", "holi",],
+      misiones: [],
       usuarioActual: this.props.currentUser,
     }
   }
 
   renderMisiones() {
+    if(this.state.usuarioActual !== null)
+    {
+      fetch("/users/"+this.state.usuarioActual.mail+"/quests")
+      .then(res => res.json())
+      .then(data => {this.setState({misiones: data}); console.log(data);})
+      .catch();
+    }
+
     return this.state.misiones.map(
       (mision,i) => <div className="col-md-4"><Mision info={mision} key={i} /></div>);
   }

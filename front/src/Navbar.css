@@ -4,7 +4,7 @@
   height: 100%;
 }
 
-.navbar-expand-lg {
+.navbar-expand-lg, .navbar-dark {
   background-color: #000000;
   border-bottom: 1px solid white;
 }

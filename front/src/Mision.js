@@ -19,7 +19,7 @@ class Mision extends React.Component {
             {this.state.info.name}
           </div>
           <div className="row descripcion">
-            {this.state.info.description}
+            <p> {this.state.info.description} </p>
           </div>
           <div className="row jugadores">
             jugadores

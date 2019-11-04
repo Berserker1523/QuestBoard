@@ -21,7 +21,7 @@ class TableroMisiones extends React.Component {
     return this.state.misiones.map(
       (mision,i) => (mision.completed === false
         ? <div className="col-md-4"><Mision info={mision} key={i} /></div>
-        : <div className="col-md-4"></div>));
+        : <div className="col-md-0"></div>));
   }
 
   render() {

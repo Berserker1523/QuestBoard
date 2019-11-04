@@ -5,6 +5,7 @@ import TableroMisiones from "./TableroMisiones.js";
 import Navbar from "./Navbar.js";
 import MisMisiones from "./MisMisiones.js";
 import CrearMision from "./CrearMision.js";
+import Chats from "./Chats.js";
 import { HashRouter, Switch, Route } from "react-router-dom";
 
 const App = (props) => {
@@ -12,6 +13,8 @@ const App = (props) => {
   const [err, setErr] = useState("");
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
+  const [myMisions, setMyMisions] = useState([]);
+  const [misions, setMisions] = useState([]);
 
   const getUser = (userMail) => { setEmail(userMail); };
 
@@ -82,6 +85,7 @@ const App = (props) => {
         />
         {/* y creamos nuestras rutas */}
       </Switch>
+      <Chats currentUser={user}  />
     </HashRouter>
       {/*{err}
       {renderDocs()}*/}
