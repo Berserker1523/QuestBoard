@@ -9,22 +9,40 @@ class Inicio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      games: [],
       nombre: "",
+      game: "",
       descripcion: "",
       fechaFinal: new Date(),
       minJugadores: 1,
-      maxJugadores: 2
+      maxJugadores: 2,
+      error: ""
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.renderGamesChoice = this.renderGamesChoice.bind(this);
+  }
+
+  renderGamesChoice() {
+    return this.state.games.map((game, i) => (
+      <option key={i} value={game._id}>
+        {game.name}
+      </option>
+    ));
+  }
+
+  componentDidMount() {
+    fetch("/games")
+      .then(res => res.json())
+      .then(data => this.setState({ games: data, game: data[0]._id }))
+      .catch(err => this.setState({ error: err }));
   }
 
   handleInputChange(event) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-
     this.setState({
       [name]: value
     });
@@ -38,14 +56,15 @@ class Inicio extends React.Component {
 
   handleSubmit(event) {
     fetch("/quests", {
-      method: "POST", // or 'PUT'
+      method: "POST",
       body: JSON.stringify({
         name: this.state.nombre,
         description: this.state.descripcion,
         finishDate: this.state.fechaFinal,
         maxPlayers: this.state.maxJugadores,
         minPlayers: this.state.minJugadores,
-        owner: this.props.currentUser._id
+        owner: this.props.currentUser._id,
+        game: this.state.game
       }),
       headers: {
         "Content-Type": "application/json"
@@ -57,7 +76,6 @@ class Inicio extends React.Component {
   }
 
   render() {
-    /*console.log("Usuario componente Inicio: " + this.props.currentUser);*/
     return (
       <div className="CrearMision">
         <div className="container-fluid crear-mision">
@@ -74,7 +92,21 @@ class Inicio extends React.Component {
                     placeholder="Nombre de la misión..."
                   />
                 </label>
-                <br /> <br />
+                <br />
+                <label htmlFor="">
+                  Juego
+                  <br />
+                  <select
+                    className="juego"
+                    name="game"
+                    value={this.state.game}
+                    onChange={this.handleInputChange}
+                    placeholder="Juego de la misión..."
+                  >
+                    {this.renderGamesChoice()}
+                  </select>
+                </label>
+                <br />
                 <label htmlFor="">
                   Descripción
                   <br />

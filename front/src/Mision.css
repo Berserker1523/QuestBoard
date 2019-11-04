@@ -39,6 +39,17 @@
   margin-top: 10px;
 }
 
+.btn-eliminar {
+  background-color: #ff6344;
+  font-family: "Patua One", cursive;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 2px;
+  font-size: 22px;
+  margin-top: 10px;
+}
+
 .btn-rechazar {
   background-color: #ff6344;
 }
