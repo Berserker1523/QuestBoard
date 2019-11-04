@@ -9,6 +9,10 @@
   border-bottom: 1px solid white;
 }
 
+.nav-item {
+  color: #FF6344;
+}
+
 body {
   font-family: 'Patua One', cursive;
 }

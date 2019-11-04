@@ -1,0 +1,10 @@
+.agregar-mision {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+  margin: 3%;
+  text-align: center;
+}
+
+.plus-icon {
+  width: 40%;
+}

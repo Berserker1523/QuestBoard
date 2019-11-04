@@ -47,7 +47,7 @@ class Inicio extends React.Component {
                 <input type="password" name="contrasenia" value={this.state.contrasenia} onChange={this.handleInputChange} size="35"/>
               </label>
               <br/> <br/>
-              <Link to={this.props.currentUser ? "/tablero" : "/"}>
+              <Link to={"/tablero"}>
                 <button type="submit" className="btn-inicio" onClick={this.handleSubmit}>Iniciar sesión</button>
               </Link>
             </form>

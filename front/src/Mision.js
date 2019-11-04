@@ -16,10 +16,10 @@ class Mision extends React.Component {
       <div className="Mision">
         <div className="container-fluid mision">
           <div className="row nombre">
-            nombre
+            {this.state.info.name}
           </div>
           <div className="row descripcion">
-            descripcion
+            {this.state.info.description}
           </div>
           <div className="row jugadores">
             jugadores

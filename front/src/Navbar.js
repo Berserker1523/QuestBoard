@@ -6,12 +6,12 @@ const Navbar = props => {
   return (
     <div className="Navbar">
       <nav className="navbar navbar-expand-lg fixed-top">
-        <Link className="navbar-brand" to={props.currentUser ? "/" : "/tablero"}>
+        <Link className="navbar-brand" to={props.currentUser === null ? "/" : "/tablero"}>
           <img src="../QBLogo.png" alt="Quest Board logo" className="navbar-logo"/>
         </Link>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
-            {props.currentUser ? (
+            {props.currentUser  !== null ? (
               <li className="nav-item">
                 <Link
                   to={"/mis-misiones"}

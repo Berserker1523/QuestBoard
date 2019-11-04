@@ -1,0 +1,49 @@
+.crear-mision {
+  background-color: rgba(255, 255, 255, 0.15);
+  width: 70%;
+  height: 80%;
+  border-radius: 10px;
+
+  position: absolute;
+  left: 15%;
+  top: 15%;
+  bottom: 15%;
+  right: 20%;
+}
+
+form {
+  margin-top: 3%;
+  text-align: center;
+  align-content: center;
+}
+
+input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #FFFFFF;
+  color: #FFFFFF;
+  font-family: 'Oswald', sans-serif;
+  font-size: 16px;
+}
+
+label {
+  font-family: 'Patua One', cursive;
+  font-size: 20px;
+  padding-bottom: 10px;
+  margin: 1%;
+}
+
+p {
+  font-family: 'Oswald', sans-serif;
+  margin-bottom: 1px;
+  margin-top: 1px;
+}
+
+.btn-crear {
+  background-color: #FF6344;
+  border: none;
+  border-radius: 5px;
+  font-family: 'Patua One', cursive;
+  font-size: 24px;
+  color: #000000;
+}
