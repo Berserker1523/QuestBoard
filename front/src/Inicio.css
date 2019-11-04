@@ -17,7 +17,8 @@
   margin-top: 6%;
 }
 
-.inicio-sesion, form {
+.inicio-sesion,
+.form {
   margin: auto;
   margin-top: 3%;
   text-align: center;
@@ -27,33 +28,37 @@
 input {
   background: transparent;
   border: none;
-  border-bottom: 1px solid #FFFFFF;
-  color: #FFFFFF;
-  font-family: 'Oswald', sans-serif;
+  border-bottom: 1px solid #ffffff;
+  color: #ffffff;
+  font-family: "Oswald", sans-serif;
   font-size: 16px;
 }
 
 label {
-  font-family: 'Patua One', cursive;
+  font-family: "Patua One", cursive;
   font-size: 20px;
   padding-bottom: 10px;
 }
 
 p {
-  font-family: 'Oswald', sans-serif;
+  font-family: "Oswald", sans-serif;
   margin-bottom: 1px;
   margin-top: 1px;
 }
 
 .registrar {
-  color: #FF6344;
+  color: #ff6344;
 }
 
 .btn-inicio {
-  background-color: #FF6344;
+  background-color: #ff6344;
   border: none;
   border-radius: 5px;
-  font-family: 'Patua One', cursive;
+  font-family: "Patua One", cursive;
   font-size: 24px;
   color: #000000;
+}
+
+.error {
+  color: red;
 }

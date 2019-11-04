@@ -6,15 +6,13 @@ import Navbar from "./Navbar.js";
 import MisMisiones from "./MisMisiones.js";
 import CrearMision from "./CrearMision.js";
 import Chats from "./Chats.js";
-import { HashRouter, Switch, Route } from "react-router-dom";
+import { HashRouter, Switch, Route, Redirect } from "react-router-dom";
 
-const App = (props) => {
-  const [docs, setDocs] = useState([]);
-  const [err, setErr] = useState("");
+const App = props => {
+  /*const [docs, setDocs] = useState([]);
+  const [err, setErr] = useState("");*/
   const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
-  const [myMisions, setMyMisions] = useState([]);
-  const [misions, setMisions] = useState([]);
 
   const getUser = (userMail) => { setEmail(userMail); };
 
@@ -25,11 +23,11 @@ const App = (props) => {
 
       ws.onmessage = msg => {
         console.log("got ws data", msg);
-        setDocs(JSON.parse(msg.data));
+        //setDocs(JSON.parse(msg.data));
       };
     };
 
-    if(email !== "")
+    /*if(email !== "")
     {
       fetch("/users/" + email)
         .then(res => res.json())
@@ -37,56 +35,57 @@ const App = (props) => {
           setUser(responseUser);
         })
         .catch(err => setErr(err));
-    }
+    }*/
+  }, [user]);
 
-  }, [email]);
-
-  const renderDocs = () => docs.map(d => <div key={d.name}>{d.name}</div>);
+  //const renderDocs = () => docs.map(d => <div key={d.name}>{d.name}</div>);
 
   return (
     <div className="App">
       <HashRouter>
-      <Navbar currentUser={user} />
-      {/* envolvemos nuestra aplicación en el Router  */}
-      <Switch>
-        {/* también la envolvemos en el componente Switch */}
-        <Route
-          path="/"
-          render={propiedades => (
-            <Inicio {...propiedades}
-              currentUser={user}
-              getUser={getUser} />
-          )}
-          exact
-        />
-        <Route
-          path="/tablero"
-          render={propiedades => (
-            <TableroMisiones {...propiedades}
-              currentUser={user} />
-          )}
-          exact
-        />
-        <Route
-          path="/mis-misiones"
-          render={propiedades => (
-            <MisMisiones {...propiedades}
-              currentUser={user} />
-          )}
-          exact
-        />
-        <Route
-          path="/crear-mision"
-          render={propiedades => (
-            <CrearMision {...propiedades}
-              currentUser={user} />
-          )}
-          exact
-        />
-        {/* y creamos nuestras rutas */}
-      </Switch>
-      <Chats currentUser={user}  />
-    </HashRouter>
+        <Navbar currentUser={user} />
+        {user !== null ? <Redirect push to="/tablero" /> : ""}
+        {/* envolvemos nuestra aplicación en el Router  */}
+        <Switch>
+          {/* también la envolvemos en el componente Switch */}
+          <Route
+            path="/"
+            render={propiedades => (
+              <Inicio {...propiedades} setUser={setUser} />
+            )}
+            exact
+          />
+          <Route
+            path="/tablero"
+            render={propiedades => (
+              <TableroMisiones {...propiedades} currentUser={user} />
+            )}
+            exact
+          />
+          <Route
+            path="/mis-misiones"
+            render={propiedades => (
+              <MisMisiones {...propiedades} currentUser={user} />
+            )}
+            exact
+          />
+          <Route
+            path="/crear-mision"
+            render={propiedades => (
+              <CrearMision {...propiedades} currentUser={user} />
+            )}
+            exact
+          />
+          <Route
+            path="/chats"
+            render={propiedades => (
+              <Chats {...propiedades} currentUser={user} />
+            )}
+            exact
+          />
+          {/* y creamos nuestras rutas */}
+        </Switch>
+      </HashRouter>
       {/*{err}
       {renderDocs()}*/}
     </div>

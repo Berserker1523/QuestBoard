@@ -5,12 +5,36 @@ import "./Chat.css";
 
 class Chats extends React.Component{
 
-  handleNewUserMessage = (newMessage) => {
-    console.log(`New message incomig! ${newMessage}`);
-    // Now send the message throught the backend API
+  constructor(props) {
+    super(props);
+    this.state = {
+      chats: [],
+      currentChat: {}
+    }
+
+    this.renderChatsNames = this.renderChatsNames.bind(this);
+    this.renderCurrentChat = this.renderCurrentChat.bind(this);
   }
 
-  handleOpenChat = () => {
+  handleOpenChat () {
+
+  }
+
+  componentDidMount() {
+    if(this.props.currentUser !== null)
+    {
+      fetch("/users/"+this.props.currentUser.mail+"/chats")
+      .then(res => res.json())
+      .then(data => this.setState({chats: data}))
+      .catch();
+    }
+  }
+
+  renderChatsNames() {
+
+  }
+
+  renderCurrentChat() {
 
   }
 
@@ -20,15 +44,15 @@ class Chats extends React.Component{
         <footer className="fixed-bottom barra-chats">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-2">
-                <button onClick={this.handleOpenChat}>
-                  Chats
-                </button>
+              <div className="col-md-4">
+                {this.renderChatsNames()}
+              </div>
+              <div className="col-md-8">
+                {this.renderCurrentChat()}
               </div>
             </div>
           </div>
         </footer>
-        <Chat handleNewUserMessage={this.handleNewUserMessage} />;
       </div>
     );
   }

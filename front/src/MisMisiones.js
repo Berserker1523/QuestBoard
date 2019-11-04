@@ -12,9 +12,11 @@ class TableroMisiones extends React.Component {
       misiones: [],
       usuarioActual: this.props.currentUser,
     }
+
+    this.renderMisiones = this.renderMisiones.bind(this);
   }
 
-  renderMisiones() {
+  componentDidMount() {
     if(this.state.usuarioActual !== null)
     {
       fetch("/users/"+this.state.usuarioActual.mail+"/quests")
@@ -22,7 +24,9 @@ class TableroMisiones extends React.Component {
       .then(data => {this.setState({misiones: data}); console.log(data);})
       .catch();
     }
+  }
 
+  renderMisiones() {
     return this.state.misiones.map(
       (mision,i) => <div className="col-md-4"><Mision info={mision} key={i} /></div>);
   }

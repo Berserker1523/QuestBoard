@@ -6,51 +6,89 @@ class Inicio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      contrasenia: '',
+      email: "",
+      password: "",
+      error: ""
     };
 
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleEmailInput = this.handleEmailInput.bind(this);
+    this.handlePasswordInput = this.handlePasswordInput.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
+  handleEmailInput(event) {
     this.setState({
-      [name]: value
+      email: event.target.value
     });
   }
 
-  handleSubmit(event) {
-    this.props.getUser(this.state.email);
+  handlePasswordInput(event) {
+    this.setState({
+      password: event.target.value
+    });
+  }
+
+  handleSubmit() {
+    fetch("/users/" + this.state.email)
+      .then(res => res.json())
+      .then(response => {
+        if (this.state.password === response.password) {
+          this.props.setUser(response);
+          this.setState({ error: "" });
+        } else {
+          this.setState({
+            error: "El correo electrónico o  la contraseña no son correctos"
+          });
+        }
+      })
+      .catch(err => {
+        this.setState({
+          error: "El correo electrónico o  la contraseña no son correctos"
+        });
+      });
   }
 
   render() {
-    /*console.log("Usuario componente Inicio: " + this.props.currentUser);*/
     return (
       <div className="Inicio">
         <div className="container-fluid inicio">
           <div className="row inicio-sesion">
-            <form>
+            <div className="form">
+              {this.state.error !== "" ? (
+                <p className="error">{this.state.error}</p>
+              ) : (
+                ""
+              )}
               <label htmlFor="">
                 Correo electrónico
-                <br/>
-                <input type="email" name="email" value={this.state.email} onChange={this.handleInputChange} size="35"/>
+                <br />
+                <input
+                  type="email"
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleEmailInput}
+                  size="35"
+                />
               </label>
-              <br/> <br/>
+              <br /> <br />
               <label htmlFor="">
                 Contraseña
-                <br/>
-                <input type="password" name="contrasenia" value={this.state.contrasenia} onChange={this.handleInputChange} size="35"/>
+                <br />
+                <input
+                  type="password"
+                  name="contrasenia"
+                  value={this.state.password}
+                  onChange={this.handlePasswordInput}
+                  size="35"
+                />
               </label>
-              <br/> <br/>
-              <Link to={"/tablero"}>
-                <button type="submit" className="btn-inicio" onClick={this.handleSubmit}>Iniciar sesión</button>
-              </Link>
-            </form>
+              <br /> <br />
+              {/*<Link to={"/tablero"}>*/}
+              <button className="btn-inicio" onClick={this.handleSubmit}>
+                Iniciar sesión
+              </button>
+              {/*</Link>*/}
+            </div>
           </div>
           <div className="row registro">
             <p>¿Aún no tienes una cuenta?</p>
