@@ -7,29 +7,31 @@ import "./MisMisiones.css";
 class MisMisiones extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      misiones: [],
-      usuarioActual: this.props.currentUser
-    };
 
     this.renderMisiones = this.renderMisiones.bind(this);
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     if (this.state.usuarioActual !== null) {
       fetch("/users/" + this.state.usuarioActual.mail + "/quests")
         .then(res => res.json())
         .then(data => this.setState({ misiones: data }))
         .catch();
     }
-  }
+  }*/
 
   renderMisiones() {
-    return this.state.misiones.map((mision, i) => (
-      <div className="col-md-4" key={i}>
-        <Mision info={mision} currentUser={this.props.currentUser} />
-      </div>
-    ));
+    return this.props.quests.map((mision, i) => {
+      if (mision.owner === this.props.currentUser._id) {
+        return (
+          <div className="col-md-4" key={i}>
+            <Mision info={mision} currentUser={this.props.currentUser} />
+          </div>
+        );
+      } else {
+        return "";
+      }
+    });
   }
 
   render() {

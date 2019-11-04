@@ -86,7 +86,11 @@ const App = props => {
           <Route
             path="/mis-misiones"
             render={propiedades => (
-              <MisMisiones {...propiedades} currentUser={user} />
+              <MisMisiones
+                {...propiedades}
+                quests={quests}
+                currentUser={user}
+              />
             )}
             exact
           />
