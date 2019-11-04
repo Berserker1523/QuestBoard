@@ -531,12 +531,17 @@ router.put(
       matchStats: null
     };
 
-    fetch_lol_data(user_game_info, summoner_name, info => {
-      myMongoLib
-        .putUser_Game(user_game_id, info)
-        .then(docs => res.send({ updated: docs.modifiedCount }))
-        .catch(err => res.send({ err: true, msg: err }));
-    });
+    myMongoLib
+      .deleteUser_Game(user_game_id)
+      .then(() => {
+        fetch_lol_data(user_game_info, summoner_name, info => {
+          myMongoLib
+            .postUser_Game(info)
+            .then(docs => res.send(docs.ops[0]))
+            .catch(err => res.send({ err: true, msg: err }));
+        });
+      })
+      .catch(err => res.send({ err: true, msg: err }));
   }
 );
 

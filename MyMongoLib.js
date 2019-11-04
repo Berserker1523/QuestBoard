@@ -675,7 +675,7 @@ const MyMongoLib = function() {
       });
     });
 
-  MyMongoLib.putUser_Game = (user_game_id, updatedUser_Game) =>
+  /*MyMongoLib.putUser_Game = (user_game_id, updatedUser_Game) =>
     new Promise((resolve, reject) => {
       // Use connect method to connect to the Server
       client.connect((err, client) => {
@@ -697,7 +697,7 @@ const MyMongoLib = function() {
           })
           .catch(reject);
       });
-    });
+    });*/
 
   MyMongoLib.deleteUser_Game = user_game_id =>
     new Promise((resolve, reject) => {
