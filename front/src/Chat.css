@@ -34,6 +34,14 @@ textarea {
   width: 100%;
 }
 
+.right {
+  text-align: right;
+}
+
+.left {
+  text-align: left;
+}
+
 .btn-enviar {
   font-family: "Patua One", cursive;
   width: 100%;

@@ -16,6 +16,7 @@ const App = props => {
   const [quests, setQuests] = useState([]);
   const [questsError, setQuestsError] = useState("");
   const [connected, setConnected] = useState(false);
+  const [chats, setChats] = useState([]);
 
   useEffect(() => {
     if (!connected) {
@@ -29,10 +30,13 @@ const App = props => {
           if (res.type === "quests") {
             setQuests(res.data);
           }
+          if (res.type === "chats") {
+            setChats(res.data);
+          }
         };
       };
     }
-  }, [connected, user, quests]);
+  }, [connected, user, quests, chats]);
 
   const GetQuests = () => {
     fetch("/quests")
@@ -104,7 +108,10 @@ const App = props => {
           <Route
             path="/chats"
             render={propiedades => (
-              <Chats {...propiedades} currentUser={user} />
+              <Chats
+                {...propiedades}
+                currentUser={user}
+                chats={chats} />
             )}
             exact
           />

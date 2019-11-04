@@ -11,6 +11,7 @@ class Chat extends React.Component{
     };
 
     this.sendMessage = this.sendMessage.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
   }
 
   handleInputChange(event) {
@@ -50,7 +51,7 @@ class Chat extends React.Component{
   }
 
   renderMsgs() {
-    return this.props.chat.messages.map(msg => <div className="row">{msg.text}</div>);
+    return this.props.chat.messages.map(msg => <div className={msg.owner === this.props.currentUser._id ? "row right" : "row left"}>{msg.text}</div>);
   }
 
   render() {
@@ -66,7 +67,7 @@ class Chat extends React.Component{
         </div>
         <div className="row enviar-mensaje">
           <div className="col-md-10">
-            <textarea name="texto" cols="80" rows="1" placeholder="Escribe tu mensaje..."></textarea>
+            <textarea name="texto" cols="80" rows="1" placeholder="Escribe tu mensaje..." onChange={this.handleInputChange}></textarea>
           </div>
           <div className="col-md-2">
             <button className="btn-enviar" onClick={this.sendMessage}>Enviar</button>

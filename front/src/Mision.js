@@ -16,7 +16,7 @@ const Mision = props => {
           <p>{props.info.description}</p>
         </div>
         <div className="row jugadores">
-          jugadores {props.info.players.length + 1} / {props.info.maxPlayers}
+          {props.info.players.length + 1} / {props.info.maxPlayers} jugadores
         </div>
 
         {props.currentUser && props.info.owner === props.currentUser._id ? (
