@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Chat } from 'react-chat-popup';
-import "./Chat.css";
+import "./Chats.css";
+import Chat from "./Chat.js";
 
 class Chats extends React.Component{
 
@@ -9,15 +9,13 @@ class Chats extends React.Component{
     super(props);
     this.state = {
       chats: [],
-      currentChat: {}
+      currentChat: null,
+      currentChatId: "",
     }
 
     this.renderChatsNames = this.renderChatsNames.bind(this);
     this.renderCurrentChat = this.renderCurrentChat.bind(this);
-  }
-
-  handleOpenChat () {
-
+    this.setCurrent = this.setCurrent.bind(this);
   }
 
   componentDidMount() {
@@ -30,29 +28,48 @@ class Chats extends React.Component{
     }
   }
 
-  renderChatsNames() {
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.currentChatId !== prevState.currentChatId) {
+      if(this.state.currentChatId !== "")
+      {
+        fetch("/chats/"+this.state.currentChatId)
+          .then(resp => resp.json())
+          .then(chat => this.setState({currentChat: chat}))
+          .catch();
+      }
+    }
 
+    console.log(this.state.currentChat);
+  }
+
+  renderChatsNames() {
+    return this.state.chats.map(
+        (chat, i) => (<div className="row nombre-lista" key={i}><button type="button" className="btn-nombre" value={chat._id} onClick={this.setCurrent}>{chat.name}</button></div>)
+      );
+  }
+
+  setCurrent (event) {
+    event.preventDefault()
+    this.setState({currentChatId: event.currentTarget.value});
   }
 
   renderCurrentChat() {
-
+    return <Chat chat={this.state.currentChat} />;
   }
 
   render() {
     return (
       <div className="Chat">
-        <footer className="fixed-bottom barra-chats">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-4">
-                {this.renderChatsNames()}
-              </div>
-              <div className="col-md-8">
-                {this.renderCurrentChat()}
-              </div>
+        <div className="container-fluid chats">
+          <div className="row">
+            <div className="col-md-3 nombres">
+              {this.renderChatsNames()}
+            </div>
+            <div className="col-md-9 chat-actual">
+              {this.renderCurrentChat()}
             </div>
           </div>
-        </footer>
+        </div>
       </div>
     );
   }
