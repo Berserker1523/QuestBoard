@@ -20,7 +20,12 @@ const App = props => {
 
   useEffect(() => {
     if (!connected) {
-      const ws = new WebSocket("ws://localhost:3001");
+      console.log(window.location.origin.toString().replace(/^http/, "ws"));
+      const ws = new WebSocket(
+        /*"ws://localhost:3001"*/ window.location.origin
+          .toString()
+          .replace(/^http/, "ws")
+      );
       ws.onopen = () => {
         console.log("connnected to ws");
         setConnected(true);
@@ -108,10 +113,7 @@ const App = props => {
           <Route
             path="/chats"
             render={propiedades => (
-              <Chats
-                {...propiedades}
-                currentUser={user}
-                chats={chats} />
+              <Chats {...propiedades} currentUser={user} chats={chats} />
             )}
             exact
           />
