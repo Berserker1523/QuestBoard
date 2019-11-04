@@ -11,19 +11,25 @@
   right: 20%;
 }
 
+.nombre {
+  font-family: 'Patua One', cursive;
+  margin-bottom: 0%;
+}
+
 form {
   margin-top: 3%;
   text-align: center;
-  align-content: center;
 }
 
-input {
+input, textarea {
+  margin: 1%;
   background: transparent;
   border: none;
   border-bottom: 1px solid #FFFFFF;
   color: #FFFFFF;
   font-family: 'Oswald', sans-serif;
   font-size: 16px;
+  text-align: center;
 }
 
 label {

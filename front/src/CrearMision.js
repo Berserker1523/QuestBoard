@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./CrearMision.css";
+import DatePicker from "react-datepicker";
+
+import "react-datepicker/dist/react-datepicker.css";
 
 class Inicio extends React.Component {
   constructor(props) {
@@ -8,8 +11,7 @@ class Inicio extends React.Component {
     this.state = {
       nombre: '',
       descripcion: '',
-      fechaInicial: '',
-      fechaFinal: '',
+      fechaFinal: new Date(),
       minJugadores: 1,
       maxJugadores: 2,
     };
@@ -28,7 +30,34 @@ class Inicio extends React.Component {
     });
   }
 
+  handleChange = date => {
+    this.setState({
+      fechaFinal: date
+    });
+  };
+
   handleSubmit(event) {
+    fetch("/quests", {
+      method: 'POST', // or 'PUT'
+      body: JSON.stringify(
+      {
+        name: this.state.nombre,
+        description: this.state.descripcion,
+        finishDate: this.state.fechaFinal,
+        maxPlayers: this.state.maxJugadores,
+        minPlayers:this.state.minJugadores,
+        owner: this.props.currentUser._id,
+      }
+
+      ), // data can be `string` or {object}!
+      headers:{
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .catch(error => console.error('Error:', error))
+    .then(response =>
+      console.log('Success:', response)
+    );
   }
 
   render() {
@@ -37,40 +66,42 @@ class Inicio extends React.Component {
       <div className="CrearMision">
         <div className="container-fluid crear-mision">
           <div className="row informacion">
+          <div className="col-md-12">
             <form>
               <label htmlFor="">
-                <input type="text" name="nombre" value={this.state.email} onChange={this.handleInputChange} size="50"/>
+                <input type="text" className="nombre" name="nombre" value={this.state.nombre} onChange={this.handleInputChange} placeholder="Nombre de la misión..."/>
               </label>
               <br/> <br/>
               <label htmlFor="">
-                Descripcion
+                Descripción
                 <br/>
-                <input type="text" name="descripcion" value={this.state.descripcion} onChange={this.handleInputChange} size="35"/>
+                <textarea name="descripcion" value={this.state.descripcion} onChange={this.handleInputChange} placeholder="Escribe algo.."> </textarea>
               </label>
               <br/>
               <label htmlFor="">
                 Número mínimo y máximo de jugadores
                 <br/>
-                <input type="number" name="minJugadores" value={this.state.minJugadores} onChange={this.handleInputChange} size="5"/>
+                <input type="number" name="minJugadores" value={this.state.minJugadores} onChange={this.handleInputChange} />
                 -
-                <input type="number" name="maxJugadores" value={this.state.maxJugadores} onChange={this.handleInputChange} size="5"/>
+                <input type="number" name="maxJugadores" value={this.state.maxJugadores} onChange={this.handleInputChange} />
               </label>
               <br/>
               <label htmlFor="">
-                Fecha de inicio
-                <br/>
-                <input type="text" name="fechaInicial" value={this.state.fechaInicial} onChange={this.handleInputChange} size="35"/>
-              </label>
-              <label htmlFor="">
                 Fecha de fin
                 <br/>
-                <input type="text" name="fechaFinal" value={this.state.fechaFinal} onChange={this.handleInputChange} size="35"/>
+                <DatePicker
+                  name="fechaFinal"
+                  value={this.state.fechaFinal}
+                  selected={this.state.fechaFinal}
+                  onChange={this.handleChange}
+                />
               </label>
               <br/> <br/>
               <Link to={"/mis-misiones"}>
                 <button type="submit" className="btn-crear" onClick={this.handleSubmit}>Crear</button>
               </Link>
             </form>
+          </div>
           </div>
         </div>
       </div>
