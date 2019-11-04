@@ -40,7 +40,7 @@ const MyMongoLib = function() {
       });
     });
 
-  MyMongoLib.getUser = user_id =>
+  MyMongoLib.getUser = user_mail =>
     new Promise((resolve, reject) => {
       // Use connect method to connect to the Server
       client.connect((err, client) => {
@@ -55,7 +55,7 @@ const MyMongoLib = function() {
         const collection = db.collection("Users");
 
         return collection
-          .find({ _id: ObjectId(user_id) })
+          .find({ mail: user_mail })
           .toArray()
           .then(resolve)
           .catch(reject);
