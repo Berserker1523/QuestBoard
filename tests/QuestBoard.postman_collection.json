@@ -17,7 +17,8 @@
 								"id": "b43e7f11-ba19-49cf-8924-074159cade13",
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
-									"pm.globals.set(\"user_id\", jsonData._id);"
+									"pm.globals.set(\"user_id\", jsonData._id);",
+									"pm.globals.set(\"user_mail\", jsonData.mail);"
 								],
 								"type": "text/javascript"
 							}
@@ -79,14 +80,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:3001/users/{{user_id}}",
+							"raw": "localhost:3001/users/{{user_mail}}",
 							"host": [
 								"localhost"
 							],
 							"port": "3001",
 							"path": [
 								"users",
-								"{{user_id}}"
+								"{{user_mail}}"
 							]
 						}
 					},
@@ -211,6 +212,26 @@
 							],
 							"port": "3001",
 							"path": [
+								"quests"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetQuestsByUserMail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/users/{{user_mail}}/quests",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"{{user_mail}}",
 								"quests"
 							]
 						}
@@ -477,6 +498,321 @@
 							""
 						]
 					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "PostChat",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c764c6eb-d17a-4dea-9317-85b8ad8aedfe",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"chat_id\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"1vs1 en lolsito\",\n\t\"quest\": \"{{quest_id}}\",\n\t\"users\": [\"{{user_id}}\"],\n\t\"messages\": []\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/chats",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"chats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetChats",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/chats",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"chats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetChat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/chats/{{chat_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"chats",
+								"{{chat_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutChat",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "29d6f0fc-32f5-400b-ad89-617470c85a88",
+								"exec": [
+									"const moment = require('moment');\r",
+									"pm.globals.set(\"timestamp\", moment().format(\"MM/DD/YYYY\"));"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"1vs1 en lolsito\",\r\n    \"quest\": \"5dbf52cd7709001fa82109e6\",\r\n    \"users\": [\r\n        \"5dbf54dbde99a24fd856d876\"\r\n    ],\r\n    \"messages\": [\r\n    \t{\"date\": \"{{timestamp}}\", \"user\": \"5dbf54dbde99a24fd856d876\", \"message\": \"Mi summoner name es juansito123\" },\r\n    \t{\"date\": \"{{timestamp}}\", \"user\": \"123123123123123123123123\", \"message\": \"Ok listo\" }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3001/chats/{{chat_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"chats",
+								"{{chat_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteChat",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/chats/{{chat_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"chats",
+								"{{chat_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "ebfdbb43-d1a5-4445-be91-5d55522c63ea",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "922302ba-8e9d-4580-b1aa-47e5ca5fc5c4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "RiotGamesAPI",
+			"item": [
+				{
+					"name": "PostSummonerInfo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "52ae78cd-2149-4e09-b7bb-23d8bbc33981",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"user_game_id\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/user_game/lol/user/{{user_id}}/summoner/BERSERKER 1523",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user_game",
+								"lol",
+								"user",
+								"{{user_id}}",
+								"summoner",
+								"BERSERKER 1523"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUsers_Games",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/user_game",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user_game"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetUser_Game",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/user_game/user/{{user_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user_game",
+								"user",
+								"{{user_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PutSummonerInfo",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "52ae78cd-2149-4e09-b7bb-23d8bbc33981",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"pm.globals.set(\"user_game_id\", jsonData._id);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/user_game/{{user_game_id}}/user/{{user_id}}/summoner/BERSERKER 1523",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user_game",
+								"{{user_game_id}}",
+								"user",
+								"{{user_id}}",
+								"summoner",
+								"BERSERKER 1523"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSummonerInfo",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/user_game/lol/{{user_game_id}}",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user_game",
+								"lol",
+								"{{user_game_id}}"
+							]
+						}
+					},
+					"response": []
 				}
 			],
 			"protocolProfileBehavior": {}

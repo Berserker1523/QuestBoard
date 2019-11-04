@@ -123,6 +123,15 @@ router.get("/quests/:quest_id", (req, res) => {
     .catch(err => res.send({ err: true, msg: err }));
 });
 
+router.get("/users/:user_mail/quests", (req, res) => {
+  const user_mail = req.params.user_mail;
+
+  myMongoLib
+    .getQuestsByUserMail(user_mail)
+    .then(docs => res.send(docs))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
 router.post("/quests", (req, res) => {
   const quest_name = req.body.name;
   const quest_description = req.body.description;
