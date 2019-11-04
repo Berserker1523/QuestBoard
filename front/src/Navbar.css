@@ -1,11 +1,12 @@
 .navbar-logo {
   margin-left: 20px;
-  width: 60px;
+  width: 50px;
   height: 100%;
 }
 
 .navbar-expand-lg {
   background-color: #000000;
+  border-bottom: 1px solid white;
 }
 
 body {

@@ -11,22 +11,22 @@ const Navbar = props => {
         </Link>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ml-auto">
-            {/*props.currentUser ? (
+            {props.currentUser ? (
               <li className="nav-item">
                 <Link
-                  to={"/wishlist"}
+                  to={"/mis-misiones"}
                   className={
                     props.paginaActual === "wishList"
                       ? "nav-link-disabled"
                       : "nav-link"
                   }
                 >
-                  Wish List
+                  Mis misiones
                 </Link>
               </li>
             ) : (
               ""
-            )*/}
+            )}
           </ul>
         </div>
       </nav>

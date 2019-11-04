@@ -7,20 +7,25 @@ class TableroMisiones extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      misiones: ["holi"],
+      misiones: ["holi", "holi", "holi", "holi", "holi", "holi", "holi", "holi", "holi", "holi",],
+      usuarioActual: this.props.currentUser,
     }
   }
 
   renderMisiones() {
     return this.state.misiones.map(
-      (mision,i) => <Mision info={mision} key={i} />);
+      (mision,i) => <div className="col-md-4"><Mision info={mision} key={i} /></div>);
   }
 
   render() {
     /*console.log("Usuario componente Inicio: " + this.props.currentUser);*/
     return (
       <div className="TableroMisiones">
-        {this.renderMisiones()}
+        <div className="container-fluid misiones">
+          <div className="row">
+            {this.renderMisiones()}
+          </div>
+        </div>
       </div>
     );
   }

@@ -5,9 +5,14 @@ import TableroMisiones from "./TableroMisiones.js";
 import Navbar from "./Navbar.js";
 import { HashRouter, Switch, Route } from "react-router-dom";
 
-const App = () => {
+const App = (props) => {
   const [docs, setDocs] = useState([]);
   const [err, setErr] = useState("");
+  const [user, setUser] = useState({});
+  const [email, setEmail] = useState("");
+  const [page, setPage] = useState("");
+
+  const getUser = (userMail) => { setEmail(userMail); setPage("Tablero"); };
 
   useEffect(() => {
     const ws = new WebSocket("ws://localhost:3001");
@@ -29,6 +34,12 @@ const App = () => {
           setDocs(data);
         }
       });
+
+    fetch("/users/" + {email})
+      .then(res => res.json())
+      .then(responseUser => {
+        setUser(responseUser);
+      });
   }, []);
 
   const renderDocs = () => docs.map(d => <div key={d.name}>{d.name}</div>);
@@ -36,18 +47,25 @@ const App = () => {
   return (
     <div className="App">
       <HashRouter>
-      <Navbar />
+      <Navbar currentUser={user} paginaActual={}/>
       {/* envolvemos nuestra aplicación en el Router  */}
       <Switch>
         {/* también la envolvemos en el componente Switch */}
         <Route
           path="/"
-          component={Inicio}
+          render={propiedades => (
+            <Inicio {...propiedades}
+              currentUser={user}
+              getUser={getUser} />
+          )}
           exact
         />
         <Route
           path="/tablero"
-          component={TableroMisiones}
+          render={propiedades => (
+            <TableroMisiones {...propiedades}
+              currentUser={user} />
+          )}
           exact
         />
         {/* y creamos nuestras rutas */}

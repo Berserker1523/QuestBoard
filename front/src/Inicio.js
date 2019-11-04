@@ -6,8 +6,9 @@ class Inicio extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      apodo: '',
-      contrasenia: ''
+      email: '',
+      contrasenia: '',
+      usuarioActual: this.props.currentUser,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -25,8 +26,7 @@ class Inicio extends React.Component {
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
-    event.preventDefault();
+    this.props.getUser(this.state.email);
   }
 
   render() {
@@ -37,9 +37,9 @@ class Inicio extends React.Component {
           <div className="row inicio-sesion">
             <form>
               <label htmlFor="">
-                Nombre de usuario
+                Correo electrónico
                 <br/>
-                <input type="text" name="apodo" value={this.state.apodo} onChange={this.handleInputChange} size="35"/>
+                <input type="email" name="email" value={this.state.email} onChange={this.handleInputChange} size="35"/>
               </label>
               <br/> <br/>
               <label htmlFor="">
@@ -49,7 +49,7 @@ class Inicio extends React.Component {
               </label>
               <br/> <br/>
               <Link to={"/tablero"}>
-                <button type="submit" className="btn-inicio">Iniciar sesión</button>
+                <button type="submit" className="btn-inicio" onClick={this.handleSubmit}>Iniciar sesión</button>
               </Link>
             </form>
           </div>

@@ -1,0 +1,42 @@
+.mision {
+  background-color: rgba(255, 255, 255, 0.15);
+  /*border: 2px solid white;*/
+  border-radius: 5px;
+  margin:3%;
+}
+
+.nombre {
+  font-size: 30px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.descripcion, .jugadores {
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10%;
+  padding-right: 10%;
+}
+
+.btn-rechazar, .btn-unirse {
+  font-family: 'Patua One', cursive;
+  width: 50%;
+  height: 100%;
+  border: none;
+  border-radius: 2px;
+  font-size: 22px;
+  margin-top: 10px;
+}
+
+.btn-rechazar {
+  background-color: #FF6344;
+}
+
+.btn-unirse {
+  background-color: #FACB00;
+}
