@@ -32,6 +32,7 @@ class Chats extends React.Component{
     if(this.state.currentChatId !== prevState.currentChatId) {
       if(this.state.currentChatId !== "")
       {
+        console.log("/chats/"+this.state.currentChatId);
         fetch("/chats/"+this.state.currentChatId)
           .then(resp => resp.json())
           .then(chat => this.setState({currentChat: chat}))
@@ -54,7 +55,7 @@ class Chats extends React.Component{
   }
 
   renderCurrentChat() {
-    return <Chat chat={this.state.currentChat} />;
+    return <Chat chat={this.state.currentChat} currentUser={this.props.currentUser} />;
   }
 
   render() {
