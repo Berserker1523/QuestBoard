@@ -28,10 +28,30 @@
   margin-right: 5%;
 }
 
-.btn-rechazar,
+/*.btn-rechazar,
 .btn-unirse {
   font-family: "Patua One", cursive;
   width: 50%;
+  height: 100%;
+  border: none;
+  border-radius: 2px;
+  font-size: 22px;
+  margin-top: 10px;
+}*/
+
+.btn-unirse {
+  font-family: "Patua One", cursive;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 2px;
+  font-size: 22px;
+  margin-top: 10px;
+}
+
+.btn-rechazar {
+  font-family: "Patua One", cursive;
+  width: 100%;
   height: 100%;
   border: none;
   border-radius: 2px;
