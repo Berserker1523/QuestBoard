@@ -38,6 +38,11 @@ Open your CMD en clone the repositorie, using the next command:
 ```
   yarn install
 ```
+3. To be able to use a database you must create a .env file in the root directory
+   and put inside: 
+```
+  MONGO_URL="your_mongo_database_url"
+```
 ### React
 1. Access the ./front directory from your cmd
 ```
