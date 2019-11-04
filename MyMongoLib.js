@@ -35,7 +35,10 @@ const MyMongoLib = function() {
         return collection
           .find({})
           .toArray()
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -57,7 +60,10 @@ const MyMongoLib = function() {
         return collection
           .find({ mail: user_mail })
           .toArray()
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -78,7 +84,10 @@ const MyMongoLib = function() {
 
         return collection
           .insertOne(newUser)
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -99,7 +108,10 @@ const MyMongoLib = function() {
 
         return collection
           .updateOne({ _id: ObjectId(user_id) }, updatedUser)
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -120,7 +132,10 @@ const MyMongoLib = function() {
 
         return collection
           .deleteOne({ _id: ObjectId(user_id) })
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -145,7 +160,10 @@ const MyMongoLib = function() {
         return collection
           .find({})
           .toArray()
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -167,7 +185,10 @@ const MyMongoLib = function() {
         return collection
           .find({ _id: ObjectId(quest_id) })
           .toArray()
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -188,7 +209,10 @@ const MyMongoLib = function() {
 
         return collection
           .insertOne(newQuest)
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -209,7 +233,10 @@ const MyMongoLib = function() {
 
         return collection
           .updateOne({ _id: ObjectId(quest_id) }, updatedQuest)
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -230,7 +257,10 @@ const MyMongoLib = function() {
 
         return collection
           .deleteOne({ _id: ObjectId(quest_id) })
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -255,7 +285,10 @@ const MyMongoLib = function() {
         return collection
           .find({})
           .toArray()
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -277,7 +310,35 @@ const MyMongoLib = function() {
         return collection
           .find({ _id: ObjectId(game_id) })
           .toArray()
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.getGameByName = game_name =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Get Game by Name - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Games");
+
+        return collection
+          .find({ name: game_name })
+          .toArray()
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -298,7 +359,10 @@ const MyMongoLib = function() {
 
         return collection
           .insertOne(newGame)
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -319,7 +383,10 @@ const MyMongoLib = function() {
 
         return collection
           .updateOne({ _id: ObjectId(game_id) }, updatedGame)
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -340,7 +407,10 @@ const MyMongoLib = function() {
 
         return collection
           .deleteOne({ _id: ObjectId(game_id) })
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -365,7 +435,10 @@ const MyMongoLib = function() {
         return collection
           .find({})
           .toArray()
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -387,7 +460,10 @@ const MyMongoLib = function() {
         return collection
           .find({ _id: ObjectId(chat_id) })
           .toArray()
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -408,7 +484,10 @@ const MyMongoLib = function() {
 
         return collection
           .insertOne(newChat)
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -429,7 +508,10 @@ const MyMongoLib = function() {
 
         return collection
           .updateOne({ _id: ObjectId(chat_id) }, updatedChat)
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });
@@ -450,7 +532,135 @@ const MyMongoLib = function() {
 
         return collection
           .deleteOne({ _id: ObjectId(chat_id) })
-          .then(resolve)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
+          .catch(reject);
+      });
+    });
+
+  /*
+  ------------------------ USER_GAME_INFO ---------------------------------------------------
+  */
+  MyMongoLib.getUSers_Games = () =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Get Users_Games Info - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Users_Games");
+
+        return collection
+          .find({})
+          .toArray()
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.getUser_GameByUser = user_id =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Get User_Game Info - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Users_Games");
+
+        return collection
+          .find({ user_id: user_id })
+          .toArray()
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.postUser_Game = newUser_Game =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Post User_Game - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Users_Games");
+
+        return collection
+          .insertOne(newUser_Game)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.putUser_Game = (user_game_id, updatedUser_Game) =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Put User_Game - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Users_Games");
+
+        return collection
+          .updateOne({ _id: ObjectId(user_game_id) }, updatedUser_Game)
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.deleteUser_Game = user_game_id =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Delete User_Game - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Users_Games");
+
+        return collection
+          .deleteOne({ _id: ObjectId(user_game_id) })
+          .then(data => {
+            client.close();
+            resolve(data);
+          })
           .catch(reject);
       });
     });

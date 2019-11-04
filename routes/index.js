@@ -354,12 +354,7 @@ router.delete("/chats/:chat_id", (req, res) => {
 */
 const fetch = require("node-fetch");
 
-router.get("/lol_info/:summoner_name", (req, res) => {
-  let summoner_name = req.params.summoner_name;
-  summoner_name.split(" ").join("%20");
-
-  console.log(`Obtaining data from riot games api of: ${summoner_name}`);
-
+const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
   fetch(
     `https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner_name}`,
     {
@@ -373,9 +368,166 @@ router.get("/lol_info/:summoner_name", (req, res) => {
   )
     .then(res => res.json())
     .then(response => {
-      console.log("Response: ");
+      console.log("Fetch SUMMONER Response: ");
       console.log(response);
+      user_game_info.summonerInfo = response;
+
+      const fetches = [];
+
+      fetches.push(
+        fetch(
+          `https://la1.api.riotgames.com/lol/league/v4/entries/by-summoner/${user_game_info.summonerInfo.id}`,
+          {
+            method: "GET",
+            headers: {
+              Origin: "https://developer.riotgames.com",
+              "Accept-Charset":
+                "application/x-www-form-urlencoded; charset=UTF-8",
+              "X-Riot-Token": "RGAPI-5525c01a-7f6e-4728-8238-c88d6e99be28"
+            }
+          }
+        )
+          .then(res => res.json())
+          .then(response => {
+            console.log("Fetch LEAGUE Response: ");
+            console.log(response);
+            user_game_info.leagueStats = response;
+          })
+      );
+
+      fetches.push(
+        fetch(
+          `https://la1.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-summoner/${user_game_info.summonerInfo.id}`,
+          {
+            method: "GET",
+            headers: {
+              Origin: "https://developer.riotgames.com",
+              "Accept-Charset":
+                "application/x-www-form-urlencoded; charset=UTF-8",
+              "X-Riot-Token": "RGAPI-5525c01a-7f6e-4728-8238-c88d6e99be28"
+            }
+          }
+        )
+          .then(res => res.json())
+          .then(response => {
+            console.log("Fetch CHAMPION-MASTERY Response: ");
+            console.log(response);
+            user_game_info.championStats = response;
+          })
+      );
+
+      fetches.push(
+        fetch(
+          `https://la1.api.riotgames.com/lol/match/v4/matchlists/by-account/${user_game_info.summonerInfo.accountId}`,
+          {
+            method: "GET",
+            headers: {
+              Origin: "https://developer.riotgames.com",
+              "Accept-Charset":
+                "application/x-www-form-urlencoded; charset=UTF-8",
+              "X-Riot-Token": "RGAPI-5525c01a-7f6e-4728-8238-c88d6e99be28"
+            }
+          }
+        )
+          .then(res => res.json())
+          .then(response => {
+            console.log("Fecth MATCH Response: ");
+            console.log(response);
+            user_game_info.matchStats = response;
+          })
+      );
+
+      fetches.push(
+        myMongoLib
+          .getGameByName("League of Legends")
+          .then(docs => {
+            console.log("League of legends Info: ");
+            console.log(docs);
+            user_game_info.game_id = docs[0]._id;
+          })
+          .catch(err => console.warn(err))
+      );
+
+      Promise.all(fetches).then(() => {
+        cbk(user_game_info);
+      });
     });
+};
+
+router.get("/user_game", (req, res) => {
+  myMongoLib
+    .getUSers_Games()
+    .then(docs => res.send(docs))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.get("/user_game/user/:user_id", (req, res) => {
+  const user_id = req.params.user_id;
+  myMongoLib
+    .getUser_GameByUser(user_id)
+    .then(docs => res.send(docs))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
+router.post(
+  "/user_game/lol/user/:user_id/summoner/:summoner_name",
+  (req, res) => {
+    const user_id = req.params.user_id;
+    const summoner_name = req.params.summoner_name;
+
+    console.log(`Obtaining data from riot games api of: ${summoner_name}`);
+
+    let user_game_info = {
+      user_id: user_id,
+      game_id: null,
+      summonerInfo: null,
+      leagueStats: null,
+      championStats: null,
+      matchStats: null
+    };
+
+    fetch_lol_data(user_game_info, summoner_name, info => {
+      myMongoLib
+        .postUser_Game(info)
+        .then(docs => res.send(docs.ops[0]))
+        .catch(err => res.send({ err: true, msg: err }));
+    });
+  }
+);
+
+router.put(
+  "/user_game/:user_game_id/user/:user_id/summoner/:summoner_name",
+  (req, res) => {
+    const user_game_id = req.params.user_game_id;
+    const user_id = req.params.user_id;
+    const summoner_name = req.params.summoner_name;
+
+    console.log(`Obtaining data from riot games api of: ${summoner_name}`);
+
+    let user_game_info = {
+      user_id: user_id,
+      game_id: null,
+      summonerInfo: null,
+      leagueStats: null,
+      championStats: null,
+      matchStats: null
+    };
+
+    fetch_lol_data(user_game_info, summoner_name, info => {
+      myMongoLib
+        .putUser_Game(user_game_id, info)
+        .then(docs => res.send({ updated: docs.modifiedCount }))
+        .catch(err => res.send({ err: true, msg: err }));
+    });
+  }
+);
+
+router.delete("/user_game/lol/:user_game_id", (req, res) => {
+  const user_game_id = req.params.user_game_id;
+  myMongoLib
+    .deleteUser_Game(user_game_id)
+    .then(docs => res.send({ deleted: docs.deletedCount }))
+    .catch(err => res.send({ err: true, msg: err }));
 });
 
 module.exports = router;
