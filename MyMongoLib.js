@@ -747,17 +747,23 @@ const MyMongoLib = function() {
 
       csCursorQuest.on("change", data => {
         console.log("Quests changed: ", data);
-        MyMongoLib.getQuests().then(docs => cbk(JSON.stringify(docs)));
+        MyMongoLib.getQuests().then(docs =>
+          cbk(JSON.stringify({ type: "quests", data: docs }))
+        );
       });
 
       csCursorGames.on("change", data => {
         console.log("Games changed: ", data);
-        MyMongoLib.getGames().then(docs => cbk(JSON.stringify(docs)));
+        MyMongoLib.getGames().then(docs =>
+          cbk(JSON.stringify({ type: "games", data: docs }))
+        );
       });
 
       csCursorChats.on("change", data => {
         console.log("Chats changed: ", data);
-        MyMongoLib.getChats().then(docs => cbk(JSON.stringify(docs)));
+        MyMongoLib.getChats().then(docs =>
+          cbk(JSON.stringify({ type: "chats", data: docs }))
+        );
       });
     });
   };

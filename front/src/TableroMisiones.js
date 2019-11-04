@@ -5,40 +5,31 @@ import Mision from "./Mision.js";
 class TableroMisiones extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      misiones: [],
-      usuarioActual: this.props.currentUser,
-      error: ""
-    };
-
     this.renderMisiones = this.renderMisiones.bind(this);
   }
 
   renderMisiones() {
-    return this.state.misiones.map((mision, i) =>
+    return this.props.quests.map((mision, i) =>
       mision.completed === false ? (
         <div className="col-md-4" key={i}>
-          <Mision info={mision} />
+          <Mision info={mision} currentUser={this.props.currentUser} />
         </div>
       ) : null
     );
   }
 
   componentDidMount() {
-    fetch("/quests")
-      .then(res => res.json())
-      .then(data => this.setState({ misiones: data }))
-      .catch(err =>
-        this.setState({
-          error:
-            "No fue posible obtener las misiones, por favor intentelo de nuevo"
-        })
-      );
+    this.props.GetQuests();
   }
 
   render() {
     return (
       <div>
+        {this.props.questsError !== "" ? (
+          <p className="error">{this.props.questsError}</p>
+        ) : (
+          ""
+        )}
         <div className="TableroMisiones">
           <div className="container-fluid misiones">
             <div className="row">{this.renderMisiones()}</div>

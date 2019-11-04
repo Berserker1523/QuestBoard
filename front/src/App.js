@@ -13,33 +13,40 @@ const App = props => {
   /*const [docs, setDocs] = useState([]);
   const [err, setErr] = useState("");*/
   const [user, setUser] = useState(null);
-  const [email, setEmail] = useState("");
-
-  const getUser = (userMail) => { setEmail(userMail); };
+  const [quests, setQuests] = useState([]);
+  const [questsError, setQuestsError] = useState("");
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
-    const ws = new WebSocket("ws://localhost:3001");
-    ws.onopen = () => {
-      console.log("connnected to ws");
-
-      ws.onmessage = msg => {
-        console.log("got ws data", msg);
-        //setDocs(JSON.parse(msg.data));
+    if (!connected) {
+      const ws = new WebSocket("ws://localhost:3001");
+      ws.onopen = () => {
+        console.log("connnected to ws");
+        setConnected(true);
+        ws.onmessage = msg => {
+          let res = JSON.parse(msg.data);
+          console.log("got ws data", res);
+          if (res.type === "quests") {
+            setQuests(res.data);
+          }
+        };
       };
-    };
+    }
+  }, [connected, user, quests]);
 
-    /*if(email !== "")
-    {
-      fetch("/users/" + email)
-        .then(res => res.json())
-        .then(responseUser => {
-          setUser(responseUser);
-        })
-        .catch(err => setErr(err));
-    }*/
-  }, [user]);
-
-  //const renderDocs = () => docs.map(d => <div key={d.name}>{d.name}</div>);
+  const GetQuests = () => {
+    fetch("/quests")
+      .then(res => res.json())
+      .then(data => {
+        setQuests(data);
+        setQuestsError("");
+      })
+      .catch(err =>
+        setQuestsError(
+          "No fue posible obtener las misiones, por favor intentelo de nuevo"
+        )
+      );
+  };
 
   return (
     <div className="App">
@@ -66,7 +73,13 @@ const App = props => {
           <Route
             path="/tablero"
             render={propiedades => (
-              <TableroMisiones {...propiedades} currentUser={user} />
+              <TableroMisiones
+                {...propiedades}
+                currentUser={user}
+                GetQuests={GetQuests}
+                quests={quests}
+                questsError={questsError}
+              />
             )}
             exact
           />
@@ -94,8 +107,6 @@ const App = props => {
           {/* y creamos nuestras rutas */}
         </Switch>
       </HashRouter>
-      {/*{err}
-      {renderDocs()}*/}
     </div>
   );
 };
