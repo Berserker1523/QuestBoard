@@ -308,6 +308,15 @@ router.get("/chats/:chat_id", (req, res) => {
     .catch(err => res.send({ err: true, msg: err }));
 });
 
+router.get("/users/:user_mail/chats", (req, res) => {
+  const user_mail = req.params.user_mail;
+
+  myMongoLib
+    .getChatsByUserMail(user_mail)
+    .then(docs => res.send(docs))
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
 router.post("/chats", (req, res) => {
   const chat_name = req.body.name;
   const chat_quest = req.body.quest;

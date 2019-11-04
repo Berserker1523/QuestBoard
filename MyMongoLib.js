@@ -184,8 +184,6 @@ const MyMongoLib = function() {
 
         MyMongoLib.getUser(user_mail)
           .then(docs => {
-            console.log("AAAAAAAAAAAAAA: ");
-            console.log(docs[0]);
             questsCollection
               .find({ owner: docs[0]._id + "" })
               .toArray()
@@ -469,6 +467,35 @@ const MyMongoLib = function() {
           .then(data => {
             client.close();
             resolve(data);
+          })
+          .catch(reject);
+      });
+    });
+
+  MyMongoLib.getChatsByUserMail = user_mail =>
+    new Promise((resolve, reject) => {
+      // Use connect method to connect to the Server
+      client.connect((err, client) => {
+        if (err !== null) {
+          reject(err);
+          return;
+        }
+
+        console.log("Get Chats by user mail - Connected correctly to server");
+
+        const db = client.db(dbName);
+        const collection = db.collection("Chats");
+
+        MyMongoLib.getUser(user_mail)
+          .then(docs => {
+            collection
+              .find({ users: { $elemMatch: { user_id: docs[0]._id + "" } } })
+              .toArray()
+              .then(data => {
+                client.close();
+                resolve(data);
+              })
+              .catch(reject);
           })
           .catch(reject);
       });
