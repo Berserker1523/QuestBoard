@@ -18,7 +18,8 @@
 								"exec": [
 									"var jsonData = JSON.parse(responseBody);",
 									"pm.globals.set(\"user_id\", jsonData._id);",
-									"pm.globals.set(\"user_mail\", jsonData.mail);"
+									"pm.globals.set(\"user_mail\", jsonData.mail);",
+									"pm.globals.set(\"user_name\", jsonData.name);"
 								],
 								"type": "text/javascript"
 							}
@@ -532,7 +533,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"1vs1 en lolsito\",\n\t\"quest\": \"{{quest_id}}\",\n\t\"users\": [\"{{user_id}}\"],\n\t\"messages\": []\n}",
+							"raw": "{\n\t\"name\": \"1vs1 en lolsito\",\n\t\"quest\": \"{{quest_id}}\",\n\t\"users\": [\n\t\t{\"user_id\": \"{{user_id}}\", \"user_name\": \"{{user_name}}\"}\n\t],\n\t\"messages\": []\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -564,6 +565,26 @@
 							],
 							"port": "3001",
 							"path": [
+								"chats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetChatsByUserMail",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3001/users/{{user_mail}}/chats",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"users",
+								"{{user_mail}}",
 								"chats"
 							]
 						}
