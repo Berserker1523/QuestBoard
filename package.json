@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "heroku-postbuild": "cd front && yarn && yarn run build"
   },
   "dependencies": {
     "bufferutil": "^4.0.1",
@@ -26,5 +27,8 @@
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-react": "^7.16.0"
+  },
+  "engines": {
+    "node": "10.16.3"
   }
 }
