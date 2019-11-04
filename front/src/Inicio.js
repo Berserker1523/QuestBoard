@@ -83,16 +83,14 @@ class Inicio extends React.Component {
                 />
               </label>
               <br /> <br />
-              {/*<Link to={"/tablero"}>*/}
               <button className="btn-inicio" onClick={this.handleSubmit}>
                 Iniciar sesión
               </button>
-              {/*</Link>*/}
             </div>
           </div>
           <div className="row registro">
             <p>¿Aún no tienes una cuenta?</p>
-            <Link className="registrar" to={"/"}>
+            <Link className="registrar" to={"/signup"}>
               <p>Regístrate</p>
             </Link>
           </div>

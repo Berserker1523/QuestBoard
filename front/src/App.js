@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import Inicio from "./Inicio.js";
+import SignUp from "./SignUp.js";
 import TableroMisiones from "./TableroMisiones.js";
 import Navbar from "./Navbar.js";
 import MisMisiones from "./MisMisiones.js";
@@ -48,6 +49,13 @@ const App = props => {
             path="/"
             render={propiedades => (
               <Inicio {...propiedades} setUser={setUser} />
+            )}
+            exact
+          />
+          <Route
+            path="/signup"
+            render={propiedades => (
+              <SignUp {...propiedades} setUser={setUser} />
             )}
             exact
           />
