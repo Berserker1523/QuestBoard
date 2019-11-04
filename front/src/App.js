@@ -10,7 +10,7 @@ const App = (props) => {
   const [err, setErr] = useState("");
   const [user, setUser] = useState({});
   const [email, setEmail] = useState("");
-  const [page, setPage] = useState("");
+  const [page, setPage] = useState("Inicio");
 
   const getUser = (userMail) => { setEmail(userMail); setPage("Tablero"); };
 
@@ -35,10 +35,14 @@ const App = (props) => {
         }
       });
 
-    fetch("/users/" + {email})
+    fetch("/users/" + email)
       .then(res => res.json())
       .then(responseUser => {
-        setUser(responseUser);
+        if (responseUser.err) {
+          setErr(JSON.stringify(responseUser.msg));
+        } else {
+          setUser(responseUser);
+        }
       });
   }, []);
 
@@ -47,7 +51,7 @@ const App = (props) => {
   return (
     <div className="App">
       <HashRouter>
-      <Navbar currentUser={user} paginaActual={}/>
+      <Navbar currentUser={user} paginaActual={page}/>
       {/* envolvemos nuestra aplicación en el Router  */}
       <Switch>
         {/* también la envolvemos en el componente Switch */}

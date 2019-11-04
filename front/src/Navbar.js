@@ -6,7 +6,7 @@ const Navbar = props => {
   return (
     <div className="Navbar">
       <nav className="navbar navbar-expand-lg fixed-top">
-        <Link className="navbar-brand" to={"/"}>
+        <Link className="navbar-brand" to={props.currentUser ? "/" : "/tablero"}>
           <img src="../QBLogo.png" alt="Quest Board logo" className="navbar-logo"/>
         </Link>
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -16,7 +16,7 @@ const Navbar = props => {
                 <Link
                   to={"/mis-misiones"}
                   className={
-                    props.paginaActual === "wishList"
+                    props.paginaActual === "Tablero"
                       ? "nav-link-disabled"
                       : "nav-link"
                   }

@@ -8,7 +8,6 @@ class Inicio extends React.Component {
     this.state = {
       email: '',
       contrasenia: '',
-      usuarioActual: this.props.currentUser,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -48,7 +47,7 @@ class Inicio extends React.Component {
                 <input type="password" name="contrasenia" value={this.state.contrasenia} onChange={this.handleInputChange} size="35"/>
               </label>
               <br/> <br/>
-              <Link to={"/tablero"}>
+              <Link to={this.props.currentUser ? "/tablero" : "/"}>
                 <button type="submit" className="btn-inicio" onClick={this.handleSubmit}>Iniciar sesión</button>
               </Link>
             </form>
