@@ -12,7 +12,7 @@ router.get("/", function(req, res /*, next*/) {
 /*
   ------------------------------- USERS ----------------------------------------
 */
-
+////este método está bien para el desarrollo de la app, pero no debería quedar expuesto, más porque no están cifrando con un hash ninguna de las contraseñas. Cualquiera que haga /users obtiene toda la información de todos los usuarios
 router.get("/users", (req, res) => {
   myMongoLib
     .getUsers()
