@@ -101,6 +101,7 @@ const App = props => {
             )}
             exact
           />
+              {/* Les recomiendo incluir un margen acá. En la segunda ventana donde se muestran los tableros se ve la línea de separación del NavBar pegado a las letras que contienen la información del tablero.  */}
           <Route
             path="/tablero"
             render={propiedades => (
