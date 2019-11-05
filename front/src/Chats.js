@@ -73,4 +73,6 @@ class Chats extends React.Component{
 
 };
 
+//No es claro cómo usar el chat. No pude crear o usar ninguno.
+
 export default Chats;

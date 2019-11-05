@@ -8,10 +8,10 @@ This web page was made with:
   * Node.js
   * Express.js
   * MongoDB
-  
+
 * Languages
-  * HTML 
-  * CSS 
+  * HTML
+  * CSS
   * JavaScript
   * JSX
 # How to run
@@ -25,7 +25,7 @@ This web page was made with:
 ## Clone
 Open your CMD en clone the repositorie, using the next command:
 ```
-  git clone https://github.com/Berserker1523/QuestBoard.git 
+  git clone https://github.com/Berserker1523/QuestBoard.git
 ```
 
 ## Install dependencies
@@ -39,7 +39,7 @@ Open your CMD en clone the repositorie, using the next command:
   yarn install
 ```
 3. To be able to use a database you must create a .env file in the root directory
-   and put inside: 
+   and put inside:
 ```
   MONGO_URL="your_mongo_database_url"
 ```
@@ -81,3 +81,6 @@ Jesús Orlando Cárcamo Posada - https://github.com/Berserker1523
 ![alt text](https://66.media.tumblr.com/b71ff2ebe78d456765adee8ea6847096/6486d1cb9f4db569-bf/s540x810/9780b745b0a91b36a753ea275f2fe197f63d6b23.png)
 # MIT License
 You can find the license right here: https://github.com/Berserker1523/QuestBoard/blob/master/LICENSE
+
+#Comment
+Se nota el trabajo y el esfuerzo en la aplicacion. Hace falta un poco de explicacion para que un nuevo usuario sepa usarla. Y revisar accesibilidad.
