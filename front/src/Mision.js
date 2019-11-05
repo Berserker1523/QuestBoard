@@ -8,6 +8,8 @@ const Mision = props => {
     });
   };
   let add = false;
+  
+  //No funciona bien que cuando ya se completo el cupo en el juego no permita unirse
   const updateQuest = () => {
     if (add) {
       props.info.players.push(props.currentUser._id);
