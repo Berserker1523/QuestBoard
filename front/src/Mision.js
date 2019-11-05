@@ -37,6 +37,8 @@ const Mision = props => {
     });
   };
 
+  const createChat = () => {};
+
   const setButtons = () => {
     if (props.currentUser && props.info.owner === props.currentUser._id) {
       return (

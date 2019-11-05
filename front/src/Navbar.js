@@ -78,6 +78,22 @@ const Navbar = props => {
             ) : (
               ""
             )}
+            {props.currentUser !== null ? (
+              <li className="nav-item">
+                <Link
+                  to={"/juegos"}
+                  className={
+                    props.paginaActual === "Tablero"
+                      ? "nav-link-disabled"
+                      : "nav-link"
+                  }
+                >
+                  Juegos
+                </Link>
+              </li>
+            ) : (
+              ""
+            )}
           </ul>
         </div>
       </nav>

@@ -23,6 +23,7 @@ class TableroMisiones extends React.Component {
   }
 
   render() {
+    console.log(this.props.currentUser.ownGames.length);
     return (
       <div>
         {this.props.questsError !== "" ? (
@@ -32,7 +33,16 @@ class TableroMisiones extends React.Component {
         )}
         <div className="TableroMisiones">
           <div className="container-fluid misiones">
-            <div className="row">{this.renderMisiones()}</div>
+            {this.props.currentUser &&
+            this.props.currentUser.ownGames.length >= 1 ? (
+              <div className="row">{this.renderMisiones()}</div>
+            ) : (
+              <div className="row">
+                <h1 className="error">
+                  Agrega un juego para poder ver sus misiones!
+                </h1>
+              </div>
+            )}
           </div>
         </div>
       </div>

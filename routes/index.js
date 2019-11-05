@@ -380,7 +380,7 @@ const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
       headers: {
         Origin: "https://developer.riotgames.com",
         "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-        "X-Riot-Token": "RGAPI-5525c01a-7f6e-4728-8238-c88d6e99be28"
+        "X-Riot-Token": "RGAPI-1af4ec8f-4453-4c1a-84fd-da53cce5c9ce"
       }
     }
   )
@@ -401,7 +401,7 @@ const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
               Origin: "https://developer.riotgames.com",
               "Accept-Charset":
                 "application/x-www-form-urlencoded; charset=UTF-8",
-              "X-Riot-Token": "RGAPI-5525c01a-7f6e-4728-8238-c88d6e99be28"
+              "X-Riot-Token": "RGAPI-1af4ec8f-4453-4c1a-84fd-da53cce5c9ce"
             }
           }
         )
@@ -422,7 +422,7 @@ const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
               Origin: "https://developer.riotgames.com",
               "Accept-Charset":
                 "application/x-www-form-urlencoded; charset=UTF-8",
-              "X-Riot-Token": "RGAPI-5525c01a-7f6e-4728-8238-c88d6e99be28"
+              "X-Riot-Token": "RGAPI-1af4ec8f-4453-4c1a-84fd-da53cce5c9ce"
             }
           }
         )
@@ -443,7 +443,7 @@ const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
               Origin: "https://developer.riotgames.com",
               "Accept-Charset":
                 "application/x-www-form-urlencoded; charset=UTF-8",
-              "X-Riot-Token": "RGAPI-5525c01a-7f6e-4728-8238-c88d6e99be28"
+              "X-Riot-Token": "RGAPI-1af4ec8f-4453-4c1a-84fd-da53cce5c9ce"
             }
           }
         )
