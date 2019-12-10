@@ -23,7 +23,7 @@ class Chats extends React.Component{
     {
       fetch("/users/"+this.props.currentUser.mail+"/chats")
       .then(res => res.json())
-      .then(data => this.setState({chats: data}))
+      .then(data => {this.setState({chats: data}); console.log(data)})
       .catch();
     }
 

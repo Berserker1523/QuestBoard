@@ -4,12 +4,15 @@
   border-radius: 5px;
   margin: 3%;
   margin: 1px;
+  width:auto;
+  overflow-y: auto;
+  height: 500px;
 }
 
 .nombre-chat {
   background-color: #ff6344;
   color: #000000;
-  font-size: 24px;
+  font-size: 28px;
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 5%;
@@ -17,21 +20,19 @@
   border-bottom: 1px solid black;
 }
 
-.descripcion,
-.jugadores {
-  font-family: "Oswald", sans-serif;
-  font-size: 16px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 10%;
-  margin-right: 5%;
-}
-
 textarea {
   width: 100%;
+}
+
+.msg {
+  margin: 10px;
+  font-size: 18px;
+}
+
+.emisor p{
+  font-size: 14px;
+  color:  #ff6344;
+  margin-right: 20px;
 }
 
 .right {
@@ -47,7 +48,7 @@ textarea {
   width: 100%;
   border: none;
   border-radius: 2px;
-  font-size: 22px;
+  font-size: 24px;
 }
 
 .btn-enviar {

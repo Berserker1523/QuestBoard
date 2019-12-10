@@ -29,7 +29,7 @@ class Chat extends React.Component{
           {
             text: this.state.texto,
             date: this.state.fechaMsg,
-            owner: this.props.currentUser._id
+            owner: this.props.currentUser.name
           }
     );
 
@@ -51,7 +51,16 @@ class Chat extends React.Component{
   }
 
   renderMsgs() {
-    return this.props.chat.messages.map((msg,i) => <div key={i} className={msg.owner === this.props.currentUser._id ? "row right" : "row left"}>{msg.text}</div>);
+    return this.props.chat.messages.map((msg,i) => {
+      return (
+        <div key={i} className={msg.owner === this.props.currentUser.name ? "col-md-12 right msg" : "col-md-12 left msg"}>
+          <div className={msg.owner === this.props.currentUser.name ? "col-md-12 right emisor" : "col-md-12 left emisor"}>
+            <p>{msg.owner}</p>
+          </div>
+          <div className={msg.owner === this.props.currentUser.name ? "col-md-12 right" : "col-md-12 left"}>
+            <p>{msg.text}</p>
+          </div>
+        </div>)});
   }
 
   render() {

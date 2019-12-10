@@ -22,8 +22,8 @@ const App = props => {
   const [games, setGames] = useState([]);
   const [gamesError, setGamesError] = useState("");
 
+  const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
-  const [currentChatId, setCurrentChatId] = useState("");
 
   useEffect(() => {
     if (!connected) {
@@ -43,11 +43,7 @@ const App = props => {
             setQuests(res.data);
           }
           if (res.type === "chats") {
-            const i = res.data.indexOf(currentChatId);
-            if (i !== -1) {
-              console.log(res.data[i]);
-              setCurrentChat(res.data[i]);
-            }
+            setChats(res.data);
           }
         };
       };
@@ -87,6 +83,11 @@ const App = props => {
                   fetch("/users/"+_user.displayName)
                     .then(res => res.json())
                     .then(data => setUser(data));
+
+                  fetch("/users/"+_user.displayName+"/chats")
+                    .then(res => res.json())
+                    .then(data => setChats(data))
+                    .catch();
                 }
           });
         }
@@ -135,7 +136,6 @@ const App = props => {
   };
 
   const getCurrentChat = currentChatId => {
-    setCurrentChatId(currentChatId);
     fetch("/chats/" + currentChatId)
       .then(res => res.json())
       .then(data => {
@@ -210,6 +210,7 @@ const App = props => {
               <Chats
                 {...propiedades}
                 currentUser={user}
+                chats={chats}
                 GetCurrentChat={getCurrentChat}
                 currentChat={currentChat}
               />

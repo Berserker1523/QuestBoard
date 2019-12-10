@@ -9,20 +9,19 @@
   border-bottom: 0.5px solid white;
 }
 
-.nav-item {
-	border: 1%;
-}
-
 .nav-link-disabled {
 	color: rgba(255,255,255,0.5);
+  margin:6px;
 }
 
 .nav-link-disabled:hover {
 	color: #FFFFFF;
+  margin:6px;
 }
 
 .nav-link, .active {
 	color: #FFFFFF;
+  margin:6px;
 }
 
 body {

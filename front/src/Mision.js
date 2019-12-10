@@ -42,8 +42,14 @@ const Mision = props => {
   };
   var chatId="";
   const updateChat = () => {
-    const users=props.info.players;
-    users.push(props.info.owner);
+    const users=[]
+
+    props.info.players.map((player) => {
+      users.push({user_id:player, user_name:"default"});
+    });
+
+    users.push({user_id:props.info.owner, user_name:"default"});
+
     if(props.info.players.length+1===props.info.maxPlayers) {
       console.log("chat creation");
       fetch("/chats", {
@@ -60,52 +66,39 @@ const Mision = props => {
     })
       .then(res => res.json())
       .catch(error => console.error("Error:", error))
-      .then(response => console.log("Success:", response));
+      .then(response => {console.log("Success:", response); chatId="something"});
     }
 
     if (chatId!==""&&!add) {
-      fetch("/chats/"+chatId, {
-      method: "DELETE", // or 'PUT'
-      body: JSON.stringify({
-        name: props.info.name,
-        quest: props.info._id,
-        users: users,
-        messages: [],
-      }),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-      .then(res => res.json())
-      .catch(error => console.error("Error:", error))
-      .then(response => console.log("Success:", response));
+      
     }
   };
 
   const setButtons = () => {
-    if (props.currentUser && props.info.owner === props.currentUser._id) {
-      return (
-        <button className="btn-eliminar" onClick={deleteQuest}>
-          Eliminar
-        </button>
-      );
-    } else if (
-      props.currentUser &&
-      props.info.players.findIndex(id => id === props.currentUser._id) >= 0
-    ) {
-      add = false;
-      return (
-        <button className="btn-rechazar" onClick={updateQuest}>
-          Rechazar
-        </button>
-      );
-    } else if(props.info.players.length+1!==props.info.maxPlayers) {
-      add = true;
-      return (
-        <button className="btn-unirse" onClick={updateQuest}>
-          Unirse
-        </button>
-      );
+    if(props.currentUser) {    
+      if (props.info.owner === props.currentUser._id) {
+          return (
+            <button className="btn-eliminar" onClick={deleteQuest}>
+              Eliminar
+            </button>
+          );
+        } else if (
+          props.info.players.findIndex(id => id === props.currentUser._id) >= 0
+        ) {
+          add = false;
+          return (
+            <button className="btn-rechazar" onClick={updateQuest}>
+              Rechazar
+            </button>
+          );
+        } else if(props.info.players.length+1!==props.info.maxPlayers) {
+          add = true;
+          return (
+            <button className="btn-unirse" onClick={updateQuest}>
+              Unirse
+            </button>
+          );
+        }
     }
   };
 
@@ -124,8 +117,11 @@ const Mision = props => {
           <div className="col-md-10">
             {props.info.name}
           </div>
-          {(props.currentUser && props.info.owner === props.currentUser._id || props.info.players.findIndex(id => id === props.currentUser._id) >= 0) && props.info.players.length+1===props.info.maxPlayers
-            ?(<div className="col-md-2">
+          {props.currentUser && props.info.players.length+1===props.info.maxPlayers
+            ? 
+            (props.info.players.findIndex(id => id === props.currentUser._id) >= 0 
+            ?
+              (<div className="col-md-2">
                 <Link to="chats">
                   <img
                     src="../chat.png"
@@ -136,7 +132,7 @@ const Mision = props => {
               </div>
               ) : (
               ""
-            )
+            )): ("")
         }
         </div>
         <div className="row descripcion">
