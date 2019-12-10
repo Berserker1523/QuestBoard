@@ -3,6 +3,21 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = props => {
+
+  const login = () => {
+    fetch("/auth/login")
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+  };
+
+  const logout = () => {
+    fetch("/auth/logout")
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+  };
+
   return (
     <div className="Navbar">
       <nav className="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -81,14 +96,14 @@ const Navbar = props => {
             )}
             {props.currentUser === null ? (
               <li className="nav-item">
-                <a className="nav-link my-2 my-sm-0" href="http://localhost:3001/auth/login">Incia sesión</a>
+                <button className="nav-link my-2 my-sm-0" onClick={login}>Incia sesión</button>
               </li>
             ) : (
               ""
             )}
             {props.currentUser !== null ? (
               <li className="nav-item">
-                <a className="nav-link-disabled" href="http://localhost:3001/auth/logout">Cerrar sesión</a>
+                <button className="nav-link-disabled" onClick={logout}>Cerrar sesión</button>
               </li>
             ) : (
               ""
