@@ -16,6 +16,9 @@ var auth0Router = require("./routes/auth0Router");
 var app = express();
 
 app.use(cors());
+header('Access-Control-Allow-Origin: *');
+//aquí agregamos solo los metodos que necesitemos
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
