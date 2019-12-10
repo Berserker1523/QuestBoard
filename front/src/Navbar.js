@@ -5,17 +5,23 @@ import "./Navbar.css";
 const Navbar = props => {
 
   const login = () => {
-    fetch("/auth/login")
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
+    fetch("/auth/login", {
+      method: "GET",
+      mode: 'cors',
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   };
 
   const logout = () => {
-    fetch("/auth/logout")
-      .then(res => res.json())
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
+    fetch("/auth/logout", {
+      method: "GET",
+      mode: 'cors',
+      headers: {
+        "Content-Type": "application/json"
+      }
+    });
   };
 
   return (
