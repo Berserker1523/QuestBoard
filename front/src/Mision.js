@@ -1,5 +1,7 @@
 import React from "react";
 import "./Mision.css";
+import { Link } from "react-router-dom";
+import Popup from "reactjs-popup";
 
 const Mision = props => {
   const deleteQuest = () => {
@@ -38,7 +40,7 @@ const Mision = props => {
 
     updateChat();
   };
-
+  var chatId="";
   const updateChat = () => {
     const users=props.info.players;
     users.push(props.info.owner);
@@ -61,8 +63,22 @@ const Mision = props => {
       .then(response => console.log("Success:", response));
     }
 
-    if (!add) {
-      
+    if (chatId!==""&&!add) {
+      fetch("/chats/"+chatId, {
+      method: "DELETE", // or 'PUT'
+      body: JSON.stringify({
+        name: props.info.name,
+        quest: props.info._id,
+        users: users,
+        messages: [],
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => console.log("Success:", response));
     }
   };
 
@@ -83,7 +99,7 @@ const Mision = props => {
           Rechazar
         </button>
       );
-    } else {
+    } else if(props.info.players.length+1!==props.info.maxPlayers) {
       add = true;
       return (
         <button className="btn-unirse" onClick={updateQuest}>
@@ -93,17 +109,45 @@ const Mision = props => {
     }
   };
 
+  const renderPlayers = () => {
+    return props.info.players.map((player, i) => {
+        return (
+          <li key={i}>{player}</li>
+        );
+    });
+  };
+
   return (
     <div className="Mision">
       <div className="container-fluid mision">
-        <div className="row nombre">{props.info.name}</div>
+        <div className="row nombre">
+          <div className="col-md-10">
+            {props.info.name}
+          </div>
+          {(props.currentUser && props.info.owner === props.currentUser._id || props.info.players.findIndex(id => id === props.currentUser._id) >= 0) && props.info.players.length+1===props.info.maxPlayers
+            ?(<div className="col-md-2">
+                <Link to="chats">
+                  <img
+                    src="../chat.png"
+                    alt="Chat logo"
+                    className="quest-info-logo"
+                  />
+                </Link>
+              </div>
+              ) : (
+              ""
+            )
+        }
+        </div>
         <div className="row descripcion">
           <p>{props.info.description}</p>
         </div>
         <div className="row jugadores">
           {props.info.players.length + 1} / {props.info.maxPlayers} jugadores
         </div>
-        <div className="row botones">{setButtons()}</div>
+        <div className="row botones">
+          {setButtons()}
+        </div>
       </div>
     </div>
   );

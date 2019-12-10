@@ -62,8 +62,34 @@ const App = props => {
             console.log(_user.displayName);
             fetch("/users/"+_user.displayName)
               .then(res => res.json())
-              .then(data => setUser(data));
-          }
+              .then(data => {
+                if(data)
+                {
+                  setUser(data); 
+                }
+                else
+                {
+                  fetch("/users", {
+                    method: "POST",
+                    body: JSON.stringify({
+                        name : _user.nickname,
+                        mail : _user.displayName,
+                        password : "clave ultra-secreta",
+                        age : 20,
+                        avatar : "",
+                        country : "Colombia",
+                    }),
+                    headers: {
+                      "Content-Type": "application/json"
+                    }
+                  });
+
+                  fetch("/users/"+_user.displayName)
+                    .then(res => res.json())
+                    .then(data => setUser(data));
+                }
+          });
+        }
       });
 
       fetch("/quests")
