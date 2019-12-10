@@ -33,17 +33,15 @@ class MisMisiones extends React.Component {
       <div className="MisMisiones">
         <div className="container-fluid misiones">
           <div className="row">
-            <div className="col-md-4">
+            <div className="col-md-12">
               <div className="agregar-mision">
                 <Link to="crear-mision">
-                  <img
-                    className="plus-icon"
-                    src="https://icon-library.net/images/white-plus-icon/white-plus-icon-3.jpg"
-                    alt="Agregar misión"
-                  />
+                  <button className="btn-crear-mision">Crear misión</button>
                 </Link>
               </div>
             </div>
+          </div>
+          <div className="row">
             {this.renderMisiones()}
           </div>
         </div>

@@ -1,10 +1,12 @@
 .agregar-mision {
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 5px;
-  margin: 3%;
-  text-align: center;
+  text-align: right;
 }
 
-.plus-icon {
-  width: 35%;
+.misiones {
+	top: 75px;
+}
+
+.btn-crear-mision {
+	background-color: #facb00;
+	border: none;
 }

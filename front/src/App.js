@@ -13,6 +13,7 @@ import { HashRouter, Switch, Route, Redirect } from "react-router-dom";
 const App = props => {
   /*const [docs, setDocs] = useState([]);
   const [err, setErr] = useState("");*/
+  const backUrl = "http://localhost:3001";
   const [connected, setConnected] = useState(false);
 
   const [user, setUser] = useState(null);
@@ -28,7 +29,7 @@ const App = props => {
     if (!connected) {
       console.log(window.location.origin.toString().replace(/^http/, "ws"));
       const ws = new WebSocket(
-        /*"ws://localhost:3001"*/ window.location.origin
+        "ws://localhost:3001"
           .toString()
           .replace(/^http/, "ws")
       );
@@ -51,9 +52,35 @@ const App = props => {
         };
       };
     }
-  }, [connected, user, quests, currentChatId]);
 
-  const GetQuests = () => {
+    if(user===null)
+    {
+      fetch("/auth/getUser")
+        .then(res => res.json())
+        .then(_user => {
+          if (_user) {
+            console.log(_user.displayName);
+            fetch("/users/"+_user.displayName)
+              .then(res => res.json())
+              .then(data => setUser(data));
+          }
+      });
+
+      fetch("/quests")
+        .then(res => res.json())
+        .then(data => {
+          setQuests(data);
+          setQuestsError("");
+        })
+        .catch(err =>
+          setQuestsError(
+            "No fue posible obtener las misiones, por favor intentelo de nuevo"
+          )
+      );
+    }
+  }, [connected, user]);
+
+  const getQuests = () => {
     fetch("/quests")
       .then(res => res.json())
       .then(data => {
@@ -67,7 +94,7 @@ const App = props => {
       );
   };
 
-  const GetGames = () => {
+  const getGames = () => {
     fetch("/games")
       .then(res => res.json())
       .then(data => {
@@ -81,7 +108,7 @@ const App = props => {
       );
   };
 
-  const GetCurrentChat = currentChatId => {
+  const getCurrentChat = currentChatId => {
     setCurrentChatId(currentChatId);
     fetch("/chats/" + currentChatId)
       .then(res => res.json())
@@ -102,14 +129,7 @@ const App = props => {
           <Route
             path="/"
             render={propiedades => (
-              <Inicio {...propiedades} setUser={setUser} />
-            )}
-            exact
-          />
-          <Route
-            path="/signup"
-            render={propiedades => (
-              <SignUp {...propiedades} setUser={setUser} />
+              <Inicio {...propiedades} quests={quests} />
             )}
             exact
           />
@@ -119,7 +139,7 @@ const App = props => {
               <TableroMisiones
                 {...propiedades}
                 currentUser={user}
-                GetQuests={GetQuests}
+                GetQuests={getQuests}
                 quests={quests}
                 questsError={questsError}
               />
@@ -132,7 +152,7 @@ const App = props => {
               <TableroJuegos
                 {...propiedades}
                 currentUser={user}
-                GetGames={GetGames}
+                GetGames={getGames}
                 games={games}
                 gamesError={gamesError}
                 setUser={setUser}
@@ -164,7 +184,7 @@ const App = props => {
               <Chats
                 {...propiedades}
                 currentUser={user}
-                GetCurrentChat={GetCurrentChat}
+                GetCurrentChat={getCurrentChat}
                 currentChat={currentChat}
               />
             )}

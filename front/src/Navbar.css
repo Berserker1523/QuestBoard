@@ -4,13 +4,25 @@
   height: 100%;
 }
 
-.navbar-expand-lg, .navbar-dark {
+.navbar-dark {
   background-color: #000000;
-  border-bottom: 1px solid white;
+  border-bottom: 0.5px solid white;
 }
 
 .nav-item {
-  color: #FF6344;
+	border: 1%;
+}
+
+.nav-link-disabled {
+	color: rgba(255,255,255,0.5);
+}
+
+.nav-link-disabled:hover {
+	color: #FFFFFF;
+}
+
+.nav-link, .active {
+	color: #FFFFFF;
 }
 
 body {

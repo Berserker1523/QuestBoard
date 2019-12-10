@@ -35,9 +35,36 @@ const Mision = props => {
         "Content-Type": "application/json"
       }
     });
+
+    updateChat();
   };
 
-  const createChat = () => {};
+  const updateChat = () => {
+    const users=props.info.players;
+    users.push(props.info.owner);
+    if(props.info.players.length+1===props.info.maxPlayers) {
+      console.log("chat creation");
+      fetch("/chats", {
+      method: "POST", // or 'PUT'
+      body: JSON.stringify({
+        name: props.info.name,
+        quest: props.info._id,
+        users: users,
+        messages: [],
+      }),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+      .then(res => res.json())
+      .catch(error => console.error("Error:", error))
+      .then(response => console.log("Success:", response));
+    }
+
+    if (!add) {
+      
+    }
+  };
 
   const setButtons = () => {
     if (props.currentUser && props.info.owner === props.currentUser._id) {

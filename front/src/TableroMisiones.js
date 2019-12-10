@@ -23,7 +23,6 @@ class TableroMisiones extends React.Component {
   }
 
   render() {
-    console.log(this.props.currentUser.ownGames.length);
     return (
       <div>
         {this.props.questsError !== "" ? (

@@ -6,10 +6,16 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const cors = require("cors");
+
+const configureAuth0 = require("./configureAuth0.js");
 
 var indexRouter = require("./routes/index");
+var auth0Router = require("./routes/auth0Router");
 
 var app = express();
+
+app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -21,7 +27,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "front/build")));
 
+configureAuth0(app);
+
 app.use("/", indexRouter);
+app.use("/auth", auth0Router);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
