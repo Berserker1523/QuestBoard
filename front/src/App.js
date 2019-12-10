@@ -220,6 +220,7 @@ const App = props => {
           {/* y creamos nuestras rutas */}
         </Switch>
       </HashRouter>
+//Agreguen instrucciones claras de que es lo que hace y como se hace pues no es tan intuitivo y deberia ser lo primero que ve el usuario en este punto.
     </div>
   );
 };
