@@ -9,21 +9,34 @@
   border-bottom: 0.5px solid white;
 }
 
+.needPadding {
+  padding-top: 14px;
+}
+
+.dropdown-menu {
+  background-color: #000000;
+}
+
+.dropdown-item:hover {
+  background-color: #000000;
+}
+
 .nav-link-disabled {
-	color: rgba(255,255,255,0.5);
-  margin:6px;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 6px;
 }
 
 .nav-link-disabled:hover {
-	color: #FFFFFF;
-  margin:6px;
+  color: #ffffff;
+  margin: 6px;
 }
 
-.nav-link, .active {
-	color: #FFFFFF;
-  margin:6px;
+.nav-link,
+.active {
+  color: #ffffff;
+  margin: 6px;
 }
 
 body {
-  font-family: 'Patua One', cursive;
+  font-family: "Patua One", cursive;
 }

@@ -22,17 +22,19 @@ router.get("/users", (req, res) => {
 
 router.get("/users/:user_mail", (req, res) => {
   const user_mail = req.params.user_mail;
-  //console.log(`GET users/:user_name - param: ${user_name}`);
   myMongoLib
     .getUser(user_mail)
-    .then(docs => res.send(docs[0]))
+    .then(docs => {
+      console.log(docs);
+      console.log("docs.length: " + docs.length);
+      docs.length > 0 ? res.send(docs[0]) : res.status(404).send("Not found.");
+    })
     .catch(err => res.send({ err: true, msg: err }));
 });
 
 router.post("/users", (req, res) => {
   const user_name = req.body.name;
   const user_mail = req.body.mail;
-  const user_password = req.body.password;
   const user_age = req.body.age;
   const user_avatar = req.body.avatar;
   const user_country = req.body.country;
@@ -44,7 +46,6 @@ router.post("/users", (req, res) => {
   const new_user = {
     name: user_name,
     mail: user_mail,
-    password: user_password,
     age: user_age,
     avatar: user_avatar,
     country: user_country,
@@ -65,7 +66,6 @@ router.put("/users/:user_id", (req, res) => {
 
   const user_name = req.body.name;
   const user_mail = req.body.mail;
-  const user_password = req.body.password;
   const user_age = req.body.age;
   const user_avatar = req.body.avatar;
   const user_country = req.body.country;
@@ -78,7 +78,6 @@ router.put("/users/:user_id", (req, res) => {
     $set: {
       name: user_name,
       mail: user_mail,
-      password: user_password,
       age: user_age,
       avatar: user_avatar,
       country: user_country,
@@ -235,6 +234,7 @@ router.post("/games", (req, res) => {
   const game_genre = req.body.genre;
   const game_description = req.body.description;
   const game_logo = req.body.logo;
+  const game_platform = req.body.platform;
   const game_activeQuests = [];
   const game_completedQuests = [];
 
@@ -243,6 +243,7 @@ router.post("/games", (req, res) => {
     genre: game_genre,
     description: game_description,
     logo: game_logo,
+    platform: game_platform,
     activeQuests: game_activeQuests,
     completedQuests: game_completedQuests
   };
@@ -260,6 +261,7 @@ router.put("/games/:game_id", (req, res) => {
   const game_genre = req.body.genre;
   const game_description = req.body.description;
   const game_logo = req.body.logo;
+  const game_platform = req.body.platform;
   const game_activeQuests = req.body.activeQuests;
   const game_completedQuests = req.body.completedQuests;
 
@@ -269,6 +271,7 @@ router.put("/games/:game_id", (req, res) => {
       genre: game_genre,
       description: game_description,
       logo: game_logo,
+      platform: game_platform,
       activeQuests: game_activeQuests,
       completedQuests: game_completedQuests
     }

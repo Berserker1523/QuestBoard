@@ -1,3 +1,118 @@
+.modal {
+  background-color: rgba(15, 15, 15, 0.8);
+}
+
+.modal-content {
+  background-color: rgba(23, 23, 23, 1);
+}
+
+.close {
+  color: rgba(255, 255, 255, 1);
+}
+
+.modal-title {
+  font-size: 24px;
+}
+
+.close:hover {
+  color: #ff6344;
+}
+
+.modal-header {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.modal-description {
+  padding-left: 5%;
+  padding-bottom: 16px;
+}
+
+.row-modal-body {
+  padding-top: 16px;
+  border-top: 1px solid white;
+}
+
+.modal-body {
+  border-bottom: 1px solid white;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.modal-footer {
+  border-top: 0;
+}
+
+.platform-logo-modal {
+  padding-left: 2px;
+  padding-bottom: 2px;
+  border-radius: 0 0 0 5px;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.platform-logo {
+  padding-left: 30px;
+  position: relative;
+  bottom: 5px;
+  border-radius: 5px;
+  text-align: right;
+}
+.miptobtn {
+  float: right;
+}
+.jugadores {
+  text-align: center;
+}
+.finish-modal {
+  text-align: center;
+  margin-left: 33%;
+  margin-bottom: 5%;
+}
+.disp-jugadores-modal {
+  margin-top: 10px;
+  padding-left: 2.5%;
+}
+.jugadores-modal {
+  padding-left: 2.5%;
+  text-align: left;
+}
+.game {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.game-col {
+  padding-left: 0px;
+}
+
+.game-name {
+  margin-top: 4px;
+  font-size: 20px;
+}
+
+.game-name-modal {
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.finish {
+  text-align: right;
+  font-size: 15px;
+}
+
+.nombre {
+  padding-top: 0px;
+}
+
+.game-logo {
+  width: 100%;
+}
+
+.finish {
+  float: right;
+}
+
 .mision {
   background-color: rgba(255, 255, 255, 0.15);
   /*border: 2px solid white;*/
@@ -39,21 +154,21 @@
 }*/
 
 .btn-unirse {
-  background-color: #facb00;
+  background-color: #43b31b;
   font-family: "Patua One", cursive;
   width: 100%;
-  height: 100%;
   border: none;
   border-radius: 2px;
   font-size: 22px;
   margin-top: 10px;
 }
-
+.col-btn {
+  padding: 0;
+}
 .btn-rechazar {
   background-color: #ff6344;
   font-family: "Patua One", cursive;
   width: 100%;
-  height: 100%;
   border: none;
   border-radius: 2px;
   font-size: 22px;
@@ -64,7 +179,7 @@
   background-color: #ff6344;
   font-family: "Patua One", cursive;
   width: 100%;
-  height: 100%;
+
   border: none;
   border-radius: 2px;
   font-size: 22px;
@@ -72,21 +187,16 @@
 }
 
 .btn-mas-info {
-  background-color: #ffffff;
+  background-color: #facb00;
   font-family: "Patua One", cursive;
   width: 100%;
-  height: 100%;
   border: none;
   border-radius: 2px;
   font-size: 22px;
   margin-top: 10px;
 }
 
-.logo {
-  text-align: right;
-}
-
-.modal {
+/*.modal {
   background-color: black;
   font-size: 12px;
 }
@@ -120,4 +230,4 @@
   background: #ffffff;
   border-radius: 18px;
   border: 1px solid #cfcece;
-}
+}*/

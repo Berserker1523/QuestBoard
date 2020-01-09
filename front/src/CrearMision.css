@@ -1,3 +1,7 @@
+.error {
+  color: red;
+}
+
 .crear-mision {
   background-color: rgba(255, 255, 255, 0.15);
   width: 70%;
@@ -12,44 +16,45 @@
 }
 
 .nombre {
-  font-family: 'Patua One', cursive;
+  font-family: "Patua One", cursive;
   margin-bottom: 0%;
 }
 
-form {
+.form {
   margin-top: 3%;
   text-align: center;
 }
 
-input, textarea {
+input,
+textarea {
   margin: 1%;
   background: transparent;
   border: none;
-  border-bottom: 1px solid #FFFFFF;
-  color: #FFFFFF;
-  font-family: 'Oswald', sans-serif;
+  border-bottom: 1px solid #ffffff;
+  color: #ffffff;
+  font-family: "Oswald", sans-serif;
   font-size: 16px;
   text-align: center;
 }
 
 label {
-  font-family: 'Patua One', cursive;
+  font-family: "Patua One", cursive;
   font-size: 20px;
   padding-bottom: 10px;
   margin: 1%;
 }
 
 p {
-  font-family: 'Oswald', sans-serif;
+  font-family: "Oswald", sans-serif;
   margin-bottom: 1px;
   margin-top: 1px;
 }
 
 .btn-crear {
-  background-color: #FF6344;
+  background-color: #ff6344;
   border: none;
   border-radius: 5px;
-  font-family: 'Patua One', cursive;
+  font-family: "Patua One", cursive;
   font-size: 24px;
   color: #000000;
 }

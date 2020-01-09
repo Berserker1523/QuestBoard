@@ -69,7 +69,12 @@ const Juego = props => {
   return (
     <div className="Mision">
       <div className="container-fluid mision">
-        <div className="row nombre">{props.info.name}</div>
+        <div className="row">
+          <div className="col-10 nombre">{props.info.name}</div>
+          <div className="col-2 logo">
+            <img src={props.info.platform} alt="platform logo"></img>
+          </div>
+        </div>
         <div className="row descripcion">
           <p>{props.info.description}</p>
         </div>

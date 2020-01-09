@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { HashRouter, Switch, Route, Redirect } from "react-router-dom";
+
 import "./App.css";
 import Inicio from "./Inicio.js";
-import SignUp from "./SignUp.js";
 import TableroMisiones from "./TableroMisiones.js";
 import TableroJuegos from "./TableroJuegos.js";
 import Navbar from "./Navbar.js";
 import MisMisiones from "./MisMisiones.js";
 import CrearMision from "./CrearMision.js";
 import Chats from "./Chats.js";
-import { HashRouter, Switch, Route, Redirect } from "react-router-dom";
+
+import { getAPI, postAPI } from "./API/BasicAPI";
 
 const App = props => {
-  /*const [docs, setDocs] = useState([]);
-  const [err, setErr] = useState("");*/
-  const backUrl = "http://localhost:3001";
   const [connected, setConnected] = useState(false);
 
   const [user, setUser] = useState(null);
@@ -25,13 +24,40 @@ const App = props => {
   const [chats, setChats] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
 
+  const getQuests = () => {
+    getAPI("/quests")
+      .then(data => {
+        setQuests(data);
+        setQuestsError(null);
+      })
+      .catch(err =>
+        setQuestsError(
+          "No fue posible obtener las misiones, por favor inténtelo de nuevo"
+        )
+      );
+  };
+
+  const getGames = () => {
+    getAPI("/games")
+      .then(data => {
+        setGames(data);
+        setGamesError(null);
+      })
+      .catch(err =>
+        setGamesError(
+          "No fue posible obtener información de los juegos disponibles, por favor inténtelo de nuevo"
+        )
+      );
+  };
+
   useEffect(() => {
     if (!connected) {
+      getQuests();
+      getGames();
+
       console.log(window.location.origin.toString().replace(/^http/, "ws"));
       const ws = new WebSocket(
-        "ws://localhost:3001"
-          .toString()
-          .replace(/^http/, "ws")
+        "ws://localhost:3001".toString().replace(/^http/, "ws")
       );
       ws.onopen = () => {
         console.log("connnected to ws");
@@ -49,91 +75,41 @@ const App = props => {
       };
     }
 
-    if(user===null)
-    {
-      fetch("/auth/getUser")
-        .then(res => res.json())
-        .then(_user => {
-          if (_user) {
-            console.log(_user.displayName);
-            fetch("/users/"+_user.displayName)
-              .then(res => res.json())
-              .then(data => {
-                if(data)
-                {
-                  setUser(data); 
-                }
-                else
-                {
-                  fetch("/users", {
-                    method: "POST",
-                    body: JSON.stringify({
-                        name : _user.nickname,
-                        mail : _user.displayName,
-                        password : "clave ultra-secreta",
-                        age : 20,
-                        avatar : "",
-                        country : "Colombia",
-                    }),
-                    headers: {
-                      "Content-Type": "application/json"
-                    }
-                  });
+    if (!user) {
+      getAPI("/auth/getUser").then(loggedUser => {
+        console.log("loggedUser: ");
+        console.log(loggedUser);
+        if (loggedUser) {
+          console.log(`user: ${loggedUser.displayName}`);
+          getAPI(`/users/${loggedUser.displayName}`)
+            .then(data => {
+              console.log("Get user back response: ");
+              console.log(data);
 
-                  fetch("/users/"+_user.displayName)
-                    .then(res => res.json())
-                    .then(data => setUser(data));
-
-                  fetch("/users/"+_user.displayName+"/chats")
-                    .then(res => res.json())
-                    .then(data => setChats(data))
-                    .catch();
-                }
-          });
+              setUser(data);
+            })
+            .catch(err => {
+              console.log(err);
+              //No se encontró un usuario registrado
+              if (err instanceof SyntaxError) {
+                console.log("No se encontró un usuario registrado");
+                postAPI("/users", {
+                  name: loggedUser.nickname,
+                  mail: loggedUser.displayName,
+                  age: null,
+                  avatar: null,
+                  country: null
+                }).then(
+                  getAPI(`/users/${loggedUser.displayName}`).then(data =>
+                    setUser(data)
+                  )
+                );
+              }
+            });
         }
       });
-
-      fetch("/quests")
-        .then(res => res.json())
-        .then(data => {
-          setQuests(data);
-          setQuestsError("");
-        })
-        .catch(err =>
-          setQuestsError(
-            "No fue posible obtener las misiones, por favor intentelo de nuevo"
-          )
-      );
     }
-  }, [connected, user]);
-
-  const getQuests = () => {
-    fetch("/quests")
-      .then(res => res.json())
-      .then(data => {
-        setQuests(data);
-        setQuestsError("");
-      })
-      .catch(err =>
-        setQuestsError(
-          "No fue posible obtener las misiones, por favor intentelo de nuevo"
-        )
-      );
-  };
-
-  const getGames = () => {
-    fetch("/games")
-      .then(res => res.json())
-      .then(data => {
-        setGames(data);
-        setGamesError("");
-      })
-      .catch(err =>
-        setGamesError(
-          "No fue posible obtener infromación de los juegos disponibles, por favor intentelo de nuevo"
-        )
-      );
-  };
+  }, []);
 
   const getCurrentChat = currentChatId => {
     fetch("/chats/" + currentChatId)
@@ -149,14 +125,10 @@ const App = props => {
       <HashRouter>
         <Navbar currentUser={user} />
         {user !== null ? <Redirect push to="/tablero" /> : ""}
-        {/* envolvemos nuestra aplicación en el Router  */}
         <Switch>
-          {/* también la envolvemos en el componente Switch */}
           <Route
             path="/"
-            render={propiedades => (
-              <Inicio {...propiedades} quests={quests} />
-            )}
+            render={propiedades => <Inicio {...propiedades} quests={quests} />}
             exact
           />
           <Route
@@ -164,10 +136,12 @@ const App = props => {
             render={propiedades => (
               <TableroMisiones
                 {...propiedades}
-                currentUser={user}
-                GetQuests={getQuests}
+                user={user}
+                getQuests={getQuests}
                 quests={quests}
                 questsError={questsError}
+                games={games}
+                gamesError={gamesError}
               />
             )}
             exact
@@ -189,18 +163,19 @@ const App = props => {
           <Route
             path="/mis-misiones"
             render={propiedades => (
-              <MisMisiones
-                {...propiedades}
-                quests={quests}
-                currentUser={user}
-              />
+              <MisMisiones {...propiedades} quests={quests} user={user} />
             )}
             exact
           />
           <Route
             path="/crear-mision"
             render={propiedades => (
-              <CrearMision {...propiedades} currentUser={user} />
+              <CrearMision
+                {...propiedades}
+                games={games}
+                currentUser={user}
+                setQuestsError={setQuestsError}
+              />
             )}
             exact
           />
@@ -217,7 +192,6 @@ const App = props => {
             )}
             exact
           />
-          {/* y creamos nuestras rutas */}
         </Switch>
       </HashRouter>
     </div>
