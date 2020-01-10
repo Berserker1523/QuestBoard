@@ -40,7 +40,7 @@ const MyWsLib = function() {
         ws.isAlive = false;
         ws.ping(null, undefined);
       });
-    }, 10000);
+    }, 60000);
   };
 
   MyWsLib.notifyAll = data => {

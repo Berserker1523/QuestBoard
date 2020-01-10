@@ -14,8 +14,10 @@ class MisMisiones extends React.Component {
   renderMisiones() {
     return this.props.quests.map((mision, i) => {
       if (
-        mision.owner === this.props.user._id ||
-        mision.players.findIndex(id => id === this.props.user._id) >= 0
+        mision.owner._id === this.props.user._id ||
+        mision.players.findIndex(
+          player => player._id === this.props.user._id
+        ) >= 0
       ) {
         return (
           <div className="col-md-4" key={i}>

@@ -1,10 +1,14 @@
+import "date-fns";
 import React from "react";
 import { Link } from "react-router-dom";
 import "./CrearMision.css";
-import DatePicker from "react-datepicker";
 import { postAPI } from "./API/BasicAPI";
-
-import "react-datepicker/dist/react-datepicker.css";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker
+} from "@material-ui/pickers";
 
 class Inicio extends React.Component {
   constructor(props) {
@@ -37,9 +41,11 @@ class Inicio extends React.Component {
     });
   };
 
-  handleChange = date => {
+  handleDateChange = date => {
+    console.log("Llegue handle Date Change");
+    console.log(date);
     this.setState({
-      fechaFinal: date
+      finishDate: date
     });
   };
 
@@ -48,13 +54,22 @@ class Inicio extends React.Component {
       return game._id === this.state.game;
     });
     const game = this.props.games[gameIndex];
+
+    const owner = {
+      _id: this.props.currentUser._id,
+      name: this.props.currentUser.name
+    };
+
+    const players = [owner];
+
     postAPI("/quests", {
-      name: this.state.nombre,
-      description: this.state.descripcion,
-      finishDate: this.state.fechaFinal,
-      maxPlayers: this.state.maxJugadores,
-      minPlayers: this.state.minJugadores,
-      owner: this.props.currentUser._id,
+      name: this.state.name,
+      description: this.state.description,
+      finishDate: this.state.finishDate,
+      minPlayers: this.state.minPlayers,
+      maxPlayers: this.state.maxPlayers,
+      owner: owner,
+      players: players,
       game: game
     })
       .then(response => {
@@ -69,81 +84,109 @@ class Inicio extends React.Component {
   };
 
   render() {
+    console.log(this.state.finishDate);
     return (
       <div className="CrearMision">
-        <div className="container-fluid crear-mision">
-          {this.state.error !== "" ? (
-            <p className="error">{this.state.error}</p>
-          ) : (
-            ""
-          )}
-          <div className="row informacion">
-            <div className="col-md-12 form">
-              <label htmlFor="">
-                <input
-                  type="text"
-                  className="nombre"
-                  name="nombre"
-                  value={this.state.nombre}
-                  onChange={this.handleInputChange}
-                  placeholder="Nombre de la misión..."
-                />
-              </label>
+        <div className="container-fluid crear-mision form">
+          <div className="row form-row">
+            <div className="col">
+              <label htmlFor="nombre"> Nombre de la misión </label>
               <br />
-              <label htmlFor="">
-                Juego
-                <br />
-                <select
-                  className="juego"
-                  value={this.state.game}
-                  name="game"
-                  onChange={this.handleInputChange}
-                  placeholder="Juego de la misión..."
-                >
-                  {this.renderGamesChoice()}
-                </select>
-              </label>
+              <input
+                id="nombre"
+                name="name"
+                type="text"
+                className="quest-name"
+                value={this.state.nombre}
+                onChange={this.handleInputChange}
+                maxLength="20"
+              />
+            </div>
+          </div>
+          <div className="row form-row">
+            <div className="col">
+              <label htmlFor="juego"> Juego </label>
               <br />
-              <label htmlFor="">
-                Descripción
-                <br />
-                <textarea
-                  name="descripcion"
-                  value={this.state.descripcion}
-                  onChange={this.handleInputChange}
-                  placeholder="Escribe algo.."
-                />
-              </label>
+              <select
+                id="juego"
+                className="juego"
+                value={this.state.game}
+                name="game"
+                onChange={this.handleInputChange}
+              >
+                {this.renderGamesChoice()}
+              </select>
+            </div>
+          </div>
+          <div className="row form-row">
+            <div className="col">
+              <label htmlFor="descripcion"> Descripción </label>
               <br />
-              <label htmlFor="">
-                Número mínimo y máximo de jugadores
-                <br />
-                <input
-                  type="number"
-                  name="minJugadores"
-                  value={this.state.minJugadores}
-                  onChange={this.handleInputChange}
-                />
-                -
-                <input
-                  type="number"
-                  name="maxJugadores"
-                  value={this.state.maxJugadores}
-                  onChange={this.handleInputChange}
-                />
-              </label>
+              <textarea
+                id="descripcion"
+                value={this.state.descripcion}
+                onChange={this.handleInputChange}
+                name="description"
+              />
+            </div>
+          </div>
+          <div className="row form-row">
+            <div className="col">
+              <label htmlFor="minJugadores">Mínimo y máximo de jugadores</label>
               <br />
-              <label htmlFor="">
-                Fecha de fin
-                <br />
-                <DatePicker
-                  name="fechaFinal"
-                  value={this.state.fechaFinal}
-                  selected={this.state.fechaFinal}
-                  onChange={this.handleChange}
+              <input
+                type="number"
+                min="1"
+                id="minJugadores"
+                value={this.state.minJugadores}
+                onChange={this.handleInputChange}
+                name="minPlayers"
+              />
+              -
+              <input
+                type="number"
+                id="maxJugadores"
+                value={this.state.maxJugadores}
+                onChange={this.handleInputChange}
+                name="maxPlayers"
+              />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <label htmlFor="">Fecha de finalización</label>
+              <br />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  format="dd/MM/yyyy"
+                  margin="normal"
+                  id="date-picker-inline"
+                  value={this.state.finishDate}
+                  onChange={this.handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date"
+                  }}
                 />
-              </label>
-              <br /> <br />
+              </MuiPickersUtilsProvider>
+            </div>
+          </div>
+          <div className="row form-row">
+            <div className="col">
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardTimePicker
+                  margin="normal"
+                  id="time-picker"
+                  value={this.state.finishDate}
+                  onChange={this.handleDateChange}
+                  KeyboardButtonProps={{
+                    "aria-label": "change time"
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
               <Link to={"/mis-misiones"}>
                 <button className="btn-crear" onClick={this.handleSubmit}>
                   Crear

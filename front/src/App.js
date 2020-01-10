@@ -52,9 +52,6 @@ const App = props => {
 
   useEffect(() => {
     if (!connected) {
-      getQuests();
-      getGames();
-
       console.log(window.location.origin.toString().replace(/^http/, "ws"));
       const ws = new WebSocket(
         "ws://localhost:3001".toString().replace(/^http/, "ws")
@@ -66,9 +63,11 @@ const App = props => {
           let res = JSON.parse(msg.data);
           console.log("got ws data", res);
           if (res.type === "quests") {
+            console.log("App.js: se recibió info de misiones");
             setQuests(res.data);
           }
           if (res.type === "chats") {
+            console.log("App.js: se recibió info de chats");
             setChats(res.data);
           }
         };
@@ -76,38 +75,43 @@ const App = props => {
     }
 
     if (!user) {
-      getAPI("/auth/getUser").then(loggedUser => {
-        console.log("loggedUser: ");
-        console.log(loggedUser);
-        if (loggedUser) {
-          console.log(`user: ${loggedUser.displayName}`);
-          getAPI(`/users/${loggedUser.displayName}`)
-            .then(data => {
-              console.log("Get user back response: ");
-              console.log(data);
+      getAPI("/auth/getUser")
+        .then(loggedUser => {
+          console.log("loggedUser: ");
+          console.log(loggedUser);
+          if (loggedUser) {
+            console.log(`user: ${loggedUser.displayName}`);
+            getAPI(`/users/${loggedUser.displayName}`)
+              .then(data => {
+                console.log("Get user back response: ");
+                console.log(data);
 
-              setUser(data);
-            })
-            .catch(err => {
-              console.log(err);
-              //No se encontró un usuario registrado
-              if (err instanceof SyntaxError) {
-                console.log("No se encontró un usuario registrado");
-                postAPI("/users", {
-                  name: loggedUser.nickname,
-                  mail: loggedUser.displayName,
-                  age: null,
-                  avatar: null,
-                  country: null
-                }).then(
-                  getAPI(`/users/${loggedUser.displayName}`).then(data =>
-                    setUser(data)
-                  )
-                );
-              }
-            });
-        }
-      });
+                setUser(data);
+              })
+              .catch(err => {
+                console.log(err);
+                //No se encontró un usuario registrado
+                if (err instanceof SyntaxError) {
+                  console.log("No se encontró un usuario registrado");
+                  postAPI("/users", {
+                    name: loggedUser.nickname,
+                    mail: loggedUser.displayName,
+                    age: null,
+                    avatar: null,
+                    country: null
+                  }).then(
+                    getAPI(`/users/${loggedUser.displayName}`).then(data => {
+                      setUser(data);
+                    })
+                  );
+                }
+              });
+          }
+        })
+        .then(() => {
+          getQuests();
+          getGames();
+        });
     }
   }, []);
 

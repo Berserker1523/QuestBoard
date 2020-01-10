@@ -2,34 +2,46 @@
   color: red;
 }
 
+.form-row {
+  margin-bottom: 5%;
+}
+.MuiInputBase-root,
+.MuiSvgIcon-root {
+  color: white !important;
+}
+
+.MuiInput-underline::before {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.42) !important;
+}
+
+.MuiInput-underline::after {
+  border-bottom: 1px solid rgba(255, 255, 255, 1) !important;
+}
+#date-picker-inline-label {
+  font-family: "Patua One", cursive;
+  font-size: 25px;
+  color: white;
+  margin-bottom: 100px;
+}
+
 .crear-mision {
   background-color: rgba(255, 255, 255, 0.15);
   width: 70%;
   height: 80%;
   border-radius: 10px;
-
-  position: absolute;
-  left: 15%;
-  top: 20%;
-  bottom: 15%;
-  right: 20%;
-}
-
-.nombre {
-  font-family: "Patua One", cursive;
-  margin-bottom: 0%;
+  padding-top: 3%;
+  padding-bottom: 1%;
+  margin-top: 7%;
+  margin-bottom: 1%;
 }
 
 .form {
-  margin-top: 3%;
   text-align: center;
 }
 
 input,
 textarea {
-  margin: 1%;
   background: transparent;
-  border: none;
   border-bottom: 1px solid #ffffff;
   color: #ffffff;
   font-family: "Oswald", sans-serif;
@@ -40,14 +52,10 @@ textarea {
 label {
   font-family: "Patua One", cursive;
   font-size: 20px;
-  padding-bottom: 10px;
-  margin: 1%;
 }
 
 p {
   font-family: "Oswald", sans-serif;
-  margin-bottom: 1px;
-  margin-top: 1px;
 }
 
 .btn-crear {

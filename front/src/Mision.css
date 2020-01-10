@@ -1,3 +1,8 @@
+.modal-btn-close {
+  padding-right: 0;
+  margin-top: 10px;
+}
+
 .modal {
   background-color: rgba(15, 15, 15, 0.8);
 }

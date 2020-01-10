@@ -140,7 +140,7 @@ router.post("/quests", (req, res) => {
   const quest_maxPlayers = req.body.maxPlayers;
   const quest_completed = false;
   const quest_owner = req.body.owner;
-  const quest_players = [];
+  const quest_players = req.body.players;
   const quest_game = req.body.game;
 
   console.log("POST QUEST ROUTER");

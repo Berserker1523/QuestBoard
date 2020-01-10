@@ -1,50 +1,54 @@
 import React from "react";
 import "./Mision.css";
 import { Link } from "react-router-dom";
-import Popup from "reactjs-popup";
+//import Popup from "reactjs-popup";
+import { putAPI, deleteAPI } from "./API/BasicAPI";
 
 const Mision = props => {
   const deleteQuest = () => {
-    fetch("/quests/" + props.info._id, {
-      method: "DELETE"
-    });
+    deleteAPI("/quests/" + props.info._id).catch(err =>
+      console.error("No fue posible eliminar la misión: \n" + err)
+    );
   };
-  let add = false;
-  const updateQuest = () => {
-    if (add) {
-      props.info.players.push(props.user._id);
-    } else {
-      props.info.players.splice(
-        props.info.players.findIndex(id => id === props.user._id),
-        1
-      );
-    }
-    fetch("/quests/" + props.info._id, {
-      method: "PUT",
-      body: JSON.stringify({
-        name: props.info.name,
-        description: props.info.description,
-        startDate: props.info.startDate,
-        finishDate: props.info.finishDate,
-        minPlayers: props.info.minPlayers,
-        maxPlayers: props.info.maxPlayers,
-        completed: props.info.completed,
-        owner: props.info.owner,
-        players: props.info.players,
-        game: props.info.game
-      }),
-      headers: {
-        "Content-Type": "application/json"
-      }
+
+  const putQuest = err_msg => {
+    putAPI("/quests/" + props.info._id, {
+      name: props.info.name,
+      description: props.info.description,
+      startDate: props.info.startDate,
+      finishDate: props.info.finishDate,
+      minPlayers: props.info.minPlayers,
+      maxPlayers: props.info.maxPlayers,
+      completed: props.info.completed,
+      owner: props.info.owner,
+      players: props.info.players,
+      game: props.info.game
+    }).catch(err => console.error(err_msg + err));
+  };
+
+  const addPlayer = () => {
+    props.info.players.push({
+      _id: props.user._id,
+      name: props.user.name
     });
 
-    updateChat();
+    putQuest("No fue posible agregar el jugador a la misión: \n");
   };
-  var chatId = "";
+
+  const removePlayer = () => {
+    props.info.players.splice(
+      props.info.players.findIndex(player => player._id === props.user._id),
+      1
+    );
+
+    putQuest("No fue posible eliminar al jugador de la misión: \n");
+  };
+
+  /*var chatId = "";
   const updateChat = () => {
     const users = [];
 
-    props.info.players.map(player => {
+    props.info.players.forEach(player => {
       users.push({ user_id: player, user_name: "default" });
     });
 
@@ -74,10 +78,10 @@ const Mision = props => {
 
     if (chatId !== "" && !add) {
     }
-  };
+  };*/
 
   const setPlayersColor = () => {
-    const currentPlayers = props.info.players.length + 1;
+    const currentPlayers = props.info.players.length;
     if (currentPlayers < props.info.minPlayers) {
       return { color: "yellow" };
     } else if (
@@ -91,126 +95,125 @@ const Mision = props => {
   };
 
   const setButtons = () => {
+    const btn_read_more = (
+      <button
+        type="button"
+        data-toggle="modal"
+        data-target={"#modal" + props.info.name.replace(/ /g, "")}
+        className="btn-mas-info"
+      >
+        Leer más
+      </button>
+    );
+
+    const btn_join = (
+      <button className="btn-unirse" onClick={addPlayer}>
+        Unirse
+      </button>
+    );
+
+    const btn_delete = (
+      <button className="btn-eliminar" onClick={deleteQuest}>
+        Eliminar
+      </button>
+    );
+
+    const btn_discard = (
+      <button className="btn-rechazar" onClick={removePlayer}>
+        Rechazar
+      </button>
+    );
+
     if (props.user) {
-      if (props.info.owner === props.user._id) {
+      if (props.info.owner._id === props.user._id) {
         return (
           <div className="row botones">
-            <div className="col col-btn">
-              <button
-                type="button"
-                data-toggle="modal"
-                data-target={"#modal" + props.info.name.replace(/ /g, "")}
-                className="btn-mas-info"
-              >
-                Leer más
-              </button>
-            </div>
-            <div className="col col-btn">
-              <button className="btn-eliminar" onClick={deleteQuest}>
-                Eliminar
-              </button>
-            </div>
+            <div className="col col-btn">{btn_read_more}</div>
+            <div className="col col-btn">{btn_delete}</div>
           </div>
         );
       } else if (
-        props.info.players.findIndex(id => id === props.user._id) >= 0
+        props.info.players.findIndex(player => player._id === props.user._id) >=
+        0
       ) {
-        add = false;
         return (
           <div className="row botones">
-            <div className="col col-btn">
-              <button
-                type="button"
-                data-toggle="modal"
-                data-target={"#modal" + props.info.name.replace(/ /g, "")}
-                className="btn-mas-info"
-              >
-                Leer más
-              </button>
-            </div>
-            <div className="col col-btn">
-              <button className="btn-rechazar" onClick={updateQuest}>
-                Rechazar
-              </button>
-            </div>
+            <div className="col col-btn">{btn_read_more}</div>
+            <div className="col col-btn">{btn_discard}</div>
           </div>
         );
-      } else if (props.info.players.length + 1 !== props.info.maxPlayers) {
-        add = true;
+      } else if (props.info.players.length <= props.info.maxPlayers) {
         return (
           <div className="row botones">
-            <div className="col col-btn">
-              <button
-                type="button"
-                data-toggle="modal"
-                data-target={"#modal" + props.info.name.replace(/ /g, "")}
-                className="btn-mas-info"
-              >
-                Leer más
-              </button>
-            </div>
-            <div className="col col-btn">
-              <button className="btn-unirse" onClick={updateQuest}>
-                Unirse
-              </button>
-            </div>
+            <div className="col col-btn">{btn_read_more}</div>
+            <div className="col col-btn">{btn_join}</div>
           </div>
         );
       }
     } else {
-      return (
-        <div className="row botones">
-          <button
-            type="button"
-            data-toggle="modal"
-            data-target={"#modal" + props.info.name.replace(/ /g, "")}
-            className="btn-mas-info"
-          >
-            Leer más
-          </button>
-        </div>
-      );
+      return <div className="row botones">{btn_read_more}</div>;
     }
   };
 
   const setButtonsModal = () => {
     let botones;
+
+    const btn_close = (
+      <button
+        type="button"
+        className="btn btn-secondary miptobtn"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+    );
+
+    const btn_join = (
+      <button className="btn-unirse" onClick={addPlayer}>
+        Unirse
+      </button>
+    );
+
+    const btn_delete = (
+      <button
+        className="btn-eliminar"
+        data-dismiss="modal"
+        onClick={deleteQuest}
+      >
+        Eliminar
+      </button>
+    );
+
+    const btn_discard = (
+      <button
+        className="btn-rechazar"
+        data-dismiss="modal"
+        onClick={removePlayer}
+      >
+        Rechazar
+      </button>
+    );
+
     if (props.user) {
-      if (props.info.owner === props.user._id) {
-        botones = (
-          <button className="btn-eliminar" onClick={deleteQuest}>
-            Eliminar
-          </button>
-        );
+      if (props.info.owner._id === props.user._id) {
+        botones = btn_delete;
       } else if (
-        props.info.players.findIndex(id => id === props.user._id) >= 0
+        props.info.players.findIndex(player => player._id === props.user._id) >=
+        0
       ) {
-        add = false;
-        botones = (
-          <button className="btn-rechazar" onClick={updateQuest}>
-            Rechazar
-          </button>
-        );
-      } else if (props.info.players.length + 1 !== props.info.maxPlayers) {
-        add = true;
-        botones = (
-          <button className="btn-unirse" onClick={updateQuest}>
-            Unirse
-          </button>
-        );
+        botones = btn_discard;
+      } else if (props.info.players.length <= props.info.maxPlayers) {
+        botones = btn_join;
       }
     }
 
     return (
-      <div className="row">
-        {botones}
-        <button
-          type="button"
-          className="btn btn-secondary miptobtn"
-          data-dismiss="modal"
-        >
-          Close
-        </button>
+      <div>
+        <div className="row">{botones}</div>
+        <div className="row">
+          <div className="col-10"></div>
+          <div className="col modal-btn-close">{btn_close}</div>
+        </div>
       </div>
     );
   };
@@ -218,8 +221,8 @@ const Mision = props => {
   const renderPlayers = () => {
     return props.info.players.map((player, i) => {
       return (
-        <div className="col">
-          <p>{player}</p>
+        <div className="col" key={i}>
+          <p>{player.name}</p>
         </div>
       );
     });
@@ -230,8 +233,7 @@ const Mision = props => {
       <div className="container-fluid mision">
         <div className="nombre row">
           <div className="col-md-10">{props.info.name}</div>
-          {props.user &&
-          props.info.players.length + 1 === props.info.maxPlayers ? (
+          {props.user && props.info.players.length === props.info.maxPlayers ? (
             props.info.players.findIndex(id => id === props.user._id) >= 0 ? (
               <div className="col-md-2">
                 <Link to="chats">
@@ -273,7 +275,7 @@ const Mision = props => {
           <div className="col">
             <p>
               <span id="current-players" style={setPlayersColor()}>
-                {props.info.players.length + 1}
+                {props.info.players.length}
               </span>{" "}
               / {props.info.maxPlayers} Jugadores
             </p>
@@ -284,7 +286,7 @@ const Mision = props => {
         <div
           className="modal fade"
           id={"modal" + props.info.name.replace(/ /g, "")}
-          tabindex="-1"
+          tabIndex="-1"
           role="dialog"
           aria-labelledby={
             "ModalScrollable" + props.info.name.replace(/ /g, "")
@@ -343,16 +345,13 @@ const Mision = props => {
                     <div className="col">
                       <p>
                         <span id="current-players" style={setPlayersColor()}>
-                          {props.info.players.length + 1}
+                          {props.info.players.length}
                         </span>{" "}
                         / {props.info.maxPlayers} Jugadores
                       </p>
                     </div>
                   </div>
                   <div className="row disp-jugadores-modal">
-                    <div className="col">
-                      <p>{props.info.owner}</p>
-                    </div>
                     {renderPlayers()}
                   </div>
                 </div>
