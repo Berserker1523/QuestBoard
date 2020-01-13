@@ -3,7 +3,7 @@ var router = express.Router();
 const passport = require("passport");
 
 // Initiates basic Sign in With Slack flow
-const frontURL = "http://localhost:3000";
+const frontURL = "https://questboardapp.herokuapp.com";
 
 passport.authorize({
   connection: "google-oauth2"

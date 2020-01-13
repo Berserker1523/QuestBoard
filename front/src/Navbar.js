@@ -79,7 +79,7 @@ const Navbar = props => {
               <li className="nav-item">
                 <a
                   className="nav-link my-2 my-sm-0"
-                  href="http://localhost:3001/auth/login"
+                  href="https://questboardapp.herokuapp.com/auth/login"
                 >
                   Inicia sesión
                 </a>
@@ -123,7 +123,7 @@ const Navbar = props => {
                   </a>
                   <a
                     className="dropdown-item nav-link2"
-                    href="http://localhost:3001/auth/logout"
+                    href="https://questboardapp.herokuapp.com/auth/logout"
                   >
                     Cerrar sesión
                   </a>

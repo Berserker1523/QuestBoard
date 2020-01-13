@@ -10,7 +10,7 @@ const configureAuth0 = app => {
         domain: process.env.AUTH0_DOMAIN,
         clientID: process.env.AUTH0_CLIENT_ID,
         clientSecret: process.env.AUTH0_CLIENT_SECRET,
-        callbackURL: "http://localhost:3001/auth/callback"
+        callbackURL: "https://questboardapp.herokuapp.com/auth/callback"
       },
       (accessToken, refreshToken, extraParams, profile, done) => {
         //console.log("Successful Auth", accessToken, profile);
