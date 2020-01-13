@@ -70,11 +70,10 @@ const App = props => {
       console.log(location_url);
       let ws;
       if (location_url === "http://localhost:3000") {
-        console.log("llegueeeeeeeeeeeeee");
         ws = new WebSocket("http://localhost:3001".replace(/^http/, "ws"));
         setBackURL("http://localhost:3001");
       } else {
-        ws = new WebSocket(location_url.replace(/^https/, "ws"));
+        ws = new WebSocket(location_url.replace(/^http/, "ws"));
         setBackURL(location_url);
       }
 
