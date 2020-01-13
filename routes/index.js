@@ -15,6 +15,7 @@ router.get("/", function(req, res /*, next*/) {
   ------------------------------- USERS ----------------------------------------
 */
 
+//Podrian comentar un poco mas los métodos para indicar que hacen
 router.get("/users", (req, res) => {
   myMongoLib
     .getUsers()
