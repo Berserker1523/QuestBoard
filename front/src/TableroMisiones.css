@@ -4,4 +4,14 @@
 
 .error {
   color: red;
+  margin-left: 2%;
+}
+
+.btn-crear-mision {
+  background-color: #facb00;
+  border: none;
+}
+
+.agregar-mision {
+  text-align: right;
 }

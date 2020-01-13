@@ -99,7 +99,7 @@ class Inicio extends React.Component {
                 className="quest-name"
                 value={this.state.nombre}
                 onChange={this.handleInputChange}
-                maxLength="20"
+                maxLength="28"
               />
             </div>
           </div>
@@ -127,6 +127,7 @@ class Inicio extends React.Component {
                 value={this.state.descripcion}
                 onChange={this.handleInputChange}
                 name="description"
+                className="form-textarea"
               />
             </div>
           </div>

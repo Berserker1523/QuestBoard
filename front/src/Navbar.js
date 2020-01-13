@@ -11,7 +11,7 @@ const Navbar = props => {
           to={props.currentUser === null ? "/" : "/tablero"}
         >
           <img
-            src="../QBLogo.png"
+            src="../questBoardLogo.jpeg"
             alt="Quest Board logo"
             className="navbar-logo"
           />
@@ -36,16 +36,20 @@ const Navbar = props => {
           <ul className="navbar-nav">
             {props.currentUser !== null ? (
               <li className="nav-item needPadding">
-                <Link
-                  to={"/mis-misiones"}
-                  className={
-                    props.paginaActual !== "Mis misiones"
-                      ? "nav-link-disabled"
-                      : "nav-link active"
-                  }
-                >
-                  Mis misiones
-                </Link>
+                {props.location.pathname !== "/mis-misiones" ? (
+                  <Link to={"/mis-misiones"} className="nav-link2">
+                    Mis misiones
+                  </Link>
+                ) : (
+                  <a
+                    className="nav-link-disabled"
+                    href="/"
+                    tabIndex="-1"
+                    aria-disabled="true"
+                  >
+                    Mis misiones
+                  </a>
+                )}
               </li>
             ) : (
               ""
@@ -53,16 +57,20 @@ const Navbar = props => {
 
             {props.currentUser !== null ? (
               <li className="nav-item needPadding">
-                <Link
-                  to={"/juegos"}
-                  className={
-                    props.paginaActual !== "Juegos"
-                      ? "nav-link-disabled"
-                      : "nav-link active"
-                  }
-                >
-                  Juegos
-                </Link>
+                {props.location.pathname !== "/juegos" ? (
+                  <Link to={"/juegos"} className="nav-link2">
+                    Juegos
+                  </Link>
+                ) : (
+                  <a
+                    className="nav-link-disabled"
+                    href="/"
+                    tabIndex="-1"
+                    aria-disabled="true"
+                  >
+                    Juegos
+                  </a>
+                )}
               </li>
             ) : (
               ""
@@ -95,7 +103,7 @@ const Navbar = props => {
                   className="dropdown-menu"
                   aria-labelledby="navbarDropdownMenuLink"
                 >
-                  <Link
+                  {/*<Link
                     to={"/perfil"}
                     className={
                       props.paginaActual !== "Perfil"
@@ -104,9 +112,17 @@ const Navbar = props => {
                     }
                   >
                     Perfil
-                  </Link>
+                  </Link>*/}
                   <a
-                    className="dropdown-item nav-link-disabled"
+                    className="dropdown-item disabled"
+                    href="/"
+                    tabIndex="-1"
+                    aria-disabled="true"
+                  >
+                    Perfil
+                  </a>
+                  <a
+                    className="dropdown-item nav-link2"
                     href="http://localhost:3001/auth/logout"
                   >
                     Cerrar sesión

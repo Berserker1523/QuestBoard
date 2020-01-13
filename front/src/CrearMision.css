@@ -1,6 +1,15 @@
 .error {
   color: red;
 }
+.form-textarea {
+  width: 80%;
+  height: 80%;
+  text-align: left;
+}
+
+.quest-name {
+  width: 20%;
+}
 
 .form-row {
   margin-bottom: 5%;

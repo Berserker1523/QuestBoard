@@ -1,93 +1,199 @@
-import React from "react";
-import "./Chat.css";
+import React, { useState, useEffect, useRef } from "react";
+import "./Mision.css";
+import { putAPI } from "./API/BasicAPI";
 
-class Chat extends React.Component{
+const Chat = props => {
+  const [message, setMessage] = useState("");
+  let messagesContainer = useRef(null);
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      texto:"",
-      fechaMsg: new Date(),
-    };
+  useEffect(() => {
+    const element = messagesContainer.current;
+    //76 is a message height,
+    //when a new message is rendered scroll top is not at the most bottom
+    //even if previously it was
+    const shouldScroll =
+      element.scrollTop + element.clientHeight + 76 === element.scrollHeight;
+    if (shouldScroll) {
+      element.scrollTop = element.scrollHeight;
+    }
+  }, [props.chat.messages.length]);
 
-    this.sendMessage = this.sendMessage.bind(this);
-    this.handleInputChange = this.handleInputChange.bind(this);
-  }
-
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
-  }
-
-  sendMessage() {
-    this.props.chat.messages.push(
-          {
-            text: this.state.texto,
-            date: this.state.fechaMsg,
-            owner: this.props.currentUser.name
-          }
-    );
-
-    fetch("/chats/"+this.props.chat._id, {
-      method: "PUT", // or 'PUT'
-      body: JSON.stringify({
-        name: this.props.chat.name,
-        quest: this.props.chat.quest,
-        users: this.props.chat.users,
-        messages: this.props.chat.messages,
-      }),
-      headers: {
-        "Content-Type": "application/json"
+  const putChatMessage = () => {
+    putAPI(`/chats/${props.chat._id}/new_message`, {
+      message: {
+        _id: props.user._id,
+        name: props.user.name,
+        date: new Date(),
+        message: message
       }
     })
-      .then(res => res.json())
-      .catch(error => console.error("Error:", error))
-      .then(response => console.log("Success:", response));
-  }
+      .then(() => setMessage(""))
+      .catch(err => console.error("No fue posible enviar el mensaje: " + err));
+  };
 
-  renderMsgs() {
-    return this.props.chat.messages.map((msg,i) => {
+  const handleMessageChange = e => {
+    setMessage(e.target.value);
+  };
+
+  const onKeyPress = e => {
+    if (e.key === "Enter") {
+      putChatMessage();
+    }
+  };
+
+  const questNameWithoutSpaces = props.chat.quest_name.replace(/ /g, "");
+
+  const setMessageNameColor = name => {
+    if (name === props.user.name) {
+      return "chat-username-user";
+    } else if (
+      props.quest.players.findIndex(player => player.name === name) < 0
+    ) {
+      return "chat-username-dismissed";
+    } else {
+      return "chat-username";
+    }
+  };
+
+  const setDateFormat = someDate => {
+    const today = new Date();
+    const isToday =
+      someDate.getDate() === today.getDate() &&
+      someDate.getMonth() === today.getMonth() &&
+      someDate.getFullYear() === today.getFullYear();
+    if (isToday) {
       return (
-        <div key={i} className={msg.owner === this.props.currentUser.name ? "col-md-12 right msg" : "col-md-12 left msg"}>
-          <div className={msg.owner === this.props.currentUser.name ? "col-md-12 right emisor" : "col-md-12 left emisor"}>
-            <p>{msg.owner}</p>
-          </div>
-          <div className={msg.owner === this.props.currentUser.name ? "col-md-12 right" : "col-md-12 left"}>
-            <p>{msg.text}</p>
-          </div>
-        </div>)});
-  }
+        ("0" + someDate.getHours()).slice(-2) +
+        ":" +
+        ("0" + someDate.getMinutes()).slice(-2)
+      );
+    } else {
+      return (
+        ("0" + someDate.getDate()).slice(-2) +
+        "/" +
+        ("0" + (someDate.getMonth() + 1)).slice(-2) +
+        "/" +
+        someDate.getFullYear() +
+        " - " +
+        ("0" + someDate.getHours()).slice(-2) +
+        ":" +
+        ("0" + someDate.getMinutes()).slice(-2)
+      );
+    }
+  };
 
-  render() {
-    return (
-    <div className="Chat">
-    {this.props.chat !== null?
-      <div className="container-fluid chat">
-        <div className="row nombre-chat">{this.props.chat.name}</div>
-        <div className="row mostrar-mensajes">
-          <div className="col-md-12">
-            {this.renderMsgs()}
+  const setChatMessages = () => {
+    return props.chat.messages.map((msg, i) => (
+      <div key={i} className="chat-msg">
+        <div className="row">
+          <div className="col">
+            <p>
+              <span className={setMessageNameColor(msg.name)}>
+                {msg.name + " "}
+              </span>
+
+              <span className="msg-date">
+                {setDateFormat(new Date(msg.date))}
+              </span>
+            </p>
           </div>
         </div>
-        <div className="row enviar-mensaje">
-          <div className="col-md-10">
-            <textarea name="texto" cols="80" rows="1" placeholder="Escribe tu mensaje..." onChange={this.handleInputChange}></textarea>
-          </div>
-          <div className="col-md-2">
-            <button className="btn-enviar" onClick={this.sendMessage}>Enviar</button>
+        <div className="row">
+          <div className="col">
+            <p className="chat-text">{msg.message}</p>
           </div>
         </div>
       </div>
-      : null }
+    ));
+  };
+
+  const chat = (
+    <div
+      className="modal fade"
+      id={"modal" + questNameWithoutSpaces + "chat"}
+      tabIndex="-1"
+      role="dialog"
+      aria-labelledby={"ModalScrollable" + questNameWithoutSpaces + "chat"}
+      aria-hidden="true"
+    >
+      <div className="modal-dialog modal-dialog-scrollable" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col">
+                  <h5
+                    className="modal-title"
+                    id={"ModalScrollable" + questNameWithoutSpaces + "chat"}
+                  >
+                    {props.chat.quest_name}
+                  </h5>
+                </div>
+              </div>
+            </div>
+            <button
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body" ref={messagesContainer}>
+            <div className="container-fluid">{setChatMessages()}</div>
+          </div>
+          <div className="modal-footer">
+            <div className="container-fluid">
+              <div className="row">
+                <div className="col">
+                  <input
+                    className="chat-new-message"
+                    name="message"
+                    type="text"
+                    value={message}
+                    onChange={handleMessageChange}
+                    placeholder="Escribe algo..."
+                    onKeyPress={onKeyPress}
+                  />
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-10"></div>
+                <div className="col modal-btn-close">
+                  <button
+                    type="button"
+                    className="btn btn-secondary miptobtn"
+                    data-dismiss="modal"
+                  >
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
-  }
 
+  return (
+    <div className="col-2">
+      {chat}
+      <button
+        className="btn-chat"
+        type="button"
+        data-toggle="modal"
+        data-target={"#modal" + questNameWithoutSpaces + "chat"}
+        onClick={() =>
+          setTimeout(() => {
+            messagesContainer.current.scrollTop =
+              messagesContainer.current.scrollHeight;
+          }, 300)
+        }
+      ></button>
+    </div>
+  );
 };
 
 export default Chat;

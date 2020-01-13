@@ -347,6 +347,22 @@ const MyMongoLib = function() {
         .catch(reject);
     });
 
+  MyMongoLib.getChatByQuestId = quest_id =>
+    new Promise((resolve, reject) => {
+      console.log("Get Chats by quest_id - Connected correctly to server");
+
+      const db = client.db(dbName);
+      const collection = db.collection("Chats");
+
+      return collection
+        .find({ quest_id: quest_id })
+        .toArray()
+        .then(data => {
+          resolve(data);
+        })
+        .catch(reject);
+    });
+
   MyMongoLib.getChat = chat_id =>
     new Promise((resolve, reject) => {
       console.log("Get Chat - Connected correctly to server");
@@ -436,6 +452,24 @@ const MyMongoLib = function() {
 
       return collection
         .find({ user_id: user_id })
+        .toArray()
+        .then(data => {
+          resolve(data);
+        })
+        .catch(reject);
+    });
+
+  MyMongoLib.getUserStats = (user_id, game_id) =>
+    new Promise((resolve, reject) => {
+      console.log("Get User Stats - Connected correctly to server");
+      console.log(user_id);
+      console.log(game_id);
+
+      const db = client.db(dbName);
+      const collection = db.collection("Users_Games");
+
+      return collection
+        .find({ user_id: user_id, game_id: ObjectId(game_id) })
         .toArray()
         .then(data => {
           resolve(data);

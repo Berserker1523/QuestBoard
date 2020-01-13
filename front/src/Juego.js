@@ -12,9 +12,18 @@ const Juego = props => {
       props.currentUser.ownGames.findIndex(game => game === props.info._id) >= 0
     ) {
       return null;
+    } else if (showInput) {
+      return (
+        <button className="btn-unirse" onClick={() => joinPlayer()}>
+          Obtener datos
+        </button>
+      );
     } else {
       return (
-        <button className="btn-unirse" onClick={() => setShowInput(!showInput)}>
+        <button
+          className="btn-mas-info"
+          onClick={() => setShowInput(!showInput)}
+        >
           Unirse al juego
         </button>
       );
@@ -46,7 +55,7 @@ const Juego = props => {
       }
     }).then(() => {
       fetch(
-        `/user_game/lol/user/${props.currentUser}/summoner/${summonerName}`,
+        `/user_game/lol/user/${props.currentUser._id}/summoner/${summonerName}`,
         {
           method: "POST"
         }
@@ -60,12 +69,6 @@ const Juego = props => {
     });
   };
 
-  const onKeyPress = e => {
-    if (e.key === "Enter") {
-      joinPlayer();
-    }
-  };
-
   return (
     <div className="Mision">
       <div className="container-fluid mision">
@@ -75,25 +78,37 @@ const Juego = props => {
             <img src={props.info.platform} alt="platform logo"></img>
           </div>
         </div>
-        <div className="row descripcion">
+        <div className="row juego-descripcion">
           <p>{props.info.description}</p>
         </div>
-        {showInput ? (
-          <label htmlFor="">
-            Ingrese su summoner name
-            <br />
-            <input
-              type="text"
-              name="name"
-              value={summonerName}
-              onChange={handleSummonerInput}
-              size="35"
-              onKeyPress={onKeyPress}
-            />
-          </label>
+
+        {showInput &&
+        !(
+          props.currentUser.ownGames.findIndex(
+            game => game === props.info._id
+          ) >= 0
+        ) ? (
+          <div className="row input-juego">
+            <div className="col">
+              <label htmlFor="" className="label-juego">
+                Ingrese su nombre de invocador
+                <br />
+                <input
+                  type="text"
+                  name="name"
+                  value={summonerName}
+                  onChange={handleSummonerInput}
+                  size="35"
+                />
+              </label>
+            </div>
+          </div>
         ) : (
-          <div className="row botones">{setButtons()}</div>
+          ""
         )}
+        <div className="row botones">
+          <div className="col juego-btn">{setButtons()}</div>
+        </div>
       </div>
     </div>
   );

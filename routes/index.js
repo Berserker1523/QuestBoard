@@ -4,6 +4,8 @@ const router = express.Router();
 const MyMongoLib = require("../MyMongoLib");
 const myMongoLib = MyMongoLib();
 
+const lolChampionInfo = require("../public/champion.json");
+
 /* GET home page. */
 router.get("/", function(req, res /*, next*/) {
   res.render("index", { title: "Express" });
@@ -25,8 +27,6 @@ router.get("/users/:user_mail", (req, res) => {
   myMongoLib
     .getUser(user_mail)
     .then(docs => {
-      console.log(docs);
-      console.log("docs.length: " + docs.length);
       docs.length > 0 ? res.send(docs[0]) : res.status(404).send("Not found.");
     })
     .catch(err => res.send({ err: true, msg: err }));
@@ -134,7 +134,7 @@ router.get("/users/:user_mail/quests", (req, res) => {
 router.post("/quests", (req, res) => {
   const quest_name = req.body.name;
   const quest_description = req.body.description;
-  const quest_startDate = new Date();
+  const quest_startDate = new Date().toString();
   const quest_finishDate = req.body.finishDate;
   const quest_minPlayers = req.body.minPlayers;
   const quest_maxPlayers = req.body.maxPlayers;
@@ -162,7 +162,48 @@ router.post("/quests", (req, res) => {
 
   myMongoLib
     .postQuest(new_quest)
-    .then(docs => res.send(docs.ops[0]))
+    .then(docs => {
+      if (quest_minPlayers == 1) {
+        let messages = [];
+        let promises = quest_players.map(player => {
+          return new Promise((resolve, reject) => {
+            myMongoLib
+              .getUserStats(player._id, quest_game._id)
+              .then(docs => {
+                messages.push({
+                  _id: player._id,
+                  name: player.name,
+                  date: new Date(),
+                  message: messageBySummonerStats(docs[0])
+                });
+                resolve();
+              })
+              .catch(err => {
+                console.error(
+                  "No fue posible obtener los stats del jugador: " +
+                    player._id +
+                    " " +
+                    err
+                );
+                reject();
+              });
+          });
+        });
+
+        Promise.all(promises).then(() => {
+          const new_chat = {
+            quest_id: docs.ops[0]._id.toString(),
+            quest_name: quest_name,
+            players: quest_players,
+            messages: messages
+          };
+
+          myMongoLib.postChat(new_chat);
+        });
+      }
+
+      res.send(docs.ops[0]);
+    })
     .catch(err => res.send({ err: true, msg: err }));
 });
 
@@ -180,7 +221,7 @@ router.put("/quests/:quest_id", (req, res) => {
   const quest_players = req.body.players;
   const quest_game = req.body.game;
 
-  const updated_quest = {
+  let updated_quest = {
     $set: {
       name: quest_name,
       description: quest_description,
@@ -194,6 +235,112 @@ router.put("/quests/:quest_id", (req, res) => {
       game: quest_game
     }
   };
+
+  myMongoLib.getQuest(quest_id).then(quest => {
+    const previousQuest = quest[0];
+
+    myMongoLib.getChatByQuestId(quest_id).then(chat => {
+      if (chat.length === 0 && quest_players.length == quest_minPlayers) {
+        let messages = [];
+        let promises = quest_players.map(player => {
+          return new Promise((resolve, reject) => {
+            myMongoLib
+              .getUserStats(player._id, quest_game._id)
+              .then(docs => {
+                messages.push({
+                  _id: player._id,
+                  name: player.name,
+                  date: new Date(),
+                  message: messageBySummonerStats(docs[0])
+                });
+                resolve();
+              })
+              .catch(err => {
+                console.error(
+                  "No fue posible obtener los stats del jugador: " +
+                    player._id +
+                    " " +
+                    err
+                );
+                reject();
+              });
+          });
+        });
+
+        Promise.all(promises).then(() => {
+          const new_chat = {
+            quest_id: quest_id,
+            quest_name: quest_name,
+            players: quest_players,
+            messages: messages
+          };
+
+          myMongoLib.postChat(new_chat);
+        });
+      } else if (
+        previousQuest.players.length < quest_players.length &&
+        chat.length > 0
+      ) {
+        const obtainedChat = chat[0];
+
+        const lastPlayer = quest_players[quest_players.length - 1];
+        console.log(lastPlayer);
+        const fecthPlayerStat = new Promise((resolve, reject) => {
+          myMongoLib
+            .getUserStats(lastPlayer._id, quest_game._id)
+            .then(docs => {
+              obtainedChat.messages.push({
+                _id: lastPlayer._id,
+                name: lastPlayer.name,
+                date: new Date(),
+                message: messageBySummonerStats(docs[0])
+              });
+              resolve();
+            })
+            .catch(err => {
+              console.error(
+                "No fue posible obtener los stats del jugador: " +
+                  lastPlayer._id +
+                  " " +
+                  err
+              );
+              reject();
+            });
+        });
+
+        fecthPlayerStat.then(() => {
+          const updated_chat = {
+            $set: {
+              messages: obtainedChat.messages
+            }
+          };
+          myMongoLib.putChat(obtainedChat._id, updated_chat);
+        });
+      } else if (
+        previousQuest.players.length > quest_players.length &&
+        chat.length > 0
+      ) {
+        const obtainedChat = chat[0];
+
+        const lastPlayer =
+          previousQuest.players[previousQuest.players.length - 1];
+
+        obtainedChat.messages.push({
+          _id: lastPlayer._id,
+          name: lastPlayer.name,
+          date: new Date(),
+          message: "El usuario se ha ido de la misión"
+        });
+
+        const updated_chat = {
+          $set: {
+            messages: obtainedChat.messages
+          }
+        };
+        myMongoLib.putChat(obtainedChat._id, updated_chat);
+      }
+    });
+  });
 
   myMongoLib
     .putQuest(quest_id, updated_quest)
@@ -362,6 +509,27 @@ router.put("/chats/:chat_id", (req, res) => {
     .catch(err => res.send({ err: true, msg: err }));
 });
 
+router.put("/chats/:chat_id/new_message", (req, res) => {
+  const chat_id = req.params.chat_id;
+  const new_message = req.body.message;
+
+  myMongoLib
+    .getChat(chat_id)
+    .then(docs => {
+      const received_chat = docs[0];
+      received_chat.messages.push(new_message);
+      const updated_chat = {
+        $set: {
+          messages: received_chat.messages
+        }
+      };
+      myMongoLib
+        .putChat(chat_id, updated_chat)
+        .then(docs => res.send({ updated: docs.modifiedCount }));
+    })
+    .catch(err => res.send({ err: true, msg: err }));
+});
+
 router.delete("/chats/:chat_id", (req, res) => {
   const chat_id = req.params.chat_id;
   myMongoLib
@@ -375,6 +543,26 @@ router.delete("/chats/:chat_id", (req, res) => {
 */
 const fetch = require("node-fetch");
 
+function messageBySummonerStats(lolInfo) {
+  const mains_ids = [];
+
+  for (let i = 0; i < 3; i++) {
+    mains_ids.push(lolInfo.championStats[i].championId);
+  }
+
+  const mains_names = mains_ids.map(id => {
+    let champ_name = "";
+
+    Object.values(lolChampionInfo.data).forEach(champ_info =>
+      champ_info.key == id ? (champ_name = champ_info.name) : ""
+    );
+
+    return champ_name;
+  });
+
+  return `Me encantaría jugar con ustedes! Mi summoner name es ${lolInfo.summonerInfo.name}, y mis main son ${mains_names[0]}, ${mains_names[1]} y ${mains_names[2]}`;
+}
+
 const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
   fetch(
     `https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-name/${summoner_name}`,
@@ -383,7 +571,7 @@ const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
       headers: {
         Origin: "https://developer.riotgames.com",
         "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-        "X-Riot-Token": "RGAPI-1af4ec8f-4453-4c1a-84fd-da53cce5c9ce"
+        "X-Riot-Token": process.env.RIOT_GAMES_API_KEY
       }
     }
   )
@@ -404,7 +592,7 @@ const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
               Origin: "https://developer.riotgames.com",
               "Accept-Charset":
                 "application/x-www-form-urlencoded; charset=UTF-8",
-              "X-Riot-Token": "RGAPI-1af4ec8f-4453-4c1a-84fd-da53cce5c9ce"
+              "X-Riot-Token": process.env.RIOT_GAMES_API_KEY
             }
           }
         )
@@ -425,7 +613,7 @@ const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
               Origin: "https://developer.riotgames.com",
               "Accept-Charset":
                 "application/x-www-form-urlencoded; charset=UTF-8",
-              "X-Riot-Token": "RGAPI-1af4ec8f-4453-4c1a-84fd-da53cce5c9ce"
+              "X-Riot-Token": process.env.RIOT_GAMES_API_KEY
             }
           }
         )
@@ -446,7 +634,7 @@ const fetch_lol_data = (user_game_info, summoner_name, cbk) => {
               Origin: "https://developer.riotgames.com",
               "Accept-Charset":
                 "application/x-www-form-urlencoded; charset=UTF-8",
-              "X-Riot-Token": "RGAPI-1af4ec8f-4453-4c1a-84fd-da53cce5c9ce"
+              "X-Riot-Token": process.env.RIOT_GAMES_API_KEY
             }
           }
         )

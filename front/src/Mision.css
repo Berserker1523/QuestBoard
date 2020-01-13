@@ -1,6 +1,77 @@
+.input-juego {
+  margin-left: 3%;
+  margin-top: 3%;
+}
+
+.label-juego {
+  font-size: 1.2rem;
+}
+
+.juego-btn {
+  padding: 0;
+}
+
+.chat-msg {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 2%;
+  margin-bottom: 2%;
+}
+
+.msg-date {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+}
+.btn-terminar {
+  background-color: #facb00;
+  border: none;
+}
+
+.terminar {
+  margin-top: 1%;
+  margin-left: 75%;
+}
+
+.chat-new-message {
+  border-radius: 5px;
+  border: 2px solid rgba(15, 15, 15, 1);
+  width: 100%;
+}
+
+.col-jugadores {
+  padding-top: 7px;
+}
+
+.chat-text {
+  font-family: "Oswald", sans-serif;
+}
+
+.chat-username-user {
+  font-family: "Patua One", cursive;
+  color: #facb00;
+}
+
+.chat-username-dismissed {
+  font-family: "Patua One", cursive;
+  color: #ff6344;
+}
+
+.chat-username {
+  font-family: "Patua One", cursive;
+}
+
+.btn-chat {
+  background: url(./chat.png);
+  height: 28px;
+  width: 28px;
+}
+
 .modal-btn-close {
   padding-right: 0;
   margin-top: 10px;
+}
+
+.mision-row-2 {
+  margin-top: 1%;
 }
 
 .modal {
@@ -31,6 +102,7 @@
 .modal-description {
   padding-left: 5%;
   padding-bottom: 16px;
+  overflow-wrap: break-word;
 }
 
 .row-modal-body {
@@ -83,7 +155,7 @@
   text-align: left;
 }
 .game {
-  margin-top: 10px;
+  margin-top: 1%;
   margin-bottom: 10px;
 }
 
@@ -132,6 +204,17 @@
   padding-left: 5%;
   padding-right: 5%;
   border-bottom: 1px solid white;
+}
+
+.juego-descripcion {
+  margin-top: 2%;
+  font-family: "Oswald", sans-serif;
+  font-size: 16px;
+  margin-bottom: 2%;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 10%;
+  margin-right: 5%;
 }
 
 .descripcion,

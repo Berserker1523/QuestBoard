@@ -5,14 +5,15 @@ const session = require("express-session");
 const configureAuth0 = app => {
   // Configure the Auth0 Strategy
   passport.use(
-    new Auth0Strategy({
-	   		domain:       process.env.AUTH0_DOMAIN,
-	   		clientID:     process.env.AUTH0_CLIENT_ID,
-	   		clientSecret: process.env.AUTH0_CLIENT_SECRET,
-	   		callbackURL:  "http://localhost:3001/auth/callback"
-  	  },
+    new Auth0Strategy(
+      {
+        domain: process.env.AUTH0_DOMAIN,
+        clientID: process.env.AUTH0_CLIENT_ID,
+        clientSecret: process.env.AUTH0_CLIENT_SECRET,
+        callbackURL: "http://localhost:3001/auth/callback"
+      },
       (accessToken, refreshToken, extraParams, profile, done) => {
-        console.log("Successful Auth", accessToken, profile);
+        //console.log("Successful Auth", accessToken, profile);
         return done(null, profile);
       }
     )

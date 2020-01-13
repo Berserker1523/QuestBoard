@@ -8,7 +8,7 @@ import TableroJuegos from "./TableroJuegos.js";
 import Navbar from "./Navbar.js";
 import MisMisiones from "./MisMisiones.js";
 import CrearMision from "./CrearMision.js";
-import Chats from "./Chats.js";
+//import Chats from "./Chats.js";
 
 import { getAPI, postAPI } from "./API/BasicAPI";
 
@@ -22,7 +22,7 @@ const App = props => {
   const [gamesError, setGamesError] = useState("");
 
   const [chats, setChats] = useState([]);
-  const [currentChat, setCurrentChat] = useState(null);
+  //const [chatsError, setChatsError] = useState([]);
 
   const getQuests = () => {
     getAPI("/quests")
@@ -47,6 +47,20 @@ const App = props => {
         setGamesError(
           "No fue posible obtener información de los juegos disponibles, por favor inténtelo de nuevo"
         )
+      );
+  };
+
+  const getChats = () => {
+    getAPI("/chats")
+      .then(data => {
+        setChats(data);
+        //setChatsError(null);
+      })
+      .catch(err =>
+        /*setChatsError(
+          "No fue posible obtener información de los chats, por favor inténtelo de nuevo"
+        )*/
+        console.error(err)
       );
   };
 
@@ -100,9 +114,15 @@ const App = props => {
                     avatar: null,
                     country: null
                   }).then(
-                    getAPI(`/users/${loggedUser.displayName}`).then(data => {
-                      setUser(data);
-                    })
+                    setTimeout(
+                      () =>
+                        getAPI(`/users/${loggedUser.displayName}`).then(
+                          data => {
+                            setUser(data);
+                          }
+                        ),
+                      1000
+                    )
                   );
                 }
               });
@@ -111,79 +131,112 @@ const App = props => {
         .then(() => {
           getQuests();
           getGames();
+          getChats();
         });
     }
   }, []);
 
-  const getCurrentChat = currentChatId => {
+  /*const getCurrentChat = currentChatId => {
     fetch("/chats/" + currentChatId)
       .then(res => res.json())
       .then(data => {
         setCurrentChat(data);
       })
       .catch(err => {});
-  };
+  };*/
+
+  const renderPage = (propiedades, component) => (
+    <div className="container-fluid app-container">
+      <div className="row">
+        <div className="col">
+          <Navbar {...propiedades} currentUser={user} />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">{component}</div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="App">
       <HashRouter>
-        <Navbar currentUser={user} />
         {user !== null ? <Redirect push to="/tablero" /> : ""}
         <Switch>
           <Route
             path="/"
-            render={propiedades => <Inicio {...propiedades} quests={quests} />}
+            render={propiedades =>
+              renderPage(propiedades, <Inicio {...propiedades} />)
+            }
             exact
           />
           <Route
             path="/tablero"
-            render={propiedades => (
-              <TableroMisiones
-                {...propiedades}
-                user={user}
-                getQuests={getQuests}
-                quests={quests}
-                questsError={questsError}
-                games={games}
-                gamesError={gamesError}
-              />
-            )}
+            render={propiedades =>
+              renderPage(
+                propiedades,
+                <TableroMisiones
+                  {...propiedades}
+                  user={user}
+                  getQuests={getQuests}
+                  quests={quests}
+                  questsError={questsError}
+                  games={games}
+                  gamesError={gamesError}
+                  chats={chats}
+                />
+              )
+            }
             exact
           />
           <Route
             path="/juegos"
-            render={propiedades => (
-              <TableroJuegos
-                {...propiedades}
-                currentUser={user}
-                GetGames={getGames}
-                games={games}
-                gamesError={gamesError}
-                setUser={setUser}
-              />
-            )}
+            render={propiedades =>
+              renderPage(
+                propiedades,
+                <TableroJuegos
+                  {...propiedades}
+                  currentUser={user}
+                  GetGames={getGames}
+                  games={games}
+                  gamesError={gamesError}
+                  setUser={setUser}
+                />
+              )
+            }
             exact
           />
           <Route
             path="/mis-misiones"
-            render={propiedades => (
-              <MisMisiones {...propiedades} quests={quests} user={user} />
-            )}
+            render={propiedades =>
+              renderPage(
+                propiedades,
+                <MisMisiones
+                  {...propiedades}
+                  quests={quests}
+                  user={user}
+                  chats={chats}
+                />
+              )
+            }
             exact
           />
           <Route
             path="/crear-mision"
-            render={propiedades => (
-              <CrearMision
-                {...propiedades}
-                games={games}
-                currentUser={user}
-                setQuestsError={setQuestsError}
-              />
-            )}
+            render={propiedades =>
+              renderPage(
+                propiedades,
+                <CrearMision
+                  {...propiedades}
+                  games={games}
+                  currentUser={user}
+                  setQuestsError={setQuestsError}
+                />
+              )
+            }
             exact
           />
-          <Route
+          {/*<Route
             path="/chats"
             render={propiedades => (
               <Chats
@@ -195,7 +248,7 @@ const App = props => {
               />
             )}
             exact
-          />
+          />*/}
         </Switch>
       </HashRouter>
     </div>

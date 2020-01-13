@@ -1,10 +1,53 @@
-import React from "react";
+import React, { useEffect } from "react";
+import Chat from "./Chat.js";
 import "./Mision.css";
-import { Link } from "react-router-dom";
-//import Popup from "reactjs-popup";
 import { putAPI, deleteAPI } from "./API/BasicAPI";
 
 const Mision = props => {
+  let dateElement = React.createRef();
+  let dateElementModal = React.createRef();
+
+  useEffect(() => {
+    const calculateTimeLeft = setInterval(() => {
+      // Get today's date and time
+      let now = new Date().getTime();
+      // Find the distance between now and the count down date
+      const questDate = new Date(props.info.finishDate);
+      let distance = questDate.getTime() - now;
+      if (distance < 0 || props.info.completed === true) {
+        if (dateElement.current) {
+          clearInterval(calculateTimeLeft);
+          dateElement.current.innerHTML = "Terminada";
+          dateElementModal.current.innerHTML = "Terminada";
+          setCompleted();
+        }
+      } else {
+        // Time calculations for days, hours, minutes and seconds
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        let timeLeft = days > 0 ? days + "d " : "";
+        timeLeft = hours > 0 || days > 0 ? timeLeft + hours + "h " : timeLeft;
+        timeLeft =
+          minutes > 0 || hours > 0 || days > 0
+            ? timeLeft + minutes + "m "
+            : timeLeft;
+        timeLeft =
+          seconds > 0 || minutes > 0 || hours > 0 || days > 0
+            ? timeLeft + seconds + "s "
+            : timeLeft;
+        if (dateElement.current) {
+          dateElement.current.innerHTML = "Vence en: " + timeLeft;
+          dateElementModal.current.innerHTML = "Vence en: " + timeLeft;
+        }
+      }
+    }, 1000);
+  }, [dateElement, dateElementModal, props.info.completed]);
+
   const deleteQuest = () => {
     deleteAPI("/quests/" + props.info._id).catch(err =>
       console.error("No fue posible eliminar la misión: \n" + err)
@@ -26,6 +69,13 @@ const Mision = props => {
     }).catch(err => console.error(err_msg + err));
   };
 
+  const setCompleted = () => {
+    if (!props.info.completed) {
+      props.info.completed = true;
+      putQuest("No fue posible marcar la misión como completada: \n");
+    }
+  };
+
   const addPlayer = () => {
     props.info.players.push({
       _id: props.user._id,
@@ -33,6 +83,16 @@ const Mision = props => {
     });
 
     putQuest("No fue posible agregar el jugador a la misión: \n");
+
+    console.log(props.info.players.length);
+    console.log(props.info.maxPlayers);
+
+    console.log(props.info.players.length === props.info.maxPlayers);
+    /* eslint-disable */
+    if (props.info.players.length == props.info.maxPlayers) {
+      setCompleted();
+    }
+    /* eslint-enable */
   };
 
   const removePlayer = () => {
@@ -43,42 +103,6 @@ const Mision = props => {
 
     putQuest("No fue posible eliminar al jugador de la misión: \n");
   };
-
-  /*var chatId = "";
-  const updateChat = () => {
-    const users = [];
-
-    props.info.players.forEach(player => {
-      users.push({ user_id: player, user_name: "default" });
-    });
-
-    users.push({ user_id: props.info.owner, user_name: "default" });
-
-    if (props.info.players.length + 1 === props.info.maxPlayers) {
-      console.log("chat creation");
-      fetch("/chats", {
-        method: "POST", // or 'PUT'
-        body: JSON.stringify({
-          name: props.info.name,
-          quest: props.info._id,
-          users: users,
-          messages: []
-        }),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-        .then(res => res.json())
-        .catch(error => console.error("Error:", error))
-        .then(response => {
-          console.log("Success:", response);
-          chatId = "something";
-        });
-    }
-
-    if (chatId !== "" && !add) {
-    }
-  };*/
 
   const setPlayersColor = () => {
     const currentPlayers = props.info.players.length;
@@ -124,7 +148,7 @@ const Mision = props => {
       </button>
     );
 
-    if (props.user) {
+    if (props.user && props.info.completed === false) {
       if (props.info.owner._id === props.user._id) {
         return (
           <div className="row botones">
@@ -164,7 +188,7 @@ const Mision = props => {
         className="btn btn-secondary miptobtn"
         data-dismiss="modal"
       >
-        Close
+        Cerrar
       </button>
     );
 
@@ -194,7 +218,7 @@ const Mision = props => {
       </button>
     );
 
-    if (props.user) {
+    if (props.user && props.info.completed === false) {
       if (props.info.owner._id === props.user._id) {
         botones = btn_delete;
       } else if (
@@ -228,28 +252,26 @@ const Mision = props => {
     });
   };
 
+  const questNameWithoutSpaces = props.info.name.replace(/ /g, "");
+
+  const setChat = () => {
+    if (
+      props.user &&
+      props.info.players.findIndex(player => player._id === props.user._id) >=
+        0 &&
+      props.chat
+    ) {
+      return <Chat chat={props.chat} user={props.user} quest={props.info} />;
+    } else {
+      return "";
+    }
+  };
+
   return (
     <div className="Mision">
       <div className="container-fluid mision">
         <div className="nombre row">
           <div className="col-md-10">{props.info.name}</div>
-          {props.user && props.info.players.length === props.info.maxPlayers ? (
-            props.info.players.findIndex(id => id === props.user._id) >= 0 ? (
-              <div className="col-md-2">
-                <Link to="chats">
-                  <img
-                    src="../chat.png"
-                    alt="Chat logo"
-                    className="quest-info-logo"
-                  />
-                </Link>
-              </div>
-            ) : (
-              ""
-            )
-          ) : (
-            ""
-          )}
           <div className="col-2">
             <img
               className="platform-logo"
@@ -258,21 +280,38 @@ const Mision = props => {
             ></img>
           </div>
         </div>
-        <div className="row">
+        <div className="row mision-row-2">
           <div className="col finish">
-            <p>Vence el: {props.info.finishDate}</p>
+            <p ref={dateElement}>
+              Vence el: {new Date(props.info.finishDate).toString()}
+            </p>
           </div>
         </div>
+        {props.user &&
+        props.info.completed === false &&
+        props.info.owner._id === props.user._id &&
+        props.info.minPlayers <= props.info.players.length ? (
+          <div className="row terminar">
+            <div className="col">
+              <button className="btn-terminar" onClick={setCompleted}>
+                Terminar
+              </button>
+            </div>
+          </div>
+        ) : (
+          ""
+        )}
         <div className="row game">
           <div className="col-2">
             <img className="game-logo" src="../lol_logo.png" alt="game logo" />
           </div>
           <div className="game-col col">
-            <p className="game-name">League of Legends</p>
+            <p className="game-name">{props.info.game.name}</p>
           </div>
         </div>
-        <div className="row jugadores">
-          <div className="col">
+        <div className="row">
+          {setChat()}
+          <div className="col col-jugadores">
             <p>
               <span id="current-players" style={setPlayersColor()}>
                 {props.info.players.length}
@@ -285,12 +324,10 @@ const Mision = props => {
         {/* ----------------- MODAL ------------------------------*/}
         <div
           className="modal fade"
-          id={"modal" + props.info.name.replace(/ /g, "")}
+          id={"modal" + questNameWithoutSpaces}
           tabIndex="-1"
           role="dialog"
-          aria-labelledby={
-            "ModalScrollable" + props.info.name.replace(/ /g, "")
-          }
+          aria-labelledby={"ModalScrollable" + questNameWithoutSpaces}
           aria-hidden="true"
         >
           <div className="modal-dialog modal-dialog-scrollable" role="document">
@@ -301,9 +338,7 @@ const Mision = props => {
                     <div className="col">
                       <h5
                         className="modal-title"
-                        id={
-                          "ModalScrollable" + props.info.name.replace(/ /g, "")
-                        }
+                        id={"ModalScrollable" + questNameWithoutSpaces}
                       >
                         {props.info.name}
                       </h5>
@@ -327,8 +362,12 @@ const Mision = props => {
                 </button>
               </div>
               <div className="modal-body">
-                <p className="modal-description">{props.info.description}</p>
                 <div className="container-fluid">
+                  <div className="row modal-description">
+                    <div className="col">
+                      <p>{props.info.description}</p>
+                    </div>
+                  </div>
                   <div className="row game row-modal-body">
                     <div className="col-2">
                       <img
@@ -359,8 +398,8 @@ const Mision = props => {
               <div className="modal-footer">
                 <div className="container-fluid">
                   <div className="row">
-                    <p className="finish-modal">
-                      Falta: {props.info.finishDate}
+                    <p className="finish-modal" ref={dateElementModal}>
+                      Vence el: {new Date(props.info.finishDate).toString()}
                     </p>
                   </div>
                   {setButtonsModal()}

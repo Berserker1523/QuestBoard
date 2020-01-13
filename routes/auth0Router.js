@@ -6,14 +6,15 @@ const passport = require("passport");
 const frontURL = "http://localhost:3000";
 
 passport.authorize({
-    connection: 'google-oauth2'
-  });
+  connection: "google-oauth2"
+});
 
 router.get(
-	'/login',
-  passport.authenticate('auth0', {scope: 'openid email profile'}), (req, res) => {
-  	res.redirect(frontURL);
-	}
+  "/login",
+  passport.authenticate("auth0", { scope: "openid email profile" }),
+  (req, res) => {
+    res.redirect(frontURL);
+  }
 );
 
 // Completes the OAuth flow.

@@ -2,6 +2,12 @@
   margin-left: 20px;
   width: 50px;
   height: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+.navbar-logo:hover {
+  margin-left: 26px;
 }
 
 .navbar-dark {
@@ -11,6 +17,13 @@
 
 .needPadding {
   padding-top: 14px;
+}
+.disabled {
+  margin-left: 10px;
+}
+
+.dropdown-item.disabled {
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .dropdown-menu {
@@ -22,11 +35,18 @@
 }
 
 .nav-link-disabled {
-  color: rgba(255, 255, 255, 0.5);
-  margin: 6px;
+  color: rgba(255, 255, 255, 0.3);
+  pointer-events: none;
+  cursor: default;
+  margin: 10px;
 }
 
-.nav-link-disabled:hover {
+.nav-link2 {
+  color: rgba(255, 255, 255, 0.5);
+  margin: 10px;
+}
+
+.nav-link2:hover {
   color: #ffffff;
   margin: 6px;
 }
