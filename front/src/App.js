@@ -8,12 +8,12 @@ import TableroJuegos from "./TableroJuegos.js";
 import Navbar from "./Navbar.js";
 import MisMisiones from "./MisMisiones.js";
 import CrearMision from "./CrearMision.js";
-//import Chats from "./Chats.js";
 
 import { getAPI, postAPI } from "./API/BasicAPI";
 
 const App = props => {
   const [connected, setConnected] = useState(false);
+  const [backURL, setBackURL] = useState("");
 
   const [user, setUser] = useState(null);
   const [quests, setQuests] = useState([]);
@@ -66,13 +66,17 @@ const App = props => {
 
   useEffect(() => {
     if (!connected) {
-      console.log(window.location.origin.toString().replace(/^https/, "ws"));
-      /*const ws = new WebSocket(
-        "ws://localhost:3001".toString().replace(/^http/, "ws")
-      );*/
-      const ws = new WebSocket(
-        window.location.origin.toString().replace(/^http/, "ws")
-      );
+      const location_url = window.location.origin;
+      console.log(location_url);
+      let ws;
+      if (location_url === "http://localhost:3000") {
+        ws = new WebSocket("http://localhost:3001".replace(/^http/, "ws"));
+        setBackURL("http://localhost:3001");
+      } else {
+        ws = new WebSocket(location_url.replace(/^https/, "ws"));
+        setBackURL(location_url);
+      }
+
       ws.onopen = () => {
         console.log("connnected to ws");
         setConnected(true);
@@ -139,20 +143,11 @@ const App = props => {
     }
   }, []);
 
-  /*const getCurrentChat = currentChatId => {
-    fetch("/chats/" + currentChatId)
-      .then(res => res.json())
-      .then(data => {
-        setCurrentChat(data);
-      })
-      .catch(err => {});
-  };*/
-
   const renderPage = (propiedades, component) => (
     <div className="container-fluid app-container">
       <div className="row">
         <div className="col">
-          <Navbar {...propiedades} currentUser={user} />
+          <Navbar {...propiedades} currentUser={user} locationURL={backURL} />
         </div>
       </div>
       <div className="row">

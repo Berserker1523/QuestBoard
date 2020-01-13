@@ -352,7 +352,18 @@ router.delete("/quests/:quest_id", (req, res) => {
   const quest_id = req.params.quest_id;
   myMongoLib
     .deleteQuest(quest_id)
-    .then(docs => res.send({ deleted: docs.deletedCount }))
+    .then(quest_docs => {
+      myMongoLib
+        .getChatByQuestId(quest_id)
+        .then(chat_docs => {
+          if (chat_docs.length > 0) {
+            const obtainedChat = chat_docs[0];
+            console.log(obtainedChat);
+            myMongoLib.deleteChat(obtainedChat._id);
+          }
+        })
+        .then(() => res.send({ deleted: quest_docs.deletedCount }));
+    })
     .catch(err => res.send({ err: true, msg: err }));
 });
 

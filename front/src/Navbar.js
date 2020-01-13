@@ -79,7 +79,7 @@ const Navbar = props => {
               <li className="nav-item">
                 <a
                   className="nav-link my-2 my-sm-0"
-                  href="https://questboardapp.herokuapp.com/auth/login"
+                  href={props.backURL + "/auth/login"}
                 >
                   Inicia sesión
                 </a>
@@ -123,7 +123,7 @@ const Navbar = props => {
                   </a>
                   <a
                     className="dropdown-item nav-link2"
-                    href="https://questboardapp.herokuapp.com/auth/logout"
+                    href={props.backURL + "/auth/logout"}
                   >
                     Cerrar sesión
                   </a>
