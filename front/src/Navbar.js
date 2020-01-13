@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 const Navbar = props => {
+  console.log("Navbar:");
+  console.log(props.backURL);
   return (
     <div className="Navbar">
       <nav className="navbar navbar-expand-lg navbar-dark fixed-top">

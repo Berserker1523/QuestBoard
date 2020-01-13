@@ -70,6 +70,7 @@ const App = props => {
       console.log(location_url);
       let ws;
       if (location_url === "http://localhost:3000") {
+        console.log("llegueeeeeeeeeeeeee");
         ws = new WebSocket("http://localhost:3001".replace(/^http/, "ws"));
         setBackURL("http://localhost:3001");
       } else {
@@ -147,7 +148,7 @@ const App = props => {
     <div className="container-fluid app-container">
       <div className="row">
         <div className="col">
-          <Navbar {...propiedades} currentUser={user} locationURL={backURL} />
+          <Navbar {...propiedades} currentUser={user} backURL={backURL} />
         </div>
       </div>
       <div className="row">

@@ -77,6 +77,11 @@ const Mision = props => {
   };
 
   const addPlayer = () => {
+    if (
+      props.info.players.findIndex(player => player._id === props.user._id) >= 0
+    ) {
+      return;
+    }
     props.info.players.push({
       _id: props.user._id,
       name: props.user.name

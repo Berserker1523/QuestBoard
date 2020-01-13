@@ -3,6 +3,8 @@ const Auth0Strategy = require("passport-auth0");
 const session = require("express-session");
 
 const configureAuth0 = app => {
+  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+  console.log(process.env.AUTH0_CALLBACK_URL);
   // Configure the Auth0 Strategy
   passport.use(
     new Auth0Strategy(
