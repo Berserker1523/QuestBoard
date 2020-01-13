@@ -42,8 +42,6 @@ class Inicio extends React.Component {
   };
 
   handleDateChange = date => {
-    console.log("Llegue handle Date Change");
-    console.log(date);
     this.setState({
       finishDate: date
     });
@@ -84,7 +82,6 @@ class Inicio extends React.Component {
   };
 
   render() {
-    console.log(this.state.finishDate);
     return (
       <div className="CrearMision">
         <div className="container-fluid crear-mision form">

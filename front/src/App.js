@@ -66,7 +66,7 @@ const App = props => {
 
   useEffect(() => {
     if (!connected) {
-      console.log(window.location.origin.toString().replace(/^http/, "ws"));
+      console.log(window.location.origin.toString().replace(/^https/, "ws"));
       /*const ws = new WebSocket(
         "ws://localhost:3001".toString().replace(/^http/, "ws")
       );*/
