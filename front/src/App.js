@@ -150,8 +150,10 @@ const App = props => {
           <Navbar {...propiedades} currentUser={user} backURL={backURL} />
         </div>
       </div>
-      <div className="row">
-        <div className="col">{component}</div>
+      <div className="row prueba">
+        <div className="col">
+          <main>{component}</main>
+        </div>
       </div>
     </div>
   );
@@ -234,19 +236,6 @@ const App = props => {
             }
             exact
           />
-          {/*<Route
-            path="/chats"
-            render={propiedades => (
-              <Chats
-                {...propiedades}
-                currentUser={user}
-                chats={chats}
-                GetCurrentChat={getCurrentChat}
-                currentChat={currentChat}
-              />
-            )}
-            exact
-          />*/}
         </Switch>
       </HashRouter>
     </div>

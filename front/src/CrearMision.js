@@ -125,6 +125,7 @@ class Inicio extends React.Component {
                 onChange={this.handleInputChange}
                 name="description"
                 className="form-textarea"
+                rows="5"
               />
             </div>
           </div>
@@ -140,8 +141,8 @@ class Inicio extends React.Component {
                 onChange={this.handleInputChange}
                 name="minPlayers"
               />
-              -
               <input
+                aria-label="Máximo de jugadores"
                 type="number"
                 id="maxJugadores"
                 value={this.state.maxJugadores}
@@ -152,8 +153,11 @@ class Inicio extends React.Component {
           </div>
           <div className="row">
             <div className="col">
-              <label htmlFor="">Fecha de finalización</label>
-              <br />
+              <label htmlFor="date-picker-inline">Fecha de finalización</label>
+            </div>
+          </div>
+          <div className="row form-row">
+            <div className="col">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   format="dd/MM/yyyy"
@@ -166,6 +170,11 @@ class Inicio extends React.Component {
                   }}
                 />
               </MuiPickersUtilsProvider>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <label htmlFor="time-picker">Hora de finalización</label>
             </div>
           </div>
           <div className="row form-row">

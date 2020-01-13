@@ -4,15 +4,16 @@ import { putAPI } from "./API/BasicAPI";
 
 const Chat = props => {
   const [message, setMessage] = useState("");
-  let messagesContainer = useRef(null);
+  const messagesContainer = useRef(null);
 
   useEffect(() => {
     const element = messagesContainer.current;
-    //76 is a message height,
+
+    //100 is an average message height,
     //when a new message is rendered scroll top is not at the most bottom
     //even if previously it was
     const shouldScroll =
-      element.scrollTop + element.clientHeight + 76 === element.scrollHeight;
+      element.scrollTop + element.clientHeight + 100 >= element.scrollHeight;
     if (shouldScroll) {
       element.scrollTop = element.scrollHeight;
     }
@@ -148,6 +149,7 @@ const Chat = props => {
               <div className="row">
                 <div className="col">
                   <input
+                    aria-label="Escribir mensaje"
                     className="chat-new-message"
                     name="message"
                     type="text"
@@ -178,9 +180,10 @@ const Chat = props => {
   );
 
   return (
-    <div className="col-2">
+    <div className="col-3">
       {chat}
       <button
+        aria-label="Abrir chat"
         className="btn-chat"
         type="button"
         data-toggle="modal"

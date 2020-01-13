@@ -101,6 +101,12 @@ const Mision = props => {
   };
 
   const removePlayer = () => {
+    if (
+      props.info.players.findIndex(player => player._id === props.user._id) < 0
+    ) {
+      return;
+    }
+
     props.info.players.splice(
       props.info.players.findIndex(player => player._id === props.user._id),
       1
@@ -117,9 +123,9 @@ const Mision = props => {
       currentPlayers >= props.info.minPlayers &&
       currentPlayers < props.info.maxPlayers
     ) {
-      return { color: "green" };
+      return { color: "#43b31b" };
     } else {
-      return { color: "red" };
+      return { color: "#ff6344" };
     }
   };
 
@@ -276,10 +282,10 @@ const Mision = props => {
     <div className="Mision">
       <div className="container-fluid mision">
         <div className="nombre row">
-          <div className="col-md-10">{props.info.name}</div>
-          <div className="col-2">
+          <div className="col-10">{props.info.name}</div>
+          <div className="col-2 platform-logo">
             <img
-              className="platform-logo"
+              className="platform-logo-img"
               src={props.info.game.platform}
               alt="platform logo"
             ></img>
@@ -296,8 +302,8 @@ const Mision = props => {
         props.info.completed === false &&
         props.info.owner._id === props.user._id &&
         props.info.minPlayers <= props.info.players.length ? (
-          <div className="row terminar">
-            <div className="col">
+          <div className="row row-terminar">
+            <div className="col col-terminar">
               <button className="btn-terminar" onClick={setCompleted}>
                 Terminar
               </button>
@@ -307,18 +313,18 @@ const Mision = props => {
           ""
         )}
         <div className="row game">
-          <div className="col-2">
+          <div className="col-3">
             <img className="game-logo" src="../lol_logo.png" alt="game logo" />
           </div>
           <div className="game-col col">
             <p className="game-name">{props.info.game.name}</p>
           </div>
         </div>
-        <div className="row">
+        <div className="row row-jugadores">
           {setChat()}
           <div className="col col-jugadores">
             <p>
-              <span id="current-players" style={setPlayersColor()}>
+              <span className="current-players" style={setPlayersColor()}>
                 {props.info.players.length}
               </span>{" "}
               / {props.info.maxPlayers} Jugadores
@@ -388,7 +394,10 @@ const Mision = props => {
                   <div className="row jugadores-modal">
                     <div className="col">
                       <p>
-                        <span id="current-players" style={setPlayersColor()}>
+                        <span
+                          className="current-players"
+                          style={setPlayersColor()}
+                        >
                           {props.info.players.length}
                         </span>{" "}
                         / {props.info.maxPlayers} Jugadores

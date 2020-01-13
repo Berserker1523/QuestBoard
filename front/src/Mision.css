@@ -1,3 +1,7 @@
+.input-stats {
+  width: 100%;
+}
+
 .input-juego {
   margin-left: 3%;
   margin-top: 3%;
@@ -26,9 +30,12 @@
   border: none;
 }
 
-.terminar {
+.row-terminar {
   margin-top: 1%;
-  margin-left: 75%;
+}
+
+.col-terminar {
+  text-align: right;
 }
 
 .chat-new-message {
@@ -39,6 +46,11 @@
 
 .col-jugadores {
   padding-top: 7px;
+  padding-left: 0;
+}
+
+.col-3 {
+  padding-left: 0;
 }
 
 .chat-text {
@@ -63,6 +75,7 @@
   background: url(./chat.png);
   height: 28px;
   width: 28px;
+  margin-left: 5px;
 }
 
 .modal-btn-close {
@@ -129,11 +142,12 @@
 }
 
 .platform-logo {
-  padding-left: 30px;
-  position: relative;
-  bottom: 5px;
-  border-radius: 5px;
-  text-align: right;
+  padding: 0;
+}
+.platform-logo-img {
+  border-radius: 0 0 0 5px;
+  border-left: 1px solid white;
+  border-bottom: 1px solid white;
 }
 .miptobtn {
   float: right;
@@ -157,6 +171,7 @@
 .game {
   margin-top: 1%;
   margin-bottom: 10px;
+  margin-left: 1%;
 }
 
 .game-col {
@@ -166,6 +181,10 @@
 .game-name {
   margin-top: 4px;
   font-size: 20px;
+}
+
+.row-jugadores {
+  margin-left: 1%;
 }
 
 .game-name-modal {
@@ -178,12 +197,9 @@
   font-size: 15px;
 }
 
-.nombre {
-  padding-top: 0px;
-}
-
 .game-logo {
-  width: 100%;
+  height: 40px;
+  width: 40px;
 }
 
 .finish {
@@ -199,7 +215,7 @@
 
 .nombre {
   font-size: 24px;
-  padding-top: 2px;
+  padding-top: 0px;
   padding-bottom: 2px;
   padding-left: 5%;
   padding-right: 5%;

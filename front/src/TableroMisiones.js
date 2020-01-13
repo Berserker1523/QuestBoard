@@ -2,7 +2,6 @@ import React /*, { useEffect }*/ from "react";
 import "./TableroMisiones.css";
 import Mision from "./Mision.js";
 //import main from "./space-cowboy";
-import { Link } from "react-router-dom";
 
 const TableroMisiones = props => {
   /*useEffect(() => {

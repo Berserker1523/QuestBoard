@@ -8,5 +8,11 @@
 
 .btn-crear-mision {
   background-color: #facb00;
-  border: none;
+  border-radius: 10px;
+  height: 40px;
+  width: 200px;
+}
+
+.row-btn-crearMision {
+  margin-bottom: 2%;
 }

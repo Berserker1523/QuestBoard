@@ -7,9 +7,15 @@ const Navbar = props => {
   console.log(props.backURL);
   return (
     <div className="Navbar">
-      <nav className="navbar navbar-expand-lg navbar-dark fixed-top">
+      <nav className="navbar navbar-expand-lg navbar-dark">
         <Link
-          className="navbar-brand"
+          className={
+            props.currentUser === null
+              ? "navbar-brand logo-disabled"
+              : props.location.pathname === "/tablero"
+              ? "navbar-brand navbar-brand-modified logo-disabled"
+              : "navbar-brand navbar-brand-modified"
+          }
           to={props.currentUser === null ? "/" : "/tablero"}
         >
           <img
@@ -17,6 +23,7 @@ const Navbar = props => {
             alt="Quest Board logo"
             className="navbar-logo"
           />
+          {props.currentUser === null ? "" : "Tablero"}
         </Link>
 
         <button

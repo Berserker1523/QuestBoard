@@ -74,8 +74,12 @@ const Juego = props => {
       <div className="container-fluid mision">
         <div className="row">
           <div className="col-10 nombre">{props.info.name}</div>
-          <div className="col-2 logo">
-            <img src={props.info.platform} alt="platform logo"></img>
+          <div className="col-2 platform-logo">
+            <img
+              className="platform-logo-img"
+              src={props.info.platform}
+              alt="platform logo"
+            ></img>
           </div>
         </div>
         <div className="row juego-descripcion">
@@ -94,11 +98,11 @@ const Juego = props => {
                 Ingrese su nombre de invocador
                 <br />
                 <input
+                  className="input-stats"
                   type="text"
                   name="name"
                   value={summonerName}
                   onChange={handleSummonerInput}
-                  size="35"
                 />
               </label>
             </div>

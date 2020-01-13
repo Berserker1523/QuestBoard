@@ -56,7 +56,7 @@ const MisMisiones = props => {
       <div className="container-fluid misiones">
         {props.user && props.user.ownGames.length >= 1 ? (
           <div>
-            <div className="row">
+            <div className="row row-btn-crearMision">
               <div className="col">
                 <div className="agregar-mision">
                   <Link to="crear-mision">
