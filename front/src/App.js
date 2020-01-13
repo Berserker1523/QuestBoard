@@ -67,8 +67,11 @@ const App = props => {
   useEffect(() => {
     if (!connected) {
       console.log(window.location.origin.toString().replace(/^http/, "ws"));
-      const ws = new WebSocket(
+      /*const ws = new WebSocket(
         "ws://localhost:3001".toString().replace(/^http/, "ws")
+      );*/
+      const ws = new WebSocket(
+        window.location.origin.toString().replace(/^http/, "ws")
       );
       ws.onopen = () => {
         console.log("connnected to ws");
