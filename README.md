@@ -85,6 +85,6 @@ Open your CMD en clone the repositorie, using the next command:
 María José Ocampo Vargas - https://github.com/mjocampov
 Jesús Orlando Cárcamo Posada - https://github.com/Berserker1523
 # Screenshots
-![alt text](https://i.imgur.com/bTwyLyz.png)
+![alt text](https://i.imgur.com/dP8Hihp.png)
 # MIT License
 You can find the license right here: https://github.com/Berserker1523/QuestBoard/blob/master/LICENSE
