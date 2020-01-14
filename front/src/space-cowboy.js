@@ -1,3 +1,5 @@
+/* Proyecto de computación visual interactiva aún no empezado */
+
 let vertexShaderSource = `#version 300 es
 
 in vec4 a_position;

@@ -71,7 +71,7 @@ class Inicio extends React.Component {
       game: game
     })
       .then(response => {
-        console.log("Mision creada con exito:", response);
+        return;
       })
       .catch(error => {
         this.props.setQuestsError(

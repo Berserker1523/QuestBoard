@@ -67,7 +67,6 @@ const App = props => {
   useEffect(() => {
     if (!connected) {
       const location_url = window.location.origin;
-      console.log(location_url);
       let ws;
       if (location_url === "http://localhost:3000") {
         ws = new WebSocket("http://localhost:3001".replace(/^http/, "ws"));
@@ -78,17 +77,17 @@ const App = props => {
       }
 
       ws.onopen = () => {
-        console.log("connnected to ws");
+        //console.log("connnected to ws");
         setConnected(true);
         ws.onmessage = msg => {
           let res = JSON.parse(msg.data);
-          console.log("got ws data", res);
+          //console.log("got ws data", res);
           if (res.type === "quests") {
-            console.log("App.js: se recibió info de misiones");
+            //console.log("App.js: se recibió info de misiones");
             setQuests(res.data);
           }
           if (res.type === "chats") {
-            console.log("App.js: se recibió info de chats");
+            //console.log("App.js: se recibió info de chats");
             setChats(res.data);
           }
         };
@@ -98,14 +97,14 @@ const App = props => {
     if (!user) {
       getAPI("/auth/getUser")
         .then(loggedUser => {
-          console.log("loggedUser: ");
-          console.log(loggedUser);
+          //console.log("loggedUser: ");
+          //console.log(loggedUser);
           if (loggedUser) {
-            console.log(`user: ${loggedUser.displayName}`);
+            //console.log(`user: ${loggedUser.displayName}`);
             getAPI(`/users/${loggedUser.displayName}`)
               .then(data => {
-                console.log("Get user back response: ");
-                console.log(data);
+                //console.log("Get user back response: ");
+                //console.log(data);
 
                 setUser(data);
               })
@@ -113,7 +112,7 @@ const App = props => {
                 console.log(err);
                 //No se encontró un usuario registrado
                 if (err instanceof SyntaxError) {
-                  console.log("No se encontró un usuario registrado");
+                  //console.log("No se encontró un usuario registrado");
                   postAPI("/users", {
                     name: loggedUser.nickname,
                     mail: loggedUser.displayName,

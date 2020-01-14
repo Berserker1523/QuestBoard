@@ -89,10 +89,6 @@ const Mision = props => {
 
     putQuest("No fue posible agregar el jugador a la misión: \n");
 
-    console.log(props.info.players.length);
-    console.log(props.info.maxPlayers);
-
-    console.log(props.info.players.length === props.info.maxPlayers);
     /* eslint-disable */
     if (props.info.players.length == props.info.maxPlayers) {
       setCompleted();
