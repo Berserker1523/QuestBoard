@@ -38,11 +38,18 @@ Open your CMD en clone the repositorie, using the next command:
 ```
   yarn install
 ```
-3. To be able to use a database you must create a .env file in the root directory
-   and put inside: 
+3. To be able to use a database, Auth0 and Riot Games API you must create a .env file in the root directory or define as environmental variables: 
 ```
   MONGO_URL="your_mongo_database_url"
+  AUTH0_DOMAIN="yourauhth0domain.auth0.com"
+  AUTH0_CLIENT_ID="asdasdaasdasdasdasdasdas"
+  AUTH0_CLIENT_SECRET="asdasdsa-asdasdasdasdasda-sdasdadas"
+  AUTH0_CALLBACK_URL="http://yourdomain/auth/callback"
+  RIOT_GAMES_API_KEY="qweqweqweqw-qweeqweqweq-eqweqweqweqwe"
+  FRONT_URL="http://yourdomain"
 ```
+4. If you run your back server locally, you must have it in 3001 port and put localhost:3001 in yourdomain of AUTH0_CALLBACK_URL.
+
 ### React
 1. Access the ./front directory from your cmd
 ```
