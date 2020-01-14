@@ -5,13 +5,22 @@
   color: rgba(0, 0, 0, 0.8) !important;
 }
 
+.navbar-brand-modified:hover {
+  margin-left: 10px;
+}
+
 .navbar-logo {
   margin-left: 10px;
   margin-right: 10px;
   width: 50px;
   height: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid #facb00;
   border-radius: 5px;
+}
+
+.navbar-logo-currentPage {
+  border: none !important;
+  border-radius: 0 !important;
 }
 
 .logo-disabled {
@@ -19,8 +28,10 @@
   cursor: default;
 }
 
-.navbar-brand-modified:hover {
-  margin-left: 10px;
+.logo-currentPage {
+  background-color: #000 !important;
+  border: 2px solid #facb00 !important;
+  color: white !important;
 }
 
 .navbar-dark .navbar-nav .nav-link {

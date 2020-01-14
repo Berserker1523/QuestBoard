@@ -13,7 +13,7 @@ const Navbar = props => {
             props.currentUser === null
               ? "navbar-brand logo-disabled"
               : props.location.pathname === "/tablero"
-              ? "navbar-brand navbar-brand-modified logo-disabled"
+              ? "navbar-brand navbar-brand-modified logo-currentPage logo-disabled"
               : "navbar-brand navbar-brand-modified"
           }
           to={props.currentUser === null ? "/" : "/tablero"}
@@ -21,7 +21,11 @@ const Navbar = props => {
           <img
             src="../questBoardLogo.jpeg"
             alt="Quest Board logo"
-            className="navbar-logo"
+            className={
+              props.location.pathname === "/tablero"
+                ? "navbar-logo navbar-logo-currentPage"
+                : "navbar-logo"
+            }
           />
           {props.currentUser === null ? "" : "Tablero"}
         </Link>

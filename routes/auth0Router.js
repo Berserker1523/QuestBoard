@@ -4,7 +4,6 @@ const passport = require("passport");
 
 // Initiates basic Sign in With Slack flow
 const frontURL = process.env.FRONT_URL;
-console.log(process.env.FRONT_URL);
 
 passport.authorize({
   connection: "google-oauth2"
